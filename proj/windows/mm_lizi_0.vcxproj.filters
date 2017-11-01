@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{8beab597-1d24-4876-8516-e5b61390d06c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lizi_0">
+      <UniqueIdentifier>{3a9fb0cc-e9a6-4950-9bc5-04f0fdef3849}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\lizi_0\main.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

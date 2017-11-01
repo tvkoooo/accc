@@ -1,0 +1,16 @@
+//////////////////////////////////////////////////////////////////////////
+#include <tchar.h>
+#include <stdio.h>
+#include <exception>
+
+#define use_vld_check_memory_leak
+#if _DEBUG
+#ifdef use_vld_check_memory_leak
+#include <vld.h>
+#endif
+#endif // _DEBUG
+//////////////////////////////////////////////////////////////////////////
+int main(int argc,char **argv)
+{
+	return 0;
+}

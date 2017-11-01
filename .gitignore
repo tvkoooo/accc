@@ -1,0 +1,14 @@
+*.sdf
+*.opensdf
+*.DS_Store
+*.v11.suo
+*.suo
+*.vcxproj.user
+*.tags
+*.tags_sorted_by_file
+*~
+bin/
+obj/
+gen/
+libs/
+log/
