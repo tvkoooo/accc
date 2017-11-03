@@ -12,5 +12,29 @@
     <ClCompile Include="..\..\src\lizi_0\main.cpp">
       <Filter>src\lizi_0</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\li1.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\li2.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\li3.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\max2.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\li4.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\lizi_0\tou.h">
+      <Filter>src\lizi_0</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="mm_lizi_0.rc" />
   </ItemGroup>
 </Project>

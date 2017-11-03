@@ -19,7 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\lizi_0\li1.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\li2.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\li3.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\li4.cpp" />
     <ClCompile Include="..\..\src\lizi_0\main.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\max2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\lizi_0\tou.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="mm_lizi_0.rc" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A08F5B76-1815-4EB3-AD6F-0B48AA91B49B}</ProjectGuid>
