@@ -1,0 +1,35 @@
+﻿大小端的不同,在不同机型上,结果不一样
+union MyUnion
+{
+	char c[4];
+	int i;
+};
+MyUnion u;
+u.i = 123;
+printf("%d %d %d %d\n",u.c[0],u.c[1],u.c[2],u.c[3]);
+小端是 123 0 0 0
+大端是 0 0 0 123
+
+虚函数表的大小
+class MyClass0
+{
+}
+sizeof(MyClass0) = 1// 当结构中没有数据结构时,大小为1,而不是0
+
+class MyClass1
+{
+public:
+	MyClass1(){}
+	virtual ~MyClass1(){}
+public:
+	virtual void fun0(){}
+	virtual void fun1(){}
+};
+
+sizeof(MyClass1) = 4// 虚函数表只占4个字节(32位机器),与虚函数个数无关
+
+指针类型和回调函数,事件模式的基石
+typedef void (*handle_callback)(int i);
+
+结构体中可以聚合所有数据结构,包括函数指针
+
