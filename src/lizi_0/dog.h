@@ -4,7 +4,8 @@
 
 struct dog
 {
-	int dog_name;
+
+	char dog_name[20];
 
 	char dog_talk1[20];
 	char dog_talk2[20];
@@ -27,4 +28,5 @@ extern void dog_talk(struct dog *pscanf);
 //extern void dog_fjujian(struct dog *pjian);
 //extern void dog_li5();
 extern int shuijishu();
+extern void li5();
 #endif  /* _INC_dog */

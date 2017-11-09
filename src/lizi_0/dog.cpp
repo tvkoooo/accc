@@ -6,31 +6,36 @@
 
 void dogname_init(struct dog *pscanf)
 {
-	int a;
-	printf("creat dog name");
+	
+	printf("creat dog name\n");
 	//memset(pscanf,0,sizeof(struct dog));
-	scanf("%d",&a);
-	pscanf->dog_name=a;
+	scanf("%s",pscanf->dog_name);
+
+	printf("your dog is :%s\n",pscanf->dog_name);
+
 
 }
 
 void dogname_destroy(struct dog *pscanf)
 {
-	printf("del dog name");
+	int i;
+	//printf("del dog%s \n",pscanf->dog_name);
 	//memset(pscanf,0,sizeof(struct dog));
-	pscanf->dog_name=0;
+	for(i=0;i<20;i++)
+		pscanf->dog_name[i]=0;
 }
 
 
  void dogtalk_init(struct dog *pscanf)
 {
-	printf("creat dog talk1");
+	printf("\n\nyour dog is :%s\n",pscanf->dog_name);
+	printf("creat dog talk1\n");
 	scanf("%s",&pscanf->dog_talk1);
-	printf("creat dog talk2");
+	printf("creat dog talk2\n");
 	scanf("%s",&pscanf->dog_talk2);
-	printf("creat dog talk3");
+	printf("creat dog talk3\n");
 	scanf("%s",&pscanf->dog_talk3);
-	printf("creat dog talk4");
+	printf("creat dog talk4\n");
 	scanf("%s",&pscanf->dog_talk4);
 }
 
@@ -38,14 +43,14 @@ void dogname_destroy(struct dog *pscanf)
  void dogtalk_destroy(struct dog *pscanf)
 {
 	int i;
-	printf("del dog talk");
-	for(i=0;i++;i<20)
+	//printf("del dog%s talk\n",pscanf->dog_name);
+	for(i=0;i<20;i++)
         pscanf->dog_talk1[i]=0;
-	for(i=0;i++;i<20)
+	for(i=0;i<20;i++)
 		pscanf->dog_talk2[i]=0;
-	for(i=0;i++;i<20)
+	for(i=0;i<20;i++)
 		pscanf->dog_talk3[i]=0;
-	for(i=0;i++;i<20)
+	for(i=0;i<20;i++)
 		pscanf->dog_talk4[i]=0;
 }
 
@@ -55,12 +60,12 @@ void dog_talk(struct dog *pscanf)
 	i=shuijishu()%4;
 	switch (i)
 	{
-	case 0:printf("Dog %d:s%",pscanf->dog_name,pscanf->dog_talk1);break;
-	case 1:printf("Dog %d:s%",pscanf->dog_name,pscanf->dog_talk1);break;
-	case 2:printf("Dog %d:s%",pscanf->dog_name,pscanf->dog_talk1);break;
-	case 3:printf("Dog %d:s%",pscanf->dog_name,pscanf->dog_talk1);break;
+	case 0:printf("Dog %s:%s\n",pscanf->dog_name,pscanf->dog_talk1);break;
+	case 1:printf("Dog %s:%s\n",pscanf->dog_name,pscanf->dog_talk2);break;
+	case 2:printf("Dog %s:%s\n",pscanf->dog_name,pscanf->dog_talk3);break;
+	case 3:printf("Dog %s:%s\n",pscanf->dog_name,pscanf->dog_talk4);break;
 
-	default:
+	default:printf("no dog can be");
 		break;
 	}
 

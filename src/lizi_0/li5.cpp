@@ -23,57 +23,54 @@
 
 void li5()
 {
-	char i;
+
+    char m;
 	struct dog a,b,c;
+
 	dogname_init(&a);
 	dogname_init(&b);	
 	dogname_init(&c);	
 
-	printf("Which one would you like to choose? ");
-	printf("A:%d\nB:%d\nC:%d\n ",(&a)->dog_name,(&b)->dog_name,(&c)->dog_name);
-	scanf("%d",&i);
-	if(i=='A'||i=='B'||i=='C'||i=='a'||i=='b'||i=='c')
-	switch (i)
+	dogtalk_init(&a);
+	dogtalk_init(&b);
+	dogtalk_init(&c);
+
+	do 
 	{
-	case 'A':
-	case 'a':dog_talk(&a);break;
+		printf("\nWhich one would you like to choose?ÍË³öÇë°´n \n");
+		printf("A:%s\nB:%s\nC:%s\n",(&a)->dog_name,(&b)->dog_name,(&c)->dog_name);
 
-	case 'B':
-	case 'b':dog_talk(&b);break;
+		scanf(" %c",&m);
+		if(m=='n'||m=='N')
+			break;
+		if(m=='A'||m=='B'||m=='C'||m=='a'||m=='b'||m=='c')
+			switch (m)
+		{
+			case 'A':
+			case 'a':dog_talk(&a);break;
 
-	case 'C':
-	case 'c':dog_talk(&c);break;
+			case 'B':
+			case 'b':dog_talk(&b);break;
 
-	default:
-		break;
-	}
+			case 'C':
+			case 'c':dog_talk(&c);break;
 
+			default:
+				break;
+		}
+
+
+	} while (1);
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	dogtalk_destroy(&a);	
+	dogtalk_destroy(&b);
+	dogtalk_destroy(&c);
+
+
+	dogname_destroy(&a);
+	dogname_destroy(&b);
+	dogname_destroy(&c);
 	//{
 	//	int A;
 	//	func(&A);

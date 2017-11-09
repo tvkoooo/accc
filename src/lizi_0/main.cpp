@@ -28,7 +28,7 @@ int main(int argc,char **argv)
 
 	//sumscan();   //li1.app  function
  //   li2();    //li2.app  function
-	
+	//
 	//struct ff hb;
 	return 0;
 }
