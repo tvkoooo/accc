@@ -17,7 +17,7 @@ static struct goutalk quangougou={"ß÷ß÷","ÎÒÒ§Äã£¬ÎÇBom","Ïë³ÔÈâ","One One","ÎÒ²
 
 struct gou
 {
-	char *gouname;
+	char gouname[20];
    struct goutalk gouou;
 };
 
@@ -34,6 +34,7 @@ static void ffff()
 }
 extern void li2();
 extern void li3();
+
 extern void sumscan();
 extern int sumn(int m,int *x,int *y);
 extern int shuijishu();

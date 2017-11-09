@@ -27,12 +27,21 @@
     <ClCompile Include="..\..\src\lizi_0\li4.cpp">
       <Filter>src\lizi_0</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\li5.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\dog.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_0\tou.h">
       <Filter>src\lizi_0</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="..\..\src\lizi_0\dog.h">
+      <Filter>src\lizi_0</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="mm_lizi_0.rc" />

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <exception>
 #include <tou.h>
+#include "dog.h"
 
 //#include <max2.cpp>
 //#include <li1.cpp>
@@ -20,8 +21,9 @@
 int main(int argc,char **argv)
 {
 
-	li3();
-
+	//li3();
+	//li5();
+	li5();
 
 
 	//sumscan();   //li1.app  function

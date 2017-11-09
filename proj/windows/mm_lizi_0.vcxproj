@@ -19,14 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\lizi_0\dog.cpp" />
     <ClCompile Include="..\..\src\lizi_0\li1.cpp" />
     <ClCompile Include="..\..\src\lizi_0\li2.cpp" />
     <ClCompile Include="..\..\src\lizi_0\li3.cpp" />
     <ClCompile Include="..\..\src\lizi_0\li4.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\li5.cpp" />
     <ClCompile Include="..\..\src\lizi_0\main.cpp" />
     <ClCompile Include="..\..\src\lizi_0\max2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\lizi_0\dog.h" />
     <ClInclude Include="..\..\src\lizi_0\tou.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
