@@ -22,16 +22,6 @@ int sumn(int m,int *x,int *y)
 
 
 
-int shuijishu()
-{
-
-		int i,flag5;		
-		for(i=0;i<335;i++)				
-		flag5=rand();
-		return(flag5);
-	
-		
-}
 
 
 

@@ -33,6 +33,24 @@
     <ClCompile Include="..\..\src\lizi_0\dog.cpp">
       <Filter>src\lizi_0</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\dogactivity.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\dogdevelop.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\doglib.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\lead.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\leadlib.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\businessmanlib.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_0\tou.h">
@@ -40,6 +58,12 @@
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="..\..\src\lizi_0\dog.h">
+      <Filter>src\lizi_0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_0\doglib.h">
+      <Filter>src\lizi_0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_0\leadlib.h">
       <Filter>src\lizi_0</Filter>
     </ClInclude>
   </ItemGroup>

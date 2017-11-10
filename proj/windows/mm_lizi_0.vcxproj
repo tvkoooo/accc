@@ -19,7 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\lizi_0\businessmanlib.cpp" />
     <ClCompile Include="..\..\src\lizi_0\dog.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\dogactivity.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\dogdevelop.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\doglib.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\lead.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\leadlib.cpp" />
     <ClCompile Include="..\..\src\lizi_0\li1.cpp" />
     <ClCompile Include="..\..\src\lizi_0\li2.cpp" />
     <ClCompile Include="..\..\src\lizi_0\li3.cpp" />
@@ -30,6 +36,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_0\dog.h" />
+    <ClInclude Include="..\..\src\lizi_0\doglib.h" />
+    <ClInclude Include="..\..\src\lizi_0\leadlib.h" />
     <ClInclude Include="..\..\src\lizi_0\tou.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
