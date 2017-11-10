@@ -35,6 +35,8 @@
     <ClCompile Include="..\..\src\lizi_0\li5.cpp" />
     <ClCompile Include="..\..\src\lizi_0\main.cpp" />
     <ClCompile Include="..\..\src\lizi_0\max2.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\recordput.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\shuchurizhi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_0\businessmanlib.h" />
@@ -43,6 +45,8 @@
     <ClInclude Include="..\..\src\lizi_0\huidiao.h" />
     <ClInclude Include="..\..\src\lizi_0\juzhen.h" />
     <ClInclude Include="..\..\src\lizi_0\leadlib.h" />
+    <ClInclude Include="..\..\src\lizi_0\recordput.h" />
+    <ClInclude Include="..\..\src\lizi_0\shuchurizhi.h" />
     <ClInclude Include="..\..\src\lizi_0\tou.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

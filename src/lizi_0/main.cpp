@@ -6,6 +6,8 @@
 #include "dog.h"
 #include "juzhen.h"
 #include "huidiao.h"
+#include "recordput.h"
+#include "shuchurizhi.h"
 
 
 //#include <max2.cpp>
@@ -19,17 +21,20 @@
 #include <vld.h>
 #endif
 #endif // _DEBUG
+
 //////////////////////////////////////////////////////////////////////////
 
 int main(int argc,char **argv)
 {
 
+	put_loger_I();
+//input_record_test();
 	//li3();
 	//li5();
     //huidiao_a();
-	juzhen4_chen_4juzhen();
-	//sumscan();   //li1.app  function
- //   li2();    //li2.app  function
+	//juzhen4_chen_4juzhen();
+	////sumscan();   //li1.app  function
+ ////   li2();    //li2.app  function
 	//
 	//struct ff hb;
 	return 0;
