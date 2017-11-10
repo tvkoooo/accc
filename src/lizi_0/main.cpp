@@ -4,6 +4,8 @@
 #include <exception>
 #include <tou.h>
 #include "dog.h"
+#include "juzhen.h"
+#include "huidiao.h"
 
 
 //#include <max2.cpp>
@@ -24,9 +26,8 @@ int main(int argc,char **argv)
 
 	//li3();
 	//li5();
-	//li5();
-
-
+    //huidiao_a();
+	juzhen4_chen_4juzhen();
 	//sumscan();   //li1.app  function
  //   li2();    //li2.app  function
 	//

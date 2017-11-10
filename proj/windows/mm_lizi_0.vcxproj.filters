@@ -51,6 +51,12 @@
     <ClCompile Include="..\..\src\lizi_0\businessmanlib.cpp">
       <Filter>src\lizi_0</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\juzhen.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\huidiao.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_0\tou.h">
@@ -64,6 +70,15 @@
       <Filter>src\lizi_0</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_0\leadlib.h">
+      <Filter>src\lizi_0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_0\businessmanlib.h">
+      <Filter>src\lizi_0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_0\juzhen.h">
+      <Filter>src\lizi_0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_0\huidiao.h">
       <Filter>src\lizi_0</Filter>
     </ClInclude>
   </ItemGroup>
