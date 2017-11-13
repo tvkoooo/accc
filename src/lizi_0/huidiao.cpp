@@ -3,7 +3,10 @@
 #include "huidiao.h"
 #include <windows.h>
 
-
+void huidiao()
+{
+	
+}
 void huidiao_new()
 {
 
@@ -11,8 +14,7 @@ void huidiao_new()
 
 	fun_huidiao_init(&fclock_a);
 
-	fclock_a.clocktime=0;
-	fclock_a.fun_hui=&fun_huidiao_fun;
+	fun_huidiao_fuzhi(&fclock_a,&fun_huidiao_fun);
 
 	do 
 	{
@@ -24,12 +26,13 @@ void huidiao_new()
 		}
 
 		Sleep (1000);
-		fclock_a.fun_hui();
-		fclock_a.clocktime++;
+
+		fun_huidiao_update(&fclock_a);
+
 	} while (1);
 
 
-	fun_huidiao_destroy(&fclock_a);
+	  fun_huidiao_destroy(&fclock_a);
 
 }
 
@@ -37,14 +40,15 @@ void huidiao_new()
 void fun_huidiao_init(struct fun_huidiao_new *p)
 {
 	p->clocktime=0;
-	(*p).fun_hui=NULL;
+
+	p->fun_hui=&huidiao;
 }
 
 //tool destroy tool数据层面销毁
 void fun_huidiao_destroy(struct fun_huidiao_new *p)
 {
 	p->clocktime=0;
-	(*p).fun_hui=NULL;
+	(*p).fun_hui=&huidiao;
 }
 
 //tool fun    时钟回掉
@@ -53,6 +57,18 @@ void fun_huidiao_fun()
 	printf("huidiao chengong!\n");
 }
 
+//tool init  tool数据赋值
+void fun_huidiao_fuzhi(struct fun_huidiao_new*p,huidiao_type p1)
+{
 
+	p->clocktime=0;
+	p->fun_hui=p1;
+}
 
+//tool init  tool数据刷新
+void fun_huidiao_update(struct fun_huidiao_new*p)
+{
 
+	p->fun_hui();
+	p->clocktime++;
+}
