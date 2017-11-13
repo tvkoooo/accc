@@ -66,6 +66,9 @@
     <ClCompile Include="..\..\src\lizi_0\vectorlj.cpp">
       <Filter>src\lizi_0</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\vectordog.cpp">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_0\tou.h">
@@ -97,6 +100,9 @@
       <Filter>src\lizi_0</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_0\vectorlj.h">
+      <Filter>src\lizi_0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_0\vectordog.h">
       <Filter>src\lizi_0</Filter>
     </ClInclude>
   </ItemGroup>

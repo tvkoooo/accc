@@ -8,7 +8,7 @@
 //#include "huidiao.h"
 //#include "recordput.h"
 //#include "shuchurizhi.h"
-#include "vectorlj.h"
+#include "vectordog.h"
 
 
 //#include <max2.cpp>
@@ -22,13 +22,24 @@
 #include <vld.h>
 #endif
 #endif // _DEBUG
+#include <time.h>
 
 //////////////////////////////////////////////////////////////////////////
 
 int main(int argc,char **argv)
 {
+	srand((int)time(0));
+	//int i=0;
+	//int eee;
+	//for(i=0;i<10;i++)
+	//{	
+	//	{
+	//		eee=shuijishu()%21;
+	//		printf("%d\n",eee);
+	//	}
+	//}
 
-   fun__vectorlj_new_test();
+   fun__vectordog_new_test();
 //input_record_test();
 	//li3();
 	//li5();
@@ -43,11 +54,11 @@ int main(int argc,char **argv)
 
 int shuijishu()
 {
-
-	int i,flag5;		
-	for(i=0;i<335;i++)				
-		flag5=rand();
-	return(flag5);
+	return rand();
+	//int i,flag5;		
+	//for(i=0;i<335;i++)				
+	//	flag5=rand();
+	//return(flag5);
 
 
 }

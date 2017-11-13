@@ -37,6 +37,7 @@
     <ClCompile Include="..\..\src\lizi_0\max2.cpp" />
     <ClCompile Include="..\..\src\lizi_0\recordput.cpp" />
     <ClCompile Include="..\..\src\lizi_0\shuchurizhi.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\vectordog.cpp" />
     <ClCompile Include="..\..\src\lizi_0\vectorlj.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -49,6 +50,7 @@
     <ClInclude Include="..\..\src\lizi_0\recordput.h" />
     <ClInclude Include="..\..\src\lizi_0\shuchurizhi.h" />
     <ClInclude Include="..\..\src\lizi_0\tou.h" />
+    <ClInclude Include="..\..\src\lizi_0\vectordog.h" />
     <ClInclude Include="..\..\src\lizi_0\vectorlj.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
