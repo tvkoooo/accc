@@ -2,12 +2,13 @@
 #include <tchar.h>
 #include <stdio.h>
 #include <exception>
-#include <tou.h>
-#include "dog.h"
-#include "juzhen.h"
-#include "huidiao.h"
-#include "recordput.h"
-#include "shuchurizhi.h"
+//#include <tou.h>
+//#include "dog.h"
+//#include "juzhen.h"
+//#include "huidiao.h"
+//#include "recordput.h"
+//#include "shuchurizhi.h"
+#include "vectorlj.h"
 
 
 //#include <max2.cpp>
@@ -27,7 +28,7 @@
 int main(int argc,char **argv)
 {
 
-   huidiao_new();
+   fun__vectorlj_new_test();
 //input_record_test();
 	//li3();
 	//li5();
