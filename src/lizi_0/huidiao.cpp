@@ -4,37 +4,55 @@
 #include <windows.h>
 
 
-void huidiao_a()
+void huidiao_new()
 {
-	int a;
-	a=0;
-	struct fun_huidiao_in fun_time_a;
-	fun_time_a.fun_hui=editprinthuidiao;
+
+	struct fun_huidiao_new fclock_a;
+
+	fun_huidiao_init(&fclock_a);
+
+	fclock_a.clocktime=0;
+	fclock_a.fun_hui=&fun_huidiao_fun;
 
 	do 
 	{
-		fun_time_a.clocktime=a++;
-		huidiao_clock_in(fun_time_a);
-		if (fun_time_a.clocktime>20)
+
+
+		if (fclock_a.clocktime>=6)
 		{
 			break;
 		}
-		Sleep (1000);
 
+		Sleep (1000);
+		fclock_a.fun_hui();
+		fclock_a.clocktime++;
 	} while (1);
+
+
+	fun_huidiao_destroy(&fclock_a);
 
 }
 
-void editprinthuidiao()
+//tool init  tool数据层面初始化
+void fun_huidiao_init(struct fun_huidiao_new *p)
+{
+	p->clocktime=0;
+	(*p).fun_hui=NULL;
+}
+
+//tool destroy tool数据层面销毁
+void fun_huidiao_destroy(struct fun_huidiao_new *p)
+{
+	p->clocktime=0;
+	(*p).fun_hui=NULL;
+}
+
+//tool fun    时钟回掉
+void fun_huidiao_fun()
 {
 	printf("huidiao chengong!\n");
 }
 
-void huidiao_clock_in(struct fun_huidiao_in clock_a)
-{
-	if (clock_a.clocktime%6==3)
-	{
-		clock_a.fun_hui();
-	}
-}
+
+
 

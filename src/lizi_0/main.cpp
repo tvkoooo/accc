@@ -27,7 +27,7 @@
 int main(int argc,char **argv)
 {
 
-	put_loger_I();
+   huidiao_new();
 //input_record_test();
 	//li3();
 	//li5();
