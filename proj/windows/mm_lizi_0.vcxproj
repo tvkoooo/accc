@@ -26,6 +26,8 @@
     <ClCompile Include="..\..\src\lizi_0\doglib.cpp" />
     <ClCompile Include="..\..\src\lizi_0\huidiao.cpp" />
     <ClCompile Include="..\..\src\lizi_0\juzhen.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\juzhen_gf.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\juzhen_gf_test.cpp" />
     <ClCompile Include="..\..\src\lizi_0\lead.cpp" />
     <ClCompile Include="..\..\src\lizi_0\leadlib.cpp" />
     <ClCompile Include="..\..\src\lizi_0\li1.cpp" />
@@ -36,8 +38,12 @@
     <ClCompile Include="..\..\src\lizi_0\main.cpp" />
     <ClCompile Include="..\..\src\lizi_0\max2.cpp" />
     <ClCompile Include="..\..\src\lizi_0\recordput.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\shijianqi.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\shijian_dog.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\shijian_yonghu.cpp" />
     <ClCompile Include="..\..\src\lizi_0\shuchurizhi.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\vectordog.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\vectordogdingyue.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\vectordogyonghu.cpp" />
     <ClCompile Include="..\..\src\lizi_0\vectorlj.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -46,16 +52,17 @@
     <ClInclude Include="..\..\src\lizi_0\doglib.h" />
     <ClInclude Include="..\..\src\lizi_0\huidiao.h" />
     <ClInclude Include="..\..\src\lizi_0\juzhen.h" />
+    <ClInclude Include="..\..\src\lizi_0\juzhen_gf.h" />
     <ClInclude Include="..\..\src\lizi_0\leadlib.h" />
     <ClInclude Include="..\..\src\lizi_0\recordput.h" />
+    <ClInclude Include="..\..\src\lizi_0\shijianqi.h" />
+    <ClInclude Include="..\..\src\lizi_0\shijian_dog.h" />
+    <ClInclude Include="..\..\src\lizi_0\shijian_yonghu.h" />
     <ClInclude Include="..\..\src\lizi_0\shuchurizhi.h" />
     <ClInclude Include="..\..\src\lizi_0\tou.h" />
-    <ClInclude Include="..\..\src\lizi_0\vectordog.h" />
+    <ClInclude Include="..\..\src\lizi_0\vectordogdingyue.h" />
     <ClInclude Include="..\..\src\lizi_0\vectorlj.h" />
-    <ClInclude Include="resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="mm_lizi_0.rc" />
+    <ClInclude Include="..\..\src\ll\ppp.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A08F5B76-1815-4EB3-AD6F-0B48AA91B49B}</ProjectGuid>

@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mm_lizi_0", "mm_lizi_0.vcxproj", "{A08F5B76-1815-4EB3-AD6F-0B48AA91B49B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mm_lizi_1", "mm_lizi_1.vcxproj", "{97786438-5602-4851-998C-962EF031ED05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,14 @@ Global
 		{A08F5B76-1815-4EB3-AD6F-0B48AA91B49B}.Release|Win32.Build.0 = Release|Win32
 		{A08F5B76-1815-4EB3-AD6F-0B48AA91B49B}.Release|x64.ActiveCfg = Release|x64
 		{A08F5B76-1815-4EB3-AD6F-0B48AA91B49B}.Release|x64.Build.0 = Release|x64
+		{97786438-5602-4851-998C-962EF031ED05}.Debug|Win32.ActiveCfg = Debug|Win32
+		{97786438-5602-4851-998C-962EF031ED05}.Debug|Win32.Build.0 = Debug|Win32
+		{97786438-5602-4851-998C-962EF031ED05}.Debug|x64.ActiveCfg = Debug|x64
+		{97786438-5602-4851-998C-962EF031ED05}.Debug|x64.Build.0 = Debug|x64
+		{97786438-5602-4851-998C-962EF031ED05}.Release|Win32.ActiveCfg = Release|Win32
+		{97786438-5602-4851-998C-962EF031ED05}.Release|Win32.Build.0 = Release|Win32
+		{97786438-5602-4851-998C-962EF031ED05}.Release|x64.ActiveCfg = Release|x64
+		{97786438-5602-4851-998C-962EF031ED05}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
