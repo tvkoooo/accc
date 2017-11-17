@@ -15,12 +15,36 @@
     <ClCompile Include="..\..\src\lizi_1\pthread_1.cpp">
       <Filter>src\lizi_1</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\pthread_2.cpp">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\mm_uuu.cpp">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.cpp">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\appaction.cpp">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_1\lizhi1_all.h">
       <Filter>src\lizi_1</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_1\pthread_1.h">
+      <Filter>src\lizi_1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_1\pthread_2.h">
+      <Filter>src\lizi_1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_1\mm_uuu.h">
+      <Filter>src\lizi_1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_1\pthread_huidiao.h">
+      <Filter>src\lizi_1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_1\appaction.h">
       <Filter>src\lizi_1</Filter>
     </ClInclude>
   </ItemGroup>

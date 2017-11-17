@@ -1,10 +1,9 @@
 //////////////////////////////////////////////////////////////////////////
-#include "pthread.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include "pthread.h"
 #include <windows.h>
-#include "appaction.h"
 
 #define use_vld_check_memory_leak
 #if _DEBUG
@@ -12,7 +11,7 @@
 #endif
 #endif // _DEBUG
 
-struct appaction g_appaction;
+//struct appaction g_appaction;
 
 
 BOOL WINAPI __static_signal_destroy(DWORD msgType)
@@ -25,7 +24,7 @@ BOOL WINAPI __static_signal_destroy(DWORD msgType)
 	case CTRL_LOGOFF_EVENT:
 	case CTRL_SHUTDOWN_EVENT:
 		{
-			appaction_shutdown(&g_appaction);
+			//appaction_shutdown(&g_appaction);
 			printf(" ‰»Îctrl + c  \n");
 			return TRUE;
 		}
@@ -47,9 +46,7 @@ int main(int argc,char **argv)
 	//appaction_join(&g_appaction);
 	//appaction_destroy(&g_appaction);
 
-	{
 
-	}
 	return 0;
 }
 

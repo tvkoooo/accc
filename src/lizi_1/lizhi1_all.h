@@ -7,8 +7,17 @@
 #include <exception>
 #include <time.h>
 #include <vld.h>
+#include <string.h>
 #include "pthread.h"
 #include "pthread_1.h"
+#include "pthread_2.h"
+#include "pthread_huidiao.h"
+
+
+
+
+
+
 
 
 
