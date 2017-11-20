@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_1\appaction.cpp" />
-    <ClCompile Include="..\..\src\lizi_1\main.cpp" />
-    <ClCompile Include="..\..\src\lizi_1\mm_uuu.cpp" />
-    <ClCompile Include="..\..\src\lizi_1\pthread_1.cpp" />
-    <ClCompile Include="..\..\src\lizi_1\pthread_2.cpp" />
-    <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.cpp" />
+    <ClCompile Include="..\..\src\lizi_1\appaction.c" />
+    <ClCompile Include="..\..\src\lizi_1\main.c" />
+    <ClCompile Include="..\..\src\lizi_1\mm_uuu.c" />
+    <ClCompile Include="..\..\src\lizi_1\pthread_1.c" />
+    <ClCompile Include="..\..\src\lizi_1\pthread_2.c" />
+    <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_1\appaction.h" />
@@ -121,7 +121,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-      <CompileAs>CompileAsCpp</CompileAs>
+      <CompileAs>Default</CompileAs>
       <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_2;../../src/lizi_1;./windows;$(LIB_HOME)/src/pthread</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
     </ClCompile>
@@ -181,7 +181,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>
       </DebugInformationFormat>
-      <CompileAs>CompileAsCpp</CompileAs>
+      <CompileAs>Default</CompileAs>
       <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_2;../../src/lizi_1;./windows;$(LIB_HOME)/src/pthread</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>

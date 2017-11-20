@@ -1,6 +1,8 @@
 #ifndef _INC_pthread_2
 #define _INC_pthread_2
-#include "lizhi1_all.h"
+//#include "lizhi1_all.h"
+#include <stdio.h>
+#include "pthread.h"
 
 extern int flagctrlc;
 
@@ -27,8 +29,8 @@ extern void lizhi1_2_pthr_s_f1(struct lizhi1_2_pthr_s*p);
 extern void lizhi1_2_pthr_s_f2(struct lizhi1_2_pthr_s*p);
 
 
-extern void lizhi_2_pthr_1();
-extern void lizhi_2_pthr_2();
+extern void* lizhi_2_pthr_1();
+extern void* lizhi_2_pthr_2();
 extern void pthread_lizhi1_2_test();
 
 

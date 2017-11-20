@@ -1,11 +1,9 @@
 //////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include "pthread.h"
-#include <windows.h>
+//#include <windows.h>
 #include "fun_log_dll.h"
-#include "iostream"
+//#include "iostream"
 
 myfun_dllport void fun_log_fprintf(char *adr)
 {

@@ -1,12 +1,12 @@
 #ifndef _INC_pthread_huidiao
 #define _INC_pthread_huidiao
-#include <windows.h>
-#include <tchar.h>
-#include <stdio.h>
-#include <exception>
-#include <time.h>
-#include <vld.h>
-#include <string.h>
+//#include <windows.h>
+//#include <tchar.h>
+//#include <stdio.h>
+//#include <exception>
+//#include <time.h>
+//#include <vld.h>
+//#include <string.h>
 #include "pthread.h"
 
 typedef void (*pthread_huidiao_type) (void);
@@ -40,7 +40,7 @@ extern void lizhi1_huidiao_unlock(struct pthread_huidiao_1*p);
 
 
 //  mymutex1
-extern void lizhi1_huidiao_f1();
+extern void lizhi1_huidiao_f1(void);
 //  mymutex1
 extern void * lizhi1_huidiao_pthr_1(void * p);
 

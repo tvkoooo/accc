@@ -9,22 +9,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_1\main.cpp">
+    <ClCompile Include="..\..\src\lizi_1\mm_uuu.c">
       <Filter>src\lizi_1</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\pthread_1.cpp">
+    <ClCompile Include="..\..\src\lizi_1\pthread_2.c">
       <Filter>src\lizi_1</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\pthread_2.cpp">
+    <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.c">
       <Filter>src\lizi_1</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\mm_uuu.cpp">
+    <ClCompile Include="..\..\src\lizi_1\pthread_1.c">
       <Filter>src\lizi_1</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.cpp">
+    <ClCompile Include="..\..\src\lizi_1\appaction.c">
       <Filter>src\lizi_1</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\appaction.cpp">
+    <ClCompile Include="..\..\src\lizi_1\main.c">
       <Filter>src\lizi_1</Filter>
     </ClCompile>
   </ItemGroup>

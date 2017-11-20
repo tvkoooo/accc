@@ -1,14 +1,14 @@
 #include <windows.h>
-#include <tchar.h>
+//#include <tchar.h>
 #include <stdio.h>
-#include <exception>
-#include <time.h>
-#include <vld.h>
-#include <string.h>
-#include "pthread.h"
-#include <mutex>
+//#include <exception>
+//#include <time.h>
+//#include <vld.h>
+//#include <string.h>
+//#include "pthread.h"
+//#include <mutex>
 #include "pthread_huidiao.h"
-void pthread_huidiao()
+void pthread_huidiao(void)
 {
 
 }
@@ -64,7 +64,7 @@ void lizhi1_huidiao_join(struct pthread_huidiao_1*p)
 }
 
 //  mymutex1
-void lizhi1_huidiao_f1()
+void lizhi1_huidiao_f1(void)
 {
 		printf("huidiao chengong!\n");
 }

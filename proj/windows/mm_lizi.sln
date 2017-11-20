@@ -10,6 +10,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mm_lizi_1", "mm_lizi_1.vcxp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mm_lizi_2", "mm_lizi_2.vcxproj", "{365F261C-9DA5-4A01-99B8-8B8729755118}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mm_lizi_3", "mm_lizi_3.vcxproj", "{1F78E655-C52C-4A78-BBAA-7D7BE915A289}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -42,6 +44,14 @@ Global
 		{365F261C-9DA5-4A01-99B8-8B8729755118}.Release|Win32.Build.0 = Release|Win32
 		{365F261C-9DA5-4A01-99B8-8B8729755118}.Release|x64.ActiveCfg = Release|x64
 		{365F261C-9DA5-4A01-99B8-8B8729755118}.Release|x64.Build.0 = Release|x64
+		{1F78E655-C52C-4A78-BBAA-7D7BE915A289}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1F78E655-C52C-4A78-BBAA-7D7BE915A289}.Debug|Win32.Build.0 = Debug|Win32
+		{1F78E655-C52C-4A78-BBAA-7D7BE915A289}.Debug|x64.ActiveCfg = Debug|x64
+		{1F78E655-C52C-4A78-BBAA-7D7BE915A289}.Debug|x64.Build.0 = Debug|x64
+		{1F78E655-C52C-4A78-BBAA-7D7BE915A289}.Release|Win32.ActiveCfg = Release|Win32
+		{1F78E655-C52C-4A78-BBAA-7D7BE915A289}.Release|Win32.Build.0 = Release|Win32
+		{1F78E655-C52C-4A78-BBAA-7D7BE915A289}.Release|x64.ActiveCfg = Release|x64
+		{1F78E655-C52C-4A78-BBAA-7D7BE915A289}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
-#include "lizhi1_all.h"
-#include <mutex>
+#include "pthread_2.h"
+
+//#include <mutex>
 
 
 
@@ -8,13 +9,15 @@
 //线程1
 void * lizhi_2_pthr_1(void *p)
 {
+	int i = 0;
 	struct lizhi1_2_pthr_s *a;
 	a=(struct lizhi1_2_pthr_s *)p;
 
 	//int mmb=0;
 
-	for (int i = 0; i < 10; i++)
+	for (i = 0; i < 10; i++)
 	{
+		char kkkk[100];
 		lizhi1_2_pthr_s_lock(a);
 
 
@@ -23,7 +26,6 @@ void * lizhi_2_pthr_1(void *p)
 		a->intin++;
 		lizhi1_2_pthr_s_unlock(a);
 
-		char kkkk[100];
 		lizhi1_2_pthr_s_lock(a);
 		sprintf(kkkk,"全局变量Quanju_lizhi1_pth ： %d\n",a->intin);
 		fputs(kkkk,a->fpin);
@@ -124,7 +126,7 @@ void pthread_lizhi1_2_test()
 	if ((fpin=fopen(filenametest,"wb"))==NULL)
 	{
 		printf("cannot open\n");
-		exit(0);
+		return;
 	}
 	////////////////////////////////////////////////////
     lizhi1_2_pthr_s_init(&pth_2_a);

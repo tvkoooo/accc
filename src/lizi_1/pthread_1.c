@@ -1,5 +1,7 @@
-#include "lizhi1_all.h"
-#include <mutex>
+#include "pthread_1.h"
+#include <stdio.h>
+#include <pthread.h>
+//#include <mutex>
 
 extern int flagctrlc;
 
@@ -12,15 +14,16 @@ struct lizhi1_pthr_s
 //线程1
 void * lizhi_pthr_1(void *p)
 {
+	int i = 0;
 	struct lizhi1_pthr_s *a;
 	a=(struct lizhi1_pthr_s *)p;
 
 	//int mmb=0;
 
-	for (int i = 0; i < 10000; i++)
+	for (i = 0; i < 10000; i++)
 	{
-		a->intin++;
 		char kkkk[100];
+		a->intin++;
 		sprintf(kkkk,"全局变量Quanju_lizhi1_pth ： %d\n",a->intin);
 		fputs(kkkk,a->fpin);
 		//fputs("\n",a->fpin);
@@ -106,7 +109,7 @@ void pthread_lizhi1_test()
 	if ((fpin=fopen(filenametest,"wb"))==NULL)
 	{
 		printf("cannot open\n");
-		exit(0);
+		return;
 	}
 ////////////////////////////////////////////////////
 	pth_a.intin=0;
