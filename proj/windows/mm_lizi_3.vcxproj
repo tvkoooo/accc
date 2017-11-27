@@ -21,9 +21,11 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\lizi_3\main.cpp" />
     <ClCompile Include="..\..\src\lizi_3\test1.cpp" />
+    <ClCompile Include="..\..\src\lizi_3\test2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_3\test1.h" />
+    <ClInclude Include="..\..\src\lizi_3\test2.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1F78E655-C52C-4A78-BBAA-7D7BE915A289}</ProjectGuid>

@@ -15,9 +15,15 @@
     <ClCompile Include="..\..\src\lizi_3\test1.cpp">
       <Filter>src\lizi_3</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_3\test2.cpp">
+      <Filter>src\lizi_3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_3\test1.h">
+      <Filter>src\lizi_3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_3\test2.h">
       <Filter>src\lizi_3</Filter>
     </ClInclude>
   </ItemGroup>
