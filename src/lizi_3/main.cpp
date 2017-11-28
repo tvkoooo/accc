@@ -4,7 +4,7 @@
 #include <string.h>
 #include "pthread.h"
 #include <windows.h>
-#include "test2.h"
+#include "test3.h"
 
 #define use_vld_check_memory_leak
 #if _DEBUG
@@ -50,7 +50,7 @@ int main(int argc,char **argv)
 	//appaction_join(&g_appaction);
 	//appaction_destroy(&g_appaction);
 
-    lizhi3_test2();
+    lizhi3_test3();
 
 
 

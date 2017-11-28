@@ -1,4 +1,4 @@
-#ifndef _INC_lizhi3_test2
+ï»¿#ifndef _INC_lizhi3_test2
 #define _INC_lizhi3_test2
 #include <iostream>
 #include <string>
@@ -17,18 +17,18 @@ class printData
 {
 public:
 	void print(int i) {
-		cout << "ÕûÊıÎª: " << i << endl;
+		cout << "æ•´æ•°ä¸º: " << i << endl;
 	}
 
 	void print(double  f) {
-		cout << "¸¡µãÊıÎª: " << f << endl;
+		cout << "æµ®ç‚¹æ•°ä¸º: " << f << endl;
 	}
 
 	void print(string c) {
-		cout << "×Ö·û´®Îª: " << c << endl;
+		cout << "å­—ç¬¦ä¸²ä¸º: " << c << endl;
 	}
 };
-#endif   // class printData    º¯ÊıÖØÔØºÍÔËËãÖØÔØ
+#endif   // class printData    å‡½æ•°é‡è½½å’Œè¿ç®—é‡è½½
 #if 0
 class DD
 {
@@ -93,7 +93,7 @@ public:
 protected:
 	int c;
 };
-#endif  // // ÀàµÄ½á¹¹,seizof(Àà),virtual Ô­Àí
+#endif  // // ç±»çš„ç»“æ„,seizof(ç±»),virtual åŸç†
 #if 0
 class Box
 {
@@ -114,9 +114,9 @@ public:
 	{
 		height = hei;
 	}
-	// ÖØÔØ + ÔËËã·û£¬ÓÃÓÚ°ÑÁ½¸ö Box ¶ÔÏóÏà¼Ó
-	Box operator - (const Box& b)  ////±¸×¢£ºÀàËÆºê¶¨Òå£¬Box operator + (const Box& b)£¬ÆäÖĞBoxÊÇclassÃû£¬Box& bÈ¡µØÖ·£¬¡° + ¡± ÎªÔËËã·û
-		////////////////////////////////ÀıÈç  ÕâÀï¡° + ¡±¸ÄÎª ¡°-¡±£¬Ê¹ÓÃÊ±ºò¡° + ¡±Í¬Ñù¸ÄÎª ¡°-¡±£¬Ğ§¹ûÊÇÒ»ÑùµÄ,ĞèÒª¸Ä³ÉÔËËã·û¡£
+	// é‡è½½ + è¿ç®—ç¬¦ï¼Œç”¨äºæŠŠä¸¤ä¸ª Box å¯¹è±¡ç›¸åŠ 
+	Box operator - (const Box& b)  ////å¤‡æ³¨ï¼šç±»ä¼¼å®å®šä¹‰ï¼ŒBox operator + (const Box& b)ï¼Œå…¶ä¸­Boxæ˜¯classåï¼ŒBox& bå–åœ°å€ï¼Œâ€œ + â€ ä¸ºè¿ç®—ç¬¦
+		////////////////////////////////ä¾‹å¦‚  è¿™é‡Œâ€œ + â€æ”¹ä¸º â€œ-â€ï¼Œä½¿ç”¨æ—¶å€™â€œ + â€åŒæ ·æ”¹ä¸º â€œ-â€ï¼Œæ•ˆæœæ˜¯ä¸€æ ·çš„,éœ€è¦æ”¹æˆè¿ç®—ç¬¦ã€‚
 	{
 		Box box;
 		box.length = this->length + b.length;
@@ -125,11 +125,11 @@ public:
 		return box;
 	}
 private:
-	double length;      // ³¤¶È
-	double breadth;     // ¿í¶È
-	double height;      // ¸ß¶È
+	double length;      // é•¿åº¦
+	double breadth;     // å®½åº¦
+	double height;      // é«˜åº¦
 };
-#endif   //   class Box   º¯ÊıÖØÔØºÍÔËËãÖØÔØ
+#endif   //   class Box   å‡½æ•°é‡è½½å’Œè¿ç®—é‡è½½
 #if 0
 class Shape
 {
@@ -168,9 +168,57 @@ public:
 	}
 };
 
-#endif   //   ÀàµÄ¶àÌ¬£¬virtualÔÚ¶àÌ¬µÄÊ¹ÓÃ
+#endif   //   ç±»çš„å¤šæ€ï¼Œvirtualåœ¨å¤šæ€çš„ä½¿ç”¨
 
+#if 0
+  class AAC
+  {
+  public:
+	  int i;
+	  int j;
+  public:
+	//æ„é€ å‡½æ•° 
+	AAC()
+    :i(0)
+	,j(0)
+	{
+		
+	}
+	//æ‹·è´æ„é€ å‡½æ•°
+	AAC(const AAC& rhs)
+	{
+		this->i=rhs.i;
+		this->j=rhs.j;
+	}
+	//èµ‹å€¼æ„é€ å‡½æ•°  =è¿ç®—ç¬¦é‡è½½
+	AAC& operator =(const AAC & a )
+	{
+		if (this!=&a)
+		{		
+			this->i=a.i;
+			this->j=a.j;
+		}
+		return *this;
+	}
+	//+è¿ç®—ç¬¦é‡è½½
+	AAC& operator +(const AAC & a )
+	{
+		this->i+=a.i;
+		this->j+=a.j;
+		return *this;
+	}
+  };
 
+#endif    // æ„é€ å‡½æ•°ï¼Œæ‹·è´æ„é€ å‡½æ•°ï¼Œèµ‹å€¼æ„é€ å‡½æ•°
+
+#if 0
+  template<typename T>
+  T max_11(T a,T b)
+  {
+	  return a>b?a:b;
+  }   //æ³›å‹å‡½æ•°ä½¿ç”¨
+
+#endif   //æ³›å‹å‡½æ•°ä½¿ç”¨,C++æ¨¡æ¿
 
 extern void lizhi3_test2();
  

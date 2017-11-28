@@ -4,7 +4,10 @@
 #include <string>
 #include <stddef.h>
 #include <vector>
+#include <list>
+#include <map>
 using namespace std;
+
 
 
 
@@ -81,7 +84,7 @@ void lizhi3_test2()
 
 #endif  //类的多态，virtual在多态的使用
 
-#if 1
+#if 0
 	int leng_vet=9;
 	vector<int> vi(13);
 	int i;
@@ -104,8 +107,246 @@ void lizhi3_test2()
 		cout<<vi[i]<<"\t";
 	cout<<endl;
 
-#endif
-	
+#endif    /////vector 相关命令
+
+#if 0
+	vector<int> iVec;
+	int c,i;
+	cout << "容器 大小为: " << iVec.size() << endl;
+	cout << "容器 容量为: " << iVec.capacity() << endl; //0个元素， 容器容量为0
+	iVec.push_back(1);
+	cout << "容器 大小为: " << iVec.size() << endl;
+	cout << "容器 容量为: " << iVec.capacity() << endl; //1个元素， 容器容量为1
+	iVec.push_back(2);
+	cout << "容器 大小为: " << iVec.size() << endl;
+	cout << "容器 容量为: " << iVec.capacity() << endl; //2个元素， 容器容量为2
+	iVec.push_back(3);
+	cout << "容器 大小为: " << iVec.size() << endl;
+	cout << "容器 容量为: " << iVec.capacity() << endl; //3个元素， 容器容量为3
+	iVec.push_back(4);
+	iVec.push_back(5);
+	cout << "容器 大小为: " << iVec.size() << endl;
+	cout << "容器 容量为: " << iVec.capacity() << endl; //5个元素， 容器容量为6
+	iVec.push_back(6);
+	cout << "容器 大小为: " << iVec.size() << endl;
+	cout << "容器 容量为: " << iVec.capacity() << endl; //6个元素， 容器容量为6
+	iVec.push_back(7);
+	cout << "容器 大小为: " << iVec.size() << endl;
+	cout << "容器 容量为: " << iVec.capacity() << endl; //7个元素， 容器容量为9
+	iVec.push_back(8);
+	cout << "容器 大小为: " << iVec.size() << endl;
+	cout << "容器 容量为: " << iVec.capacity() << endl; //8个元素， 容器容量为9
+	iVec.push_back(9);
+	cout << "容器 大小为: " << iVec.size() << endl;
+	cout << "容器 容量为: " << iVec.capacity() << endl; //9个元素， 容器容量为9
+	/* vs2005/8 容量增长不是翻倍的，如 
+	    9个元素   容量9 
+		    10个元素 容量13 */
+	/* 测试effective stl中的特殊的交换 swap() */
+	cout << "当前vector 的大小为: " << iVec.size() << endl;
+	cout << "当前vector 的容量为: " << iVec.capacity() << endl;    //9个元素， 容器容量为9
+	vector<int>(iVec).swap(iVec);
+	cout << "临时的vector<int>对象 的大小为: " << (vector<int>(iVec)).size() << endl;
+	cout << "临时的vector<int>对象 的容量为: " << (vector<int>(iVec)).capacity() << endl;  //9个元素， 容器容量为9
+	cout << "交换后，当前vector 的大小为: " << iVec.size() << endl;
+	cout << "交换后，当前vector 的容量为: " << iVec.capacity() << endl;  //9个元素， 容器容量为9
+
+	for (i=0;i<iVec.capacity();i++)
+	{
+		cout << iVec[i]<<"\t";
+	}
+	cout <<endl;
+
+	iVec.clear();
+	for (i=0;i<iVec.capacity();i++)
+	{
+		cout << iVec[i]<<"\t";
+	}
+	cout <<endl;
+
+	c=iVec.empty();
+	cout << c<< endl;
+#endif    //vector  元素和尺寸
+
+#if 0
+	AAC m1;
+	cout<<m1.i<<"\t"<<m1.j<<"\t"<<endl;
+
+	m1.i=5;
+	m1.j=6;
+	cout<<m1.i<<"\t"<<m1.j<<"\t"<<endl;
+
+	AAC m2(m1);
+	cout<<m2.i<<"\t"<<m2.j<<"\t"<<endl;
+
+	AAC m3;
+	m3=m1;
+	cout<<m2.i<<"\t"<<m2.j<<"\t"<<endl;
+
+	m3=m1+m2;
+
+#endif    // 构造函数，拷贝构造函数，赋值构造函数
+
+#if 0
+	// list map vector
+	// 基础数据结构，（了解实现方式）
+	//遍历
+	//用list<int> 创建一个int 名为list_lj_1的list对象
+	list <int> list_lj_1;
+
+	//声明mcc为迭代器  
+	list <int>::iterator mcc;
+	list_lj_1.push_back(1);
+	list_lj_1.push_back(2);
+	list_lj_1.push_back(3);
+	list_lj_1.push_front(4);
+	list_lj_1.push_front(5);
+	for (mcc = list_lj_1.begin();mcc != list_lj_1.end();mcc ++)
+	{
+
+		cout<< *mcc <<"\t";
+	}
+	    cout<<endl;
+///////////////////////////////////////////////////////////////////
+		for (mcc = list_lj_1.begin();mcc != list_lj_1.end();)
+		{
+			if (*mcc==2)
+			{
+				mcc=list_lj_1.erase(mcc++);
+			} 
+			else
+			{
+				mcc++;
+			}
+		}
+		//copy(list_lj_1.begin(),list_lj_1.end(),ostream_iterator<int>(cout," "));
+////////////////////////////////////////////////////////////////////
+	for (mcc = list_lj_1.begin();mcc != list_lj_1.end();mcc ++)
+	{
+
+		cout<< *mcc <<"\t";
+	}
+	cout<<endl;
+
+#endif    //list 删除和遍历
+
+#if 0
+	// list map vector
+	// 基础数据结构，（了解实现方式）
+	//遍历
+	//用list<int> 创建一个int 名为list_lj_1的list对象
+	map <char,int> list_lj_1;
+
+	//声明mcc为迭代器  
+	map <char,int>::iterator mcc;
+	list_lj_1['a']=11;
+	list_lj_1['d']=22;
+	list_lj_1['e']=33;
+	list_lj_1['k']=44;
+	list_lj_1['j']=55;
+
+	for (mcc = list_lj_1.begin();mcc != list_lj_1.end();mcc ++)
+	{
+
+		cout<< mcc->first<<mcc->second <<"\t";
+	}
+	cout<<endl;
+	///////////////////////////////////////////////////////////////////
+	for (mcc = list_lj_1.begin();mcc != list_lj_1.end();)
+	{
+		if (mcc->second==33)
+		{
+			 list_lj_1.erase(mcc++); 
+
+		} 
+		else
+		{
+			mcc++;
+		}
+		std::max
+	}
+	//copy(list_lj_1.begin(),list_lj_1.end(),ostream_iterator<int>(cout," "));
+	////////////////////////////////////////////////////////////////////
+	for (mcc = list_lj_1.begin();mcc != list_lj_1.end();mcc ++)
+	{
+
+		cout<< mcc->first<<mcc->second <<"\t";
+	}
+	cout<<endl;
+
+	list_lj_1 ['c']=99;
+
+	for (mcc = list_lj_1.begin();mcc != list_lj_1.end();mcc ++)
+	{
+
+		cout<< mcc->first<<mcc->second <<"\t";
+	}
+	cout<<endl;
+
+#endif   //map 删除和遍历
+
+#if 0
+	{
+		int a,b,c;
+		a=4;
+		b=2;
+		c=max_11(a,b);
+		cout<<a<<b<<c<<endl;
+	}
+	{
+		float a,b,c;
+		a=3;
+		b=9;
+		c=max_11(a,b);
+		cout<<a<<b<<c<<endl;
+	}
+#endif   //泛型函数使用,C++模板
+
+#if 0
+	vector<int> vtoto(4,3);
+	cout<<"\n max_size\n"<<vtoto.max_size()<<"\n size\n"<<vtoto.size()<<"\n"<<endl;
+	cout<<vtoto.at(3)<<endl;
+	vector <int>::iterator mcc;
+	vtoto.push_back(11);
+	vtoto.push_back(22);
+	vtoto.push_back(33);
+	vtoto.push_back(44);
+	vtoto.push_back(55);
+	vtoto.push_back(66);
+
+	for (mcc = vtoto.begin();mcc != vtoto.end();mcc ++)
+	{
+
+		cout<< *mcc <<"\t";
+	}
+	cout<<endl;
+	///////////////////////////////////////////////////////////////////
+	for (mcc = vtoto.begin();mcc != vtoto.end();)
+	{
+		if (*mcc==44)
+		{
+			mcc=vtoto.erase(mcc++);
+		} 
+		else
+		{
+			mcc++;
+		}
+	}
+	//copy(list_lj_1.begin(),list_lj_1.end(),ostream_iterator<int>(cout," "));
+	////////////////////////////////////////////////////////////////////
+	for (mcc = vtoto.begin();mcc != vtoto.end();mcc ++)
+	{
+
+		cout<< *mcc <<"\t";
+	}
+	cout<<endl;
+
+
+
+#endif   //vector 删除和遍历
+
+
+
 
 
 
