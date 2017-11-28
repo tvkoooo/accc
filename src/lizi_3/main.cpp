@@ -4,6 +4,7 @@
 #include <string.h>
 #include "pthread.h"
 #include <windows.h>
+#include "test2.h"
 #include "test3.h"
 
 #define use_vld_check_memory_leak

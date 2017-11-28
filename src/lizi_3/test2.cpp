@@ -345,7 +345,9 @@ void lizhi3_test2()
 
 #endif   //vector 删除和遍历
 
+#if 1
 
+#endif
 
 
 
