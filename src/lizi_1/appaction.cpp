@@ -1,5 +1,6 @@
 #include "appaction.h"
 #include "pthread.h"
+#include "lizhi1_all.h"
 static void* __static_rtrr(void* arg)
 {
 

@@ -1,0 +1,77 @@
+全部可以用的结构体
+struct timespec
+pthread_t;
+pthread_attr_t;
+pthread_once_t;
+pthread_key_t;
+pthread_mutex_t;
+pthread_mutexattr_t;
+pthread_cond_t;
+pthread_condattr_t;
+pthread_rwlock_t;
+pthread_rwlockattr_t;
+pthread_spinlock_t;
+pthread_barrier_t;
+pthread_barrierattr_t;
+
+频繁应用
+pthread_t;
+	pthread_create	
+	pthread_join
+pthread_key_t;
+pthread_cond_t;
+
+
+pthread_mutex_t;互斥锁
+pthread_rwlock_t;读写锁
+pthread_spinlock_t;自旋锁//系统实现有关，与操作系统有关，有可能没有
+
+频率很少
+pthread_barrier_t;
+
+
+
+
+线程 创建
+pthread_create函数
+    原型：int  pthread_create（（pthread_t  *thread,  pthread_attr_t  *attr,  void  *（*start_routine）（void  *）,  void  *arg）
+    用法：#include  <pthread.h>
+    功能：创建线程（实际上就是确定调用该线程函数的入口点），在线程创建以后，就开始运行相关的线程函数。
+    说明：thread：线程标识符；
+              attr：线程属性设置；
+              start_routine：线程函数的起始地址；
+              arg：传递给start_routine的参数；
+              返回值：成功，返回0；出错，返回-1。
+例子：	ret=pthread_create(&id_1,NULL,lizhi_2_pthr_1,&pth_2_a);///ret int型
+
+线程 实现
+void * lizhi_2_pthr_1(void *p)//void *p  p是类型（int/char/struct等）
+{
+}
+
+pthread_mutex_t;互斥锁
+初始化：
+struct lizhi1_2_pthr_s
+{
+	FILE * fpin;
+
+	int  intin;
+	pthread_mutex_t mymutex1;
+};
+void lizhi1_2_pthr_s_init(struct lizhi1_2_pthr_s *p)
+{
+
+	p->intin=0;
+	p->fpin=NULL;
+	pthread_mutex_init(&p->mymutex1,NULL);
+}
+void lizhi1_2_pthr_s_destroy(struct lizhi1_2_pthr_s *p)
+{
+
+	p->intin=0;
+	p->fpin=NULL;
+	pthread_mutex_destroy(&p->mymutex1);
+}
+
+
+

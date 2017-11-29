@@ -9,10 +9,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_2\fun_log_dll.c">
-      <Filter>src\lizi_2</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_2\main.c">
+    <ClCompile Include="..\..\src\lizi_2\fun_log_dll.cpp">
       <Filter>src\lizi_2</Filter>
     </ClCompile>
   </ItemGroup>

@@ -7,24 +7,30 @@
     <Filter Include="src\lizi_1">
       <UniqueIdentifier>{57aec4db-c608-44db-a788-c3ef69648d2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="windows">
+      <UniqueIdentifier>{6af82d37-23df-4d96-ad8d-b731656b82bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="windows\main.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\appaction.cpp">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\application.cpp">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.cpp">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\pthread_2.cpp">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\pthread_1.cpp">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\lizi_1\mm_uuu.c">
-      <Filter>src\lizi_1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\pthread_2.c">
-      <Filter>src\lizi_1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.c">
-      <Filter>src\lizi_1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\pthread_1.c">
-      <Filter>src\lizi_1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\appaction.c">
-      <Filter>src\lizi_1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\main.c">
       <Filter>src\lizi_1</Filter>
     </ClCompile>
   </ItemGroup>
@@ -45,6 +51,9 @@
       <Filter>src\lizi_1</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_1\appaction.h">
+      <Filter>src\lizi_1</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_1\application.h">
       <Filter>src\lizi_1</Filter>
     </ClInclude>
   </ItemGroup>

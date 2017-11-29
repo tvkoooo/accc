@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\lizi_0\application.c" />
     <ClCompile Include="..\..\src\lizi_0\businessmanlib.cpp" />
     <ClCompile Include="..\..\src\lizi_0\dog.cpp" />
     <ClCompile Include="..\..\src\lizi_0\dogactivity.cpp" />
@@ -35,7 +36,6 @@
     <ClCompile Include="..\..\src\lizi_0\li3.cpp" />
     <ClCompile Include="..\..\src\lizi_0\li4.cpp" />
     <ClCompile Include="..\..\src\lizi_0\li5.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\main.cpp" />
     <ClCompile Include="..\..\src\lizi_0\max2.cpp" />
     <ClCompile Include="..\..\src\lizi_0\recordput.cpp" />
     <ClCompile Include="..\..\src\lizi_0\shijianqi.cpp" />
@@ -45,8 +45,11 @@
     <ClCompile Include="..\..\src\lizi_0\vectordogdingyue.cpp" />
     <ClCompile Include="..\..\src\lizi_0\vectordogyonghu.cpp" />
     <ClCompile Include="..\..\src\lizi_0\vectorlj.cpp" />
+    <ClCompile Include="windows\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\lizi_0\all.h" />
+    <ClInclude Include="..\..\src\lizi_0\application.h" />
     <ClInclude Include="..\..\src\lizi_0\businessmanlib.h" />
     <ClInclude Include="..\..\src\lizi_0\dog.h" />
     <ClInclude Include="..\..\src\lizi_0\doglib.h" />

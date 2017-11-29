@@ -7,11 +7,11 @@
     <Filter Include="src\lizi_0">
       <UniqueIdentifier>{3a9fb0cc-e9a6-4950-9bc5-04f0fdef3849}</UniqueIdentifier>
     </Filter>
+    <Filter Include="windows">
+      <UniqueIdentifier>{c8458c11-ec40-4b01-b62f-d6ccce7cfdd8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_0\main.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\lizi_0\li1.cpp">
       <Filter>src\lizi_0</Filter>
     </ClCompile>
@@ -87,6 +87,12 @@
     <ClCompile Include="..\..\src\lizi_0\juzhen_gf_test.cpp">
       <Filter>src\lizi_0</Filter>
     </ClCompile>
+    <ClCompile Include="windows\main.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\application.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_0\tou.h">
@@ -135,6 +141,12 @@
       <Filter>src\lizi_0</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_0\juzhen_gf.h">
+      <Filter>src\lizi_0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_0\all.h">
+      <Filter>src\lizi_0</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_0\application.h">
       <Filter>src\lizi_0</Filter>
     </ClInclude>
   </ItemGroup>

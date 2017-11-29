@@ -2,10 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "pthread.h"
+#include "application.h"
+
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif//WIN32_LEAN_AND_MEAN
+
 #include <windows.h>
-#include "test2.h"
-#include "test3.h"
+
 
 #define use_vld_check_memory_leak
 #if _DEBUG
@@ -13,7 +17,7 @@
 #endif
 #endif // _DEBUG
 
-//struct appaction g_appaction;
+struct application g_application;
 
 
 BOOL WINAPI __static_signal_destroy(DWORD msgType)
@@ -26,8 +30,7 @@ BOOL WINAPI __static_signal_destroy(DWORD msgType)
 	case CTRL_LOGOFF_EVENT:
 	case CTRL_SHUTDOWN_EVENT:
 		{
-			//appaction_shutdown(&g_appaction);
-			printf(" ‰»Îctrl + c  \n");
+			application_shutdown(&g_application);
 			return TRUE;
 		}
 		break;
@@ -38,22 +41,15 @@ BOOL WINAPI __static_signal_destroy(DWORD msgType)
 }
 
 
-
-
-
-
 int main(int argc,char **argv)
 {	
+
 	SetConsoleCtrlHandler(__static_signal_destroy, TRUE);
 
-	//appaction_init(&g_appaction);
-	//appaction_start(&g_appaction);
-	//appaction_join(&g_appaction);
-	//appaction_destroy(&g_appaction);
-
-    lizhi3_test3();
-
-
+	application_init(&g_application);
+	application_start(&g_application);
+	application_join(&g_application);
+	application_destroy(&g_application);
 
 	return 0;
 }

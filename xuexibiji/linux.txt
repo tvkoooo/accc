@@ -1,0 +1,33 @@
+有这些大概
+ls   查看当前目录的文件夹和文件
+tail 检测一个文件的附加写入
+top  查看进程
+grep 这个一般复合用，用于筛选字符串
+ps 查看当前运行的程序有哪些
+cd 目录切换
+cp 拷贝
+ctrl c 一般都能退出
+vim 打开某文件，是个编辑器
+make 编译工程
+cat 将文件输出
+mv 移动文件
+su 登录root账号
+sudo 使用root权限执行某命令
+su 账号名 登录某账号
+mkdir         创建目录
+rm 移除,删除
+du                  查看目录大小 du -h /home带有单位显示目录信息
+df                  查看磁盘大小 df -h 带有单位显示磁盘信息
+ipconfig          查看网络情况
+ping                测试网络连通
+netstat          显示网络状态信息
+kill                 杀死进程，可以先用ps 或 top命令查看进程的id，然后再用kill命令杀死进程。
+man                命令不会用了，找男人  如：man ls
+tar 解压缩
+    tar -cvf /home/abc.tar /home/abc              只打包，不压缩
+    tar -zcvf /home/abc.tar.gz /home/abc        打包，并用gzip压缩
+    tar -jcvf /home/abc.tar.bz2 /home/abc      打包，并用bzip2压缩
+
+
+
+

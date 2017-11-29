@@ -21,6 +21,12 @@ struct mm_uuu
 	pthread_t poll_thread;
 	int state;// mm_thread_state_t,default is ts_closed(0)
 };
+
+
+#if defined(__cplusplus)
+extern "C"
+{
+#endif       
 extern void mm_uuu_init(struct mm_uuu* p);
 extern void mm_uuu_destroy(struct mm_uuu* p);
 //
@@ -30,5 +36,8 @@ extern void mm_uuu_start(struct mm_uuu* p);
 extern void mm_uuu_interrupt(struct mm_uuu* p);
 extern void mm_uuu_shutdown(struct mm_uuu* p);
 extern void mm_uuu_join(struct mm_uuu* p);
+#if defined(__cplusplus)
+}
+#endif       
 
 #endif//__mm_bomber_h__

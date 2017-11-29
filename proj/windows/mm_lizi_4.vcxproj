@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_4\main.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\application.cpp" />
     <ClCompile Include="..\..\src\lizi_4\wangluo.cpp" />
     <ClCompile Include="..\..\src\lizi_4\wangluo_kehu.cpp" />
+    <ClCompile Include="windows\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\lizi_4\application.h" />
     <ClInclude Include="..\..\src\lizi_4\wangluo.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

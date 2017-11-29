@@ -19,15 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_1\appaction.c" />
-    <ClCompile Include="..\..\src\lizi_1\main.c" />
+    <ClCompile Include="..\..\src\lizi_1\appaction.cpp" />
+    <ClCompile Include="..\..\src\lizi_1\application.cpp" />
     <ClCompile Include="..\..\src\lizi_1\mm_uuu.c" />
-    <ClCompile Include="..\..\src\lizi_1\pthread_1.c" />
-    <ClCompile Include="..\..\src\lizi_1\pthread_2.c" />
-    <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.c" />
+    <ClCompile Include="..\..\src\lizi_1\pthread_1.cpp" />
+    <ClCompile Include="..\..\src\lizi_1\pthread_2.cpp" />
+    <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.cpp" />
+    <ClCompile Include="windows\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_1\appaction.h" />
+    <ClInclude Include="..\..\src\lizi_1\application.h" />
     <ClInclude Include="..\..\src\lizi_1\lizhi1_all.h" />
     <ClInclude Include="..\..\src\lizi_1\mm_uuu.h" />
     <ClInclude Include="..\..\src\lizi_1\pthread_1.h" />

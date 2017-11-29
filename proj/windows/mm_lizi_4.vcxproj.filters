@@ -7,20 +7,29 @@
     <Filter Include="src\mm_lizi_4">
       <UniqueIdentifier>{1f5e37c1-6c2d-4759-9900-f3f8ba20803e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="windows">
+      <UniqueIdentifier>{2817d8a5-192e-4546-95d8-ef6ad1796d58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_4\main.cpp">
-      <Filter>src\mm_lizi_4</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\lizi_4\wangluo.cpp">
       <Filter>src\mm_lizi_4</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\lizi_4\wangluo_kehu.cpp">
       <Filter>src\mm_lizi_4</Filter>
     </ClCompile>
+    <ClCompile Include="windows\main.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_4\application.cpp">
+      <Filter>src\mm_lizi_4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_4\wangluo.h">
+      <Filter>src\mm_lizi_4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\application.h">
       <Filter>src\mm_lizi_4</Filter>
     </ClInclude>
   </ItemGroup>

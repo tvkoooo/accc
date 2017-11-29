@@ -1,4 +1,5 @@
-//////////////////////////////////////////////////////////////////////////
+#include "application.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,45 +15,18 @@
 #include <ws2ipdef.h>
 
 
-#define use_vld_check_memory_leak
-#if _DEBUG
-#ifdef use_vld_check_memory_leak
-#endif
-#endif // _DEBUG
 
-//struct appaction g_appaction;
-
-
-BOOL WINAPI __static_signal_destroy(DWORD msgType)
+void application_init(struct application* p)
 {
-	switch (msgType)
-	{
-	case CTRL_C_EVENT:
-	case CTRL_BREAK_EVENT:
-	case CTRL_CLOSE_EVENT:
-	case CTRL_LOGOFF_EVENT:
-	case CTRL_SHUTDOWN_EVENT:
-		{
-			//appaction_shutdown(&g_appaction);
-			printf("输入ctrl + c  \n");
-			return TRUE;
-		}
-		break;
-	default:
-		return FALSE;
-	}
-	return FALSE;
+
+}
+void application_destroy(struct application* p)
+{
+
 }
 
-
-
-
-
-
-int main(int argc,char **argv)
+void application_start(struct application* p)
 {	
-
-	SetConsoleCtrlHandler(__static_signal_destroy, TRUE);
 	if(0)
 	{
 		int aa;
@@ -71,8 +45,8 @@ int main(int argc,char **argv)
 	//appaction_destroy(&g_appaction);
 	if(1)
 	{
-	pthread_t id_1;
-	pthread_t id_2;
+		pthread_t id_1;
+		pthread_t id_2;
 		int ret;
 
 		//创建线程一
@@ -94,7 +68,18 @@ int main(int argc,char **argv)
 		pthread_join(id_2,NULL);
 	}
 
-
-	return 0;
 }
+void application_interrupt(struct application* p)
+{
 
+	
+}
+void application_shutdown(struct application* p)
+{
+
+
+}
+void application_join(struct application* p)
+{
+
+}

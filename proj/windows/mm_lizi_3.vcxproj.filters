@@ -7,11 +7,11 @@
     <Filter Include="src\lizi_3">
       <UniqueIdentifier>{57aec4db-c608-44db-a788-c3ef69648d2c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="windows">
+      <UniqueIdentifier>{825a339a-bc60-4756-b1fa-3d421d812b7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_3\main.cpp">
-      <Filter>src\lizi_3</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\lizi_3\test1.cpp">
       <Filter>src\lizi_3</Filter>
     </ClCompile>
@@ -19,6 +19,12 @@
       <Filter>src\lizi_3</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\lizi_3\test3.cpp">
+      <Filter>src\lizi_3</Filter>
+    </ClCompile>
+    <ClCompile Include="windows\main.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_3\application.cpp">
       <Filter>src\lizi_3</Filter>
     </ClCompile>
   </ItemGroup>
@@ -30,6 +36,9 @@
       <Filter>src\lizi_3</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_3\test3.h">
+      <Filter>src\lizi_3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_3\application.h">
       <Filter>src\lizi_3</Filter>
     </ClInclude>
   </ItemGroup>
