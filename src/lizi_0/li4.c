@@ -1,10 +1,10 @@
 #include <tchar.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <exception>
+
 #include "tou.h"
 #include <string.h>
-#include <ctime>
+
 //#include <iostream>
 //void li4()
 //{

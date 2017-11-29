@@ -1,0 +1,51 @@
+################################################
+include makefile_platform
+################################################
+Version := .0.0.0
+SUFFIX  := 
+PREFIX  := 
+##################################################################################################
+ProjectName := lizhi_4
+OutFileName := $(PREFIX)$(ProjectName)$(SUFFIX)
+OutPathName := bin
+# $(info $(OutPathName)/$(OutFileName))
+################################################
+#global directory defined
+ObjDirPath := ./obj/
+PrefixPath := 
+################################################
+# cross compile tools defined.
+CrossCompile := 
+COMPILER     := g++
+FLAG_OUT     := -o
+################################################
+MY_FILES_SUFFIX := %.cpp %.c %.cc
+################################################
+LDFLAGS  	+= 
+################################################
+MY_COMMON_FLAGS += -Wall -MD -fPIC
+################################################
+CFLAGS 		+= $(MY_COMMON_FLAGS)
+################################################
+CXXFLAGS	+= $(MY_COMMON_FLAGS)
+CXXFLAGS 	+= -std=c++0x
+################################################
+# LIBS += -L/usr/local/lib
+################################################
+LIBS += -lpthread
+################################################
+PROJ_ROOT_PATH = ../..
+################################################
+MY_FILES_PATH += $(PROJ_ROOT_PATH)/src/lizi_4
+MY_FILES_PATH += $(PLATFORM)
+################################################
+MY_FILTER_OUT += $(PROJ_ROOT_PATH)/src/lizi_4/os/windows%
+################################################
+LOCAL_C_INCLUDES += -I/usr/local/include
+LOCAL_C_INCLUDES += -I$(PROJ_ROOT_PATH)/src
+LOCAL_C_INCLUDES += -I$(PROJ_ROOT_PATH)/src/lizi_2
+LOCAL_C_INCLUDES += -I$(PROJ_ROOT_PATH)/src/lizi_4
+LOCAL_C_INCLUDES += -I$(PROJ_ROOT_PATH)/src/lizi_4/os/$(PLATFORM)
+################################################
+include $(MAKE_HOME)/makefile_common
+################################################

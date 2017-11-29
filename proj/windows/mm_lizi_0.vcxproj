@@ -20,37 +20,31 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\lizi_0\application.c" />
-    <ClCompile Include="..\..\src\lizi_0\businessmanlib.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\dog.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\dogactivity.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\dogdevelop.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\doglib.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\huidiao.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\juzhen.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\juzhen_gf.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\juzhen_gf_test.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\lead.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\leadlib.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\li1.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\li2.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\li3.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\li4.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\li5.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\max2.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\recordput.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\shijianqi.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\shijian_dog.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\shijian_yonghu.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\shuchurizhi.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\vectordogdingyue.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\vectordogyonghu.cpp" />
-    <ClCompile Include="..\..\src\lizi_0\vectorlj.cpp" />
+    <ClCompile Include="..\..\src\lizi_0\dog.c" />
+    <ClCompile Include="..\..\src\lizi_0\doglib.c" />
+    <ClCompile Include="..\..\src\lizi_0\huidiao.c" />
+    <ClCompile Include="..\..\src\lizi_0\juzhen.c" />
+    <ClCompile Include="..\..\src\lizi_0\juzhen_gf.c" />
+    <ClCompile Include="..\..\src\lizi_0\juzhen_gf_test.c" />
+    <ClCompile Include="..\..\src\lizi_0\leadlib.c" />
+    <ClCompile Include="..\..\src\lizi_0\li1.c" />
+    <ClCompile Include="..\..\src\lizi_0\li2.c" />
+    <ClCompile Include="..\..\src\lizi_0\li3.c" />
+    <ClCompile Include="..\..\src\lizi_0\li4.c" />
+    <ClCompile Include="..\..\src\lizi_0\li5.c" />
+    <ClCompile Include="..\..\src\lizi_0\max2.c" />
+    <ClCompile Include="..\..\src\lizi_0\recordput.c" />
+    <ClCompile Include="..\..\src\lizi_0\shijianqi.c" />
+    <ClCompile Include="..\..\src\lizi_0\shijian_dog.c" />
+    <ClCompile Include="..\..\src\lizi_0\shijian_yonghu.c" />
+    <ClCompile Include="..\..\src\lizi_0\vectordogdingyue.c" />
+    <ClCompile Include="..\..\src\lizi_0\vectordogyonghu.c" />
+    <ClCompile Include="..\..\src\lizi_0\vectorlj.c" />
     <ClCompile Include="windows\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_0\all.h" />
     <ClInclude Include="..\..\src\lizi_0\application.h" />
-    <ClInclude Include="..\..\src\lizi_0\businessmanlib.h" />
     <ClInclude Include="..\..\src\lizi_0\dog.h" />
     <ClInclude Include="..\..\src\lizi_0\doglib.h" />
     <ClInclude Include="..\..\src\lizi_0\huidiao.h" />
@@ -61,11 +55,9 @@
     <ClInclude Include="..\..\src\lizi_0\shijianqi.h" />
     <ClInclude Include="..\..\src\lizi_0\shijian_dog.h" />
     <ClInclude Include="..\..\src\lizi_0\shijian_yonghu.h" />
-    <ClInclude Include="..\..\src\lizi_0\shuchurizhi.h" />
     <ClInclude Include="..\..\src\lizi_0\tou.h" />
     <ClInclude Include="..\..\src\lizi_0\vectordogdingyue.h" />
     <ClInclude Include="..\..\src\lizi_0\vectorlj.h" />
-    <ClInclude Include="..\..\src\ll\ppp.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A08F5B76-1815-4EB3-AD6F-0B48AA91B49B}</ProjectGuid>
@@ -154,7 +146,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
-      <CompileAs>CompileAsCpp</CompileAs>
+      <CompileAs>Default</CompileAs>
       <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_0;./windows</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
     </ClCompile>
@@ -214,7 +206,7 @@
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>
       </DebugInformationFormat>
-      <CompileAs>CompileAsCpp</CompileAs>
+      <CompileAs>Default</CompileAs>
       <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_0;./windows</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>

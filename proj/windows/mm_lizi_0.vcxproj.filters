@@ -12,85 +12,70 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_0\li1.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\li2.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\li3.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\max2.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\li4.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\li5.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\dog.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\dogactivity.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\dogdevelop.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\doglib.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\lead.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\leadlib.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\businessmanlib.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\juzhen.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\huidiao.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\recordput.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\shuchurizhi.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\vectorlj.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\vectordogyonghu.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\vectordogdingyue.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\shijianqi.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\shijian_dog.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\shijian_yonghu.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\juzhen_gf.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_0\juzhen_gf_test.cpp">
-      <Filter>src\lizi_0</Filter>
-    </ClCompile>
     <ClCompile Include="windows\main.cpp">
       <Filter>windows</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\lizi_0\application.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\dog.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\huidiao.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\juzhen.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\juzhen_gf.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\juzhen_gf_test.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\doglib.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\leadlib.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\li1.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\li2.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\li3.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\li4.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\li5.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\max2.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\recordput.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\shijian_dog.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\shijian_yonghu.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\shijianqi.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\vectordogdingyue.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\vectordogyonghu.c">
+      <Filter>src\lizi_0</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_0\vectorlj.c">
       <Filter>src\lizi_0</Filter>
     </ClCompile>
   </ItemGroup>
@@ -107,9 +92,6 @@
     <ClInclude Include="..\..\src\lizi_0\leadlib.h">
       <Filter>src\lizi_0</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\lizi_0\businessmanlib.h">
-      <Filter>src\lizi_0</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\lizi_0\juzhen.h">
       <Filter>src\lizi_0</Filter>
     </ClInclude>
@@ -117,9 +99,6 @@
       <Filter>src\lizi_0</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_0\recordput.h">
-      <Filter>src\lizi_0</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\lizi_0\shuchurizhi.h">
       <Filter>src\lizi_0</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_0\vectorlj.h">
@@ -135,9 +114,6 @@
       <Filter>src\lizi_0</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_0\shijian_yonghu.h">
-      <Filter>src\lizi_0</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\ll\ppp.h">
       <Filter>src\lizi_0</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_0\juzhen_gf.h">

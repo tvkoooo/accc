@@ -1,9 +1,9 @@
 #include <tchar.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <exception>
+
 #include <string.h>
-#include <ctime>
+
 #include <doglib.h>
 #include <leadlib.h>
 

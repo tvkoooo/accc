@@ -9,6 +9,12 @@ struct shijianqi
 	struct shijianqi *pnext;
 };
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
+
 // 链表内存分配
 extern struct shijianqi* shijianqi_alloc();
 // 链表内存回收
@@ -25,9 +31,13 @@ extern void shijianqi_destroy(struct shijianqi* p);
 // 链表操作---增加（增加订阅）
 extern void shijianqi_add(struct shijianqi* p,fun_shijianqi p2,void* p3);
 //  链表操作---删掉（删掉订阅）
-extern void shijianqi_sub(struct shijianqi* p);
+extern void shijianqi_sub(struct shijianqi* p,void *p_sub);
 //  链表操作---链表订阅统计个数
 extern int shijianqi_seizof(struct shijianqi* p);
 
 extern void shijianqi_update(struct shijianqi* p);
+
+#if defined(__cplusplus)
+}
+#endif 
 #endif  /* _INC_vectordog */

@@ -30,6 +30,13 @@ struct dogtalk
 {
 	char dog_act[8][20];
 };
+
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
+
 extern struct dogtalk G_dogtalk;
 
 extern void feeddog(struct doglib *p_dog,struct leadlib*p_lead);
@@ -38,6 +45,10 @@ extern void changenamedog(struct doglib *p_dog,struct leadlib*p_lead);
 extern void playdog(struct doglib *p_dog,struct leadlib*p_lead);
 extern void traindog(struct doglib *p_dog,struct leadlib*p_lead);
 extern void actdog(struct doglib *p_dog,struct leadlib*p_lead);
-extern void dogaction(struct doglib *p_dog,struct leadlib*p_lead,struct dogtalk* _dogtalk);
+extern void dogaction(struct doglib *p_dog,struct leadlib*p_lead);
 extern int shuijishu();
+#if defined(__cplusplus)
+}
+#endif 
+
 #endif  /* _INC_doglib */

@@ -1,7 +1,12 @@
 #include "application.h"
-#include <all.h>
+//#include <all.h>
 #include <vld.h>
-int shuijishu()
+#include <stdlib.h>
+#include <time.h>
+#include "tou.h"
+#include <stdio.h>
+#include "juzhen_gf.h"
+ int shuijishu()
 {
 	return rand();
 }
@@ -18,6 +23,7 @@ void application_destroy(struct application* p)
 
 void application_start(struct application* p)
 {	
+	li2();
 	srand((int)time(0));
 
 	fprintf(stderr, "\n\n%s\t%d\n\n", __FILE__, __LINE__);

@@ -3,7 +3,7 @@
 #include "huidiao.h"
 #include <windows.h>
 
-void huidiao()
+void huidiao(void)
 {
 	
 }
@@ -52,7 +52,7 @@ void fun_huidiao_destroy(struct fun_huidiao_new *p)
 }
 
 //tool fun     ±÷”ªÿµÙ
-void fun_huidiao_fun()
+void fun_huidiao_fun(void)
 {
 	printf("huidiao chengong!\n");
 }

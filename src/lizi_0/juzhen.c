@@ -18,7 +18,7 @@ void juzhen4_chen_4juzhen()
 		if (n>1)
 		{
 			struct chen_juzhen4 *junzhen_create;
-			junzhen_create=(chen_juzhen4*) malloc(sizeof(struct chen_juzhen4)*n);
+			junzhen_create=(struct chen_juzhen4*) malloc(sizeof(struct chen_juzhen4)*n);
 			for (i=0;i<n;i++)
 			{	
 				juzhen4_shuru(&junzhen_create[i]);

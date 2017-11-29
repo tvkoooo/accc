@@ -24,19 +24,23 @@ struct gou
 //struct gou gougougou={"0",&gouou};
 
 
-class aaa
-{
-};
+
 #define uuiioop 77
 
-static void ffff()
+#if defined(__cplusplus)
+extern "C"
 {
-}
+#endif
+
+
 extern void li2();
 extern void li3();
 
 extern void sumscan();
 extern int sumn(int m,int *x,int *y);
 extern int shuijishu();
+#if defined(__cplusplus)
+}
+#endif 
 
 #endif  /* _INC_5555555u */

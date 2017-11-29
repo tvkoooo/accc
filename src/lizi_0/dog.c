@@ -1,6 +1,6 @@
 #include <tchar.h>
 #include <stdio.h>
-#include <exception>
+
 #include "dog.h"
 
 

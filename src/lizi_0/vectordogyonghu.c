@@ -5,9 +5,12 @@
 //小狗说话
 void fun__vectordog_talk_a(void * p,int g)
 {
-	fun__vectordog_nam * dogname;
-	dogname=(fun__vectordog_nam*)p;
+	struct fun__vectordog_nam * dogname;
 	int chos;
+
+
+	dogname=(struct fun__vectordog_nam*)p;
+
 	chos=shuijishu()%3;
 	printf("\n小狗  %s  %d  %d:    ",dogname->dog_name,dogname->icc,g);
 
@@ -22,9 +25,10 @@ void fun__vectordog_talk_a(void * p,int g)
 }
 void fun__vectordog_qb_a(void * p,int g)
 {
-	fun__vectordog_nam * dogname;
-	dogname=(fun__vectordog_nam*)p;
+	struct fun__vectordog_nam * dogname;
 	int chos;
+	dogname=(struct fun__vectordog_nam*)p;
+
 	chos=shuijishu()%3;
 	printf("\n小狗  %s  %d qb",dogname->dog_name,dogname->icc);
 }
@@ -35,6 +39,15 @@ void fun__vectordog_rrrr_a(void * p,int g)
 typedef void (*huidiaorr_type) (void * p,int g);
 void fun__vectordog_new_test()
 {
+	//定义操作项
+	int num=0;
+	//容器大小
+	int vecnum;
+	struct fun__vectordog_new* creat_vec;
+	struct fun__vectordog_new* creat_vqb;
+
+	struct fun__vectordog_nam dog[3];
+
 	{
 		// 1:1
 		huidiaorr_type dd;
@@ -43,17 +56,11 @@ void fun__vectordog_new_test()
 		//发布
 		dd(NULL,8);
 	}
-	//定义操作项
-	int num=0;
-	//容器大小
-	int vecnum;
+
 	vecnum=0;
 
 	// 1:n
-	fun__vectordog_new* creat_vec;
-	fun__vectordog_new* creat_vqb;
 
-	fun__vectordog_nam dog[3];
 	//创建容器
 	creat_vec=fun__vectordog_new_alloc();
 	creat_vqb=fun__vectordog_new_alloc();

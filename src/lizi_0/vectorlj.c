@@ -7,12 +7,12 @@
 
 struct fun__vectorlj_new* fun__vectorlj_new_alloc()
 {
-	fun__vectorlj_new* head;
-	head=(fun__vectorlj_new*) malloc(LEN);
+	struct fun__vectorlj_new* head;
+	head=(struct fun__vectorlj_new*) malloc(LEN);
 	return(head);
 }
 
-void fun__vectorlj_new_dealloc(fun__vectorlj_new* head)
+void fun__vectorlj_new_dealloc(struct fun__vectorlj_new* head)
 {
 
 	free(head);
@@ -28,8 +28,8 @@ void fun__vectorlj_new_init(struct fun__vectorlj_new* head)
 
 void fun__vectorlj_new_add(struct fun__vectorlj_new* head,int *num)
 {	
-		fun__vectorlj_new *find_p,*p1,*p2;	
-		p2=(fun__vectorlj_new*) malloc(LEN);
+		struct fun__vectorlj_new *find_p,*p1,*p2;	
+		p2=(struct fun__vectorlj_new*) malloc(LEN);
 		p1=head;
 		while (p1->pnext!=NULL)
 		{
@@ -43,7 +43,7 @@ void fun__vectorlj_new_add(struct fun__vectorlj_new* head,int *num)
 
 void fun__vectorlj_new_sub(struct fun__vectorlj_new* head)
 {
-	fun__vectorlj_new *find_p,*p1;
+	struct fun__vectorlj_new *find_p,*p1;
 	find_p=p1=head;
 	if (p1->pnext==NULL)
 	{
@@ -67,7 +67,7 @@ void fun__vectorlj_new_sub(struct fun__vectorlj_new* head)
 //tool init  tool数据刷新
 void fun__vectorlj_new_update(struct fun__vectorlj_new* head)
 {
-	fun__vectorlj_new *find_p,*p1;
+	struct fun__vectorlj_new *find_p,*p1;
 	p1=head;
 
 	while(p1->pnext!=NULL) 
@@ -83,7 +83,7 @@ void fun__vectorlj_new_update(struct fun__vectorlj_new* head)
 //tool init  数据统计个数
 int fun__vectorlj_new_seizof(struct fun__vectorlj_new*head)
 {
-	fun__vectorlj_new *find_p,*p1;
+	struct fun__vectorlj_new *find_p,*p1;
 	int n=0;
 	find_p=p1=NULL;
 	p1=head;
@@ -99,7 +99,7 @@ int fun__vectorlj_new_seizof(struct fun__vectorlj_new*head)
 //tool destroy 容器销毁销毁
 void fun__vectorlj_new_clear(struct fun__vectorlj_new* head)
 {
-	fun__vectorlj_new *find_p,*p1;
+	struct fun__vectorlj_new *find_p,*p1;
 	find_p=p1=head;
 
 	while (head->pnext!=NULL)
@@ -133,13 +133,13 @@ void fun__vectorlj_new_destroy(struct fun__vectorlj_new *head)
 
 void fun__vectorlj_new_test()
 {
-	int vecnum=0;
+	int vecnum;
 	//容器内容
 	int num;
-	num=0;
 	//声明容器
-	fun__vectorlj_new* creat_vec;
-
+	struct fun__vectorlj_new *creat_vec;
+	num=0;
+	vecnum=0;
 	//创建容器
 	creat_vec=fun__vectorlj_new_alloc();
 

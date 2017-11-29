@@ -1,6 +1,7 @@
 #include <tchar.h>
 #include <stdio.h>
-#include <exception>
+#include <stdlib.h>
+#include <time.h>
 
 struct fff
 {
@@ -17,43 +18,46 @@ void li2()
 	int c[4][4]={0};
 	int shuju=0;
 	int linshi=0;
-
 	int g = a[77][9];
-
 	int abc0=0;//fuzhi gouzhao hanshu
-	abc0=0;//   fuzhi
 	int abc1;// gouzhao hanshu
+	//struct fff* zzz=NULL;
+	//{
+	//	struct fff zzz0;
+
+	//	zzz=&zzz0;
+	//	size_t a1 = sizeof(struct fff);
+	//	size_t a2 = sizeof(struct fff*); 
+	//	//zzz = NULL;
+	//	//free(zzz);
+	//}
+	//struct fff* zzz1 = NULL;
+	//{
+	//	zzz1 = (struct fff*)malloc(sizeof(struct fff));
+	//}
+
+
+	abc0=0;//   fuzhi
+
 	abc1=0;
 
 
-	struct fff* zzz=NULL;
-	{
-		struct fff zzz0;
 
-		zzz=&zzz0;
-		size_t a1 = sizeof(struct fff);
-		size_t a2 = sizeof(struct fff*); 
-		//zzz = NULL;
-		//free(zzz);
-	}
-	{
-		zzz->acc0 = 0;
-	}
-	{
-		//free(zzz);
-	}
+	//{
+	//	zzz->acc0 = 0;
+	//}
+	//{
+	//	//free(zzz);
+	//}
 
-	struct fff* zzz1 = NULL;
-	{
-		zzz1 = (struct fff*)malloc(sizeof(struct fff));
-	}
-	{
-		zzz1->acc0 = 0;
-	}
-	{
-		free(zzz1);
-		zzz1 = NULL;
-	}
+
+	//{
+	//	zzz1->acc0 = 0;
+	//}
+	//{
+	//	free(zzz1);
+	//	zzz1 = NULL;
+	//}
 
 	//struct fff* zzz8=&zzz0;
 

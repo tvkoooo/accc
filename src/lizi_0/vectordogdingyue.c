@@ -33,7 +33,7 @@ void fun__vectordog_nam_dogname(struct fun__vectordog_nam *p_dog)
 }
 
 //定义空函数保护
-void kongkongkong(void*p,int g)
+static void kongkongkong(void*p,int g)
 {
 
 }
@@ -41,8 +41,8 @@ void kongkongkong(void*p,int g)
 // 链表内存分配
 struct fun__vectordog_new* fun__vectordog_new_alloc()
 {
-	fun__vectordog_new* head;
-	head=(fun__vectordog_new*) malloc(sizeof(struct fun__vectordog_new));
+	struct fun__vectordog_new* head;
+	head=(struct fun__vectordog_new*) malloc(sizeof(struct fun__vectordog_new));
 	return(head);
 }
 // 链表内存回收
@@ -61,7 +61,7 @@ void fun__vectordog_new_init(struct fun__vectordog_new* ptalk)
 // 链表数据清零
 void fun__vectordog_new_clear(struct fun__vectordog_new* ptalk)
 {
-	fun__vectordog_new *find_p,*p1;
+	struct fun__vectordog_new *find_p,*p1;
 	find_p=p1=ptalk;
 
 	while (ptalk->pnext!=NULL)
@@ -92,9 +92,9 @@ void fun__vectordog_new_destroy(struct fun__vectordog_new* ptalk)
 // 链表操作---增加（增加订阅）
 void fun__vectordog_new_add(struct fun__vectordog_new* ptalk,fun__vectordog fdog,void *p)
 {
-	fun__vectordog_new *find_p,*p1,*p2;
+	struct fun__vectordog_new *find_p,*p1,*p2;
 
-	p2=(fun__vectordog_new*) malloc(sizeof(struct fun__vectordog_new));
+	p2=(struct fun__vectordog_new*) malloc(sizeof(struct fun__vectordog_new));
 	p1=ptalk;
 	while (p1->pnext!=NULL)
 	{
@@ -113,7 +113,7 @@ void fun__vectordog_new_add(struct fun__vectordog_new* ptalk,fun__vectordog fdog
 //  链表操作---删掉（删掉订阅）
 void fun__vectordog_new_sub(struct fun__vectordog_new* ptalk)
 {
-	fun__vectordog_new *find_p,*p1;
+	struct fun__vectordog_new *find_p,*p1;
 	find_p=p1=ptalk;
 	if (p1->pnext==NULL)
 	{
@@ -136,7 +136,7 @@ void fun__vectordog_new_sub(struct fun__vectordog_new* ptalk)
 //  链表操作---链表订阅统计个数
 int fun__vectordog_new_seizof(struct fun__vectordog_new*ptalk)
 {
-	fun__vectordog_new *find_p,*p1;
+	struct fun__vectordog_new *find_p,*p1;
 	int n=0;
 	find_p=p1=NULL;
 	p1=ptalk;
@@ -153,7 +153,7 @@ int fun__vectordog_new_seizof(struct fun__vectordog_new*ptalk)
 //  链表数据刷新---发布
 void fun__vectordog_new_update(struct fun__vectordog_new* ptalk,int g)
 {
-	fun__vectordog_new *find_p,*p1;
+	struct fun__vectordog_new *find_p,*p1;
 
 	p1=ptalk;
 

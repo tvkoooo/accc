@@ -8,10 +8,17 @@ struct fun__vectorlj_new
 	struct fun__vectorlj_new *pnext;
 };
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
+
+
 //tool init  内存初始化
 extern struct fun__vectorlj_new* fun__vectorlj_new_alloc();
 
-extern void fun__vectorlj_new_dealloc(fun__vectorlj_new* head);
+extern void fun__vectorlj_new_dealloc(struct fun__vectorlj_new* head);
 
 //tool init  数据初始化
 extern void fun__vectorlj_new_init(struct fun__vectorlj_new*head);
@@ -36,6 +43,8 @@ extern void fun__vectorlj_new_dealloc(struct fun__vectorlj_new*head);
 
 extern void fun__vectorlj_new_test();
 
-
+#if defined(__cplusplus)
+}
+#endif 
 
 #endif  /* _INC_vectorlj */

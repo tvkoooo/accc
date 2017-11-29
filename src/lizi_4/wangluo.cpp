@@ -75,33 +75,21 @@ void lizhi4_wangluo()
 
 
 #endif   ///测试1
-#include <ws2tcpip.h>
+
 
 #if 1
 #include <stdio.h>
-#include <winsock2.h>
-//#pragma comment(lib,"ws2_32.lib")
-static LPSTR ConvertErrorCodeToString(DWORD ErrorCode)
-{
-	HLOCAL LocalAddress=NULL;
-	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_IGNORE_INSERTS|FORMAT_MESSAGE_FROM_SYSTEM,NULL,ErrorCode,0,(PTSTR)&LocalAddress,0,NULL);
-	return (LPSTR)LocalAddress;
-}
-
+#include <string.h>
+#include "platform_config.h"
+#include "socket_context_lizi4.h"
+#include "errno_lizi4.h"
 void *lizhi4_wangluo_3(void *)
 {
-	//////加载Winsock库
-	WORD sockVersion =MAKEWORD(2,2);
-	WSADATA wsaData;
-	if(WSAStartup(sockVersion,&wsaData)!=0)
-	{
-		return NULL;  
-	}
-	AF_INET;
-	PF_INET;
+	socket_context_init();
+
 	int error_code = 0;
-	SOCKET slisten = socket(PF_INET6, SOCK_STREAM, IPPROTO_TCP);
-	if(slisten==INVALID_SOCKET)
+	socket_type slisten = socket(PF_INET6, SOCK_STREAM, IPPROTO_TCP);
+	if(slisten==PP_INVALID_SOCKET)
 	{
 
 		printf("socket error !");
@@ -112,8 +100,8 @@ void *lizhi4_wangluo_3(void *)
 	//sin.sin_port = htons(8888);
 	//sin.sin_addr.S_un.S_addr = INADDR_ANY;
 	//socklen_t addrlen = sizeof(sin);
-	sockaddr_in6 sin;
-	memset(&sin,0,sizeof(sockaddr_in6));
+	struct sockaddr_in6 sin;
+	memset(&sin,0,sizeof(struct sockaddr_in6));
 	sin.sin6_family = AF_INET6;
 	sin.sin6_port = htons(8888);
 	inet_pton(AF_INET6, "::", &sin.sin6_addr);
@@ -123,16 +111,16 @@ void *lizhi4_wangluo_3(void *)
 	error_code =setsockopt(slisten, SOL_SOCKET, SO_REUSEADDR,(const char*)&reuseaddr_flag , sizeof(reuseaddr_flag));
 	if (-1 == error_code)
 	{
-		int err = GetLastError();
-		printf("SO_REUSEADDR error:%s",ConvertErrorCodeToString(err));
+		int err = pp_errno();
+		printf("SO_REUSEADDR error:%s",errnomber(err));
 		return NULL;
 	}
 	//int bind(int sockfd, const struct sockaddr *addr,	socklen_t addrlen);
 	error_code = bind(slisten, (const struct sockaddr *)&sin, addrlen);
 	if(-1 == error_code)
 	{
-		int err = GetLastError();
-		printf("bind error:%s",ConvertErrorCodeToString(err));
+		int err = pp_errno();
+		printf("bind error:%s",errnomber(err));
 		return NULL;
 	}
 	// int listen(int sockfd, int backlog);
@@ -142,19 +130,19 @@ void *lizhi4_wangluo_3(void *)
 		printf("slisten error !");
 		return NULL;  
 	}
-	SOCKET sClient;
-	sockaddr_in6 remoteAddr;
-	int nAddrlen = sizeof(sockaddr_in6);
+	socket_type sClient;
+	struct sockaddr_in6 remoteAddr;
+	socklen_t nAddrlen = sizeof(struct sockaddr_in6);
 	char revData[255];
 	while (true)
 	{
 		printf("\n服务器：等待连接...\n");
 		// int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
 		sClient = accept(slisten, (struct sockaddr *)&remoteAddr, &nAddrlen);
-		if(sClient == INVALID_SOCKET)
+		if(sClient == PP_INVALID_SOCKET)
 		{
-					int err = GetLastError();
-		printf("accept error %s",ConvertErrorCodeToString(err));
+					int err = pp_errno();
+		printf("accept error %s",errnomber(err));
 			continue;
 		}
 		// const char *inet_ntop(int af, const void *src, char *dst, socklen_t cnt);
@@ -174,13 +162,12 @@ void *lizhi4_wangluo_3(void *)
 		const char * sendData = "\n服务器：你好，TCP客户端！\n";
 		//ssize_t send(int sockfd, const void *buff, size_t nbytes, int flags);
 		send(sClient,sendData,strlen(sendData),0);
-		 closesocket(sClient);
+		 socket_context_closed(sClient);
 	}
-	closesocket(slisten);
+	socket_context_closed(slisten);
 
 
-	/////释放Winsock库
-	WSACleanup();
+	socket_context_destroy();
 		return NULL;
 }
 

@@ -9,16 +9,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_2\fun_log_dll.cpp">
-      <Filter>src\lizi_2</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\..\src\lizi_2\fun_log_dll.h">
       <Filter>src\lizi_2</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_2\platform.h">
       <Filter>src\lizi_2</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\lizi_2\c_end.h">
+      <Filter>src\lizi_2</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_2\c_start.h">
+      <Filter>src\lizi_2</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\lizi_2\fun_log_dll.c">
+      <Filter>src\lizi_2</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

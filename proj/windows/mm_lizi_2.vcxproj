@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_2\fun_log_dll.cpp" />
+    <ClCompile Include="..\..\src\lizi_2\fun_log_dll.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\lizi_2\c_end.h" />
+    <ClInclude Include="..\..\src\lizi_2\c_start.h" />
     <ClInclude Include="..\..\src\lizi_2\fun_log_dll.h" />
     <ClInclude Include="..\..\src\lizi_2\platform.h" />
   </ItemGroup>

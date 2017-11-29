@@ -1,59 +1,50 @@
-#include<WINSOCK2.H>  
-#include<STDIO.H>  
+#include<stdio.h>  
 #include<iostream>  
 #include<cstring>  
 #include "wangluo.h"
-#include <ws2tcpip.h>
-using namespace std;  
-#pragma comment(lib, "ws2_32.lib")  
+#include "platform_config.h"
+#include "socket_context_lizi4.h"
+#include "errno_lizi4.h"
+//#include <string>
 
-static LPSTR ConvertErrorCodeToString(DWORD ErrorCode)
-{
-	HLOCAL LocalAddress=NULL;
-	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|FORMAT_MESSAGE_IGNORE_INSERTS|FORMAT_MESSAGE_FROM_SYSTEM,NULL,ErrorCode,0,(PTSTR)&LocalAddress,0,NULL);
-	return (LPSTR)LocalAddress;
-}
+using namespace std;  
+
 
 void *lizhi4_wangluo_kehu(void *)
 {  
-	/////加载Winsock库
-	WORD sockVersion = MAKEWORD(2, 2);  
-	WSADATA data;  
-	if(WSAStartup(sockVersion, &data)!=0)  
-	{  
-		return NULL;  
-	}  
-
+	socket_context_init();
+	socket_context_sleep(200);
 	while(true){  
-		SOCKET sclient = socket(PF_INET6, SOCK_STREAM, IPPROTO_TCP);  
-		if(sclient == INVALID_SOCKET)  
+		socket_type sclient = socket(PF_INET6, SOCK_STREAM, IPPROTO_TCP);  
+		if(sclient == PP_INVALID_SOCKET)  
 		{  
 			printf("invalid socket!");  
 		return NULL;  
 		}  
 
-		sockaddr_in6 serAddr; 
-		memset(&serAddr,0,sizeof(sockaddr_in6));		
+		struct sockaddr_in6 serAddr; 
+		memset(&serAddr,0,sizeof(struct sockaddr_in6));		
 		serAddr.sin6_family = AF_INET6;  
 		serAddr.sin6_port = htons(8888);
-		//inet_pton(AF_INET, "192.168.111.203", &serAddr.sin_addr);
+		//inet_pton(AF_INET, "127.0.0.1", &serAddr.sin_addr);
 		inet_pton(AF_INET6, "::1", &serAddr.sin6_addr);
 
 		int err_x;
-		err_x=connect(sclient, (sockaddr *)&serAddr, sizeof(serAddr));
-		if(SOCKET_ERROR==err_x)  
+		err_x=connect(sclient, (struct sockaddr *)&serAddr, sizeof(serAddr));
+		if(-1==err_x)  
 		{  //连接失败  
-					int err = GetLastError();
-			printf("connect error %s",ConvertErrorCodeToString(err));  
-			closesocket(sclient);  
+					int err = pp_errno();
+			printf("connect error %s",errnomber(err));  
+			socket_context_closed(sclient);  
 		return NULL;  
 		}  
 
-		char data[20]="00000000";
-		cin>>data;  
+		char data[200]="00000000";
+		gets(data);
+		//cin>>data;  
 		const char * sendData;  
 		sendData = data;   //string转const char*   
-		//char * sendData = "你好，TCP服务端，我是客户端\n";  
+		/*char * sendData = "你好，TCP服务端，我是客户端\n";*/  
 		send(sclient, sendData, strlen(sendData), 0);  
 		//send()用来将数据由指定的socket传给对方主机  
 		//int send(int s, const void * msg, int len, unsigned int flags)  
@@ -66,11 +57,10 @@ void *lizhi4_wangluo_kehu(void *)
 			recData[ret] = 0x00;  
 			printf(recData);  
 		}   
-		closesocket(sclient);  
+		socket_context_closed(sclient);  
 	}  
 
-	////释放Winsock库
-	WSACleanup();  
+	socket_context_destroy();
 		return NULL;  
 
 }  

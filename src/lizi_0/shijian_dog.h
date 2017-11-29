@@ -7,6 +7,13 @@ struct shijian_dog
 	char   dog_name[20];
 	int   dog_money;
 };
+
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
+
 //小狗数据初始化
 extern void shijian_dog_init(struct shijian_dog *p_dog);
 //小狗数据清零
@@ -18,5 +25,7 @@ extern void shijian_dog_do_money(void *p_dog);
 
 extern void shijian_dog_do_speak(void *p_dog);
 
-
+#if defined(__cplusplus)
+}
+#endif 
 #endif  /* _INC_shijian_dog */

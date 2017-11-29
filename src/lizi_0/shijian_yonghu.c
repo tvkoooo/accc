@@ -11,9 +11,9 @@ void shijian_yonghu_test()
 {
 
 	// 1:n
-	shijianqi* do_dog1;
+	struct shijianqi* do_dog1;
 	
-	shijian_dog dog[3];
+	struct shijian_dog dog[3];
 	
 	//创建事件链
 	do_dog1=shijianqi_alloc();

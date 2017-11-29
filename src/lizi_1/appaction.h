@@ -10,6 +10,12 @@ struct appaction
 
 };
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
+
 extern void appaction_init(struct appaction* p);
 extern void appaction_destroy(struct appaction* p);
 ///////////////////////////////////////////////////
@@ -17,5 +23,10 @@ extern void appaction_start(struct appaction* p);
 extern void appaction_interrupt(struct appaction* p);
 extern void appaction_shutdown(struct appaction* p);
 extern void appaction_join(struct appaction* p);
+
+#if defined(__cplusplus)
+}
+#endif  
+
 
 #endif  /* _INC_pthread_appaction */

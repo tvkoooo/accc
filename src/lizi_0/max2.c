@@ -1,13 +1,13 @@
 #include <tchar.h>
 #include <stdio.h>
-#include <exception>
+
 #include <tou.h>
 
 
 int sumn(int m,int *x,int *y)
 	{
 		//struct ff hb;
-		li2();
+		//li2();
 		int i,sum1=0;
 	    for(i=1;i<=m;i++)
 		{

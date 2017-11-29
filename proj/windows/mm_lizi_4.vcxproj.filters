@@ -10,6 +10,12 @@
     <Filter Include="windows">
       <UniqueIdentifier>{2817d8a5-192e-4546-95d8-ef6ad1796d58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\mm_lizi_4\os">
+      <UniqueIdentifier>{9a6d72ff-6880-4094-8a42-a7539c30c1d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mm_lizi_4\os\windows">
+      <UniqueIdentifier>{59477db0-887f-41d4-b0ae-f63bec529b80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\lizi_4\wangluo.cpp">
@@ -24,6 +30,12 @@
     <ClCompile Include="..\..\src\lizi_4\application.cpp">
       <Filter>src\mm_lizi_4</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_4\os\windows\errno_lizi4.cpp">
+      <Filter>src\mm_lizi_4\os\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.cpp">
+      <Filter>src\mm_lizi_4\os\windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_4\wangluo.h">
@@ -31,6 +43,15 @@
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_4\application.h">
       <Filter>src\mm_lizi_4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\os\windows\platform_config.h">
+      <Filter>src\mm_lizi_4\os\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\os\windows\errno_lizi4.h">
+      <Filter>src\mm_lizi_4\os\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.h">
+      <Filter>src\mm_lizi_4\os\windows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

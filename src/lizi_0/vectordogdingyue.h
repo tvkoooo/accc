@@ -8,6 +8,13 @@ struct fun__vectordog_nam
 	char dog_name[20];
 	int icc;
 };
+
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
+
 //小狗数据初始化
 extern void fun__vectordog_nam_init(struct fun__vectordog_nam *p_dog);
 //小狗数据清零
@@ -54,5 +61,9 @@ extern void fun__vectordog_new_update(struct fun__vectordog_new* ptalk,int g);
 //  外部函数声明
 extern void fun__vectordog_new_test();
 extern int shuijishu();
+
+#if defined(__cplusplus)
+}
+#endif 
 
 #endif  /* _INC_vectordog */

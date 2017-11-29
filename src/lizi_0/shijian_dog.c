@@ -18,9 +18,10 @@ void shijian_dog_destroy(struct shijian_dog *p_dog)
 
 void shijian_dog_do_name(void *p_dog)
 {
-	shijian_dog * dog;
-	dog=(shijian_dog*)p_dog;
+	struct shijian_dog * dog;
 	char name[20];
+	dog=(struct shijian_dog*)p_dog;
+
 	printf("请输入狗的新名字\n");
 	scanf(" %s",name);
 	strcpy(dog->dog_name,name);
@@ -28,8 +29,8 @@ void shijian_dog_do_name(void *p_dog)
 
 void shijian_dog_do_money(void *p_dog)
 {
-	shijian_dog * d;
-	d=(shijian_dog*)p_dog;
+	struct shijian_dog * d;
+	d=(struct shijian_dog*)p_dog;
 
 	printf("请输入 %s 狗的价格\n",d->dog_name);
 	scanf("%d",&d->dog_money);
@@ -38,9 +39,10 @@ void shijian_dog_do_money(void *p_dog)
 
 void shijian_dog_do_speak(void *p_dog)
 {
-	shijian_dog * dogname;
-	dogname=(shijian_dog*)p_dog;
+	struct shijian_dog * dogname;
 	int chos;
+	dogname=(struct shijian_dog*)p_dog;
+
 	chos=rand()%3;
 	printf("\n小狗%s(%d  $):",dogname->dog_name,dogname->dog_money);
 	switch (chos)

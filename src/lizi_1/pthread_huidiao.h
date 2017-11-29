@@ -28,6 +28,12 @@ struct pthread_huidiao_1
 //////½ø³ÌËø pthread_mutex_t
 	pthread_mutex_t all;
 };
+
+#if defined(__cplusplus)
+extern "C"
+{
+#endif 
+
 extern void lizhi1_huidiao_init(struct pthread_huidiao_1 *p);
 extern void lizhi1_huidiao_destroy(struct pthread_huidiao_1*p);
 extern void lizhi1_huidiao_start(struct pthread_huidiao_1* p);
@@ -45,6 +51,10 @@ extern void lizhi1_huidiao_f1(void);
 extern void * lizhi1_huidiao_pthr_1(void * p);
 
 extern void lizhi1_huidiao_test();
+
+#if defined(__cplusplus)
+}
+#endif 
 
 
 #endif  /* _INC_pthread_huidiao */

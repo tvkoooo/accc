@@ -13,6 +13,13 @@ struct dog
 	char dog_talk4[20];
 };
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
+
+
 extern void dogname_init(struct dog *pscanf);
 extern void dogname_destroy(struct dog *pscanf);
 //////////////////////////////////////////////////////////////////////////
@@ -29,4 +36,9 @@ extern void dog_talk(struct dog *pscanf);
 //extern void dog_li5();
 extern int shuijishu();
 extern void li5();
+
+#if defined(__cplusplus)
+}
+#endif 
+
 #endif  /* _INC_dog */

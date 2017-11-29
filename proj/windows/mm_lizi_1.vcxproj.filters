@@ -15,22 +15,22 @@
     <ClCompile Include="windows\main.cpp">
       <Filter>windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\appaction.cpp">
+    <ClCompile Include="..\..\src\lizi_1\mm_uuu.c">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\appaction.c">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.c">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\pthread_2.c">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\pthread_1.c">
       <Filter>src\lizi_1</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\lizi_1\application.cpp">
-      <Filter>src\lizi_1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.cpp">
-      <Filter>src\lizi_1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\pthread_2.cpp">
-      <Filter>src\lizi_1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\pthread_1.cpp">
-      <Filter>src\lizi_1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\mm_uuu.c">
       <Filter>src\lizi_1</Filter>
     </ClCompile>
   </ItemGroup>

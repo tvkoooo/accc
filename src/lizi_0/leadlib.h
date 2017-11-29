@@ -18,6 +18,13 @@ struct leadlib
 	double  lead_dog_act_money;
 
 };
+
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
+
 extern void createdog(struct doglib *p_dog,struct leadlib*p_lead);
 extern void diedog(struct doglib *p_dog,struct leadlib*p_lead);
 
@@ -31,5 +38,9 @@ extern void datedog(struct doglib *p_dog,struct leadlib*p_lead);
 extern void checkdog(struct doglib *p_dog,struct leadlib*p_lead);
 extern void checkmyself(struct doglib *p_dog,struct leadlib*p_lead);
 extern void checkmystore(struct doglib *p_dog,struct leadlib*p_lead);
+
+#if defined(__cplusplus)
+}
+#endif 
 
 #endif  /* _INC_leadlib */

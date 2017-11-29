@@ -10,6 +10,8 @@ void input_record_test()
 	int i,j;
 	struct bodytest_new testa;
 	struct bodytest_new testb;
+	FILE * fpin;
+	char filenametest[10];
 
 	strcpy(testa.bodytest_name,"love");
 	testa.bodytest_age=19;
@@ -25,9 +27,9 @@ void input_record_test()
 			testa.bodytest_mima[i][j]=7;
 		}
 
-	FILE * fpin;
+
 	//char chtest;
-	char filenametest[10];
+
 	printf("输入文件名");
 	scanf("%s",filenametest);
 	getchar();

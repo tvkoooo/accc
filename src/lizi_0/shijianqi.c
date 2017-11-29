@@ -4,7 +4,7 @@
 #include <string.h>
 
 //定义空函数保护
-void kongkongkong(void*p)
+static void kongkongkong(void*p)
 {
 
 }
@@ -12,8 +12,8 @@ void kongkongkong(void*p)
 // 链表内存分配
 struct shijianqi* shijianqi_alloc()
 {
-	shijianqi* head;
-	head=(shijianqi*) malloc(sizeof(struct shijianqi));
+	struct shijianqi* head;
+	head=(struct shijianqi*) malloc(sizeof(struct shijianqi));
 	return(head);
 }
 // 链表内存回收
@@ -32,7 +32,7 @@ void shijianqi_init(struct shijianqi* p)
 // 链表数据清零
 void shijianqi_clear(struct shijianqi* p)
 {
-	shijianqi *find_p,*p_see;
+	struct shijianqi *find_p,*p_see;
 	find_p=p_see=p;
 
 	while (p->pnext!=NULL)
@@ -65,8 +65,8 @@ void shijianqi_destroy(struct shijianqi* p)
 // 链表操作---增加（增加订阅）
 void shijianqi_add(struct shijianqi* p,fun_shijianqi p2,void* p3)
 {
-	shijianqi *find_p,*psee,*pdo;
-	pdo=(shijianqi*) malloc(sizeof(struct shijianqi));
+	struct shijianqi *find_p,*psee,*pdo;
+	pdo=(struct shijianqi*) malloc(sizeof(struct shijianqi));
 	psee=p;
 	while (psee->pnext!=NULL)
 	{
@@ -84,7 +84,7 @@ void shijianqi_add(struct shijianqi* p,fun_shijianqi p2,void* p3)
 void shijianqi_sub(struct shijianqi* p,void *p_sub)
 {
 	int lian=0;
-	shijianqi *find_p,*psee;
+	struct shijianqi *find_p,*psee;
 	find_p=psee=p;
 	if (psee->pnext==NULL)
 	{
@@ -112,7 +112,7 @@ void shijianqi_sub(struct shijianqi* p,void *p_sub)
 //  链表操作---链表订阅统计个数
 int shijianqi_seizof(struct shijianqi* p)
 {
-	shijianqi *find_p,*psee;
+	struct shijianqi *find_p,*psee;
 	int n=0;
 	find_p=psee=p;
 	while(psee->pnext!=NULL)
@@ -126,7 +126,7 @@ int shijianqi_seizof(struct shijianqi* p)
 
 void shijianqi_update(struct shijianqi* p)
 {
-	shijianqi *find_p,*psee;
+	struct shijianqi *find_p,*psee;
 
 	find_p=psee=p;
 

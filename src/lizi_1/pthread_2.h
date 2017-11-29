@@ -16,6 +16,11 @@ struct lizhi1_2_pthr_s
 	pthread_mutex_t all;
 };
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif 
+
 extern void lizhi1_2_pthr_s_init(struct lizhi1_2_pthr_s *p);
 extern void lizhi1_2_pthr_s_destroy(struct lizhi1_2_pthr_s*p);
 // 
@@ -33,5 +38,8 @@ extern void* lizhi_2_pthr_1();
 extern void* lizhi_2_pthr_2();
 extern void pthread_lizhi1_2_test();
 
+#if defined(__cplusplus)
+}
+#endif 
 
 #endif  /* _INC_pthread_2 */

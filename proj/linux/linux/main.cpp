@@ -2,14 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 #include <exception>
 #include "application.h"
-
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif//WIN32_LEAN_AND_MEAN
-
-#include <windows.h>
 
 
 #define use_vld_check_memory_leak
@@ -20,32 +15,21 @@
 
 struct application g_application;
 
-
-BOOL WINAPI __static_signal_destroy(DWORD msgType)
+static void __static_signal_destroy(int n)  
 {
-	switch (msgType)
-	{
-	case CTRL_C_EVENT:
-	case CTRL_BREAK_EVENT:
-	case CTRL_CLOSE_EVENT:
-	case CTRL_LOGOFF_EVENT:
-	case CTRL_SHUTDOWN_EVENT:
-		{
-			application_shutdown(&g_application);
-			return TRUE;
-		}
-		break;
-	default:
-		return FALSE;
-	}
-	return FALSE;
+	application_shutdown(&g_application);
 }
-
 
 int main(int argc,char **argv)
 {	
-
-	SetConsoleCtrlHandler(__static_signal_destroy, TRUE);
+	//
+	signal(SIGINT	,&__static_signal_destroy);
+	// We expect write failures to occur but we want to handle them where 
+	// the error occurs rather than in a SIGPIPE handler.
+	// when send to a disconnected socket,will trigger SIGPIPE,default handler is terminate.
+	// we not find a best way for this signal.
+	signal(SIGPIPE  ,SIG_IGN);
+	//
 	try
 	{
 		application_init(&g_application);
@@ -57,7 +41,6 @@ int main(int argc,char **argv)
 	{
 		printf("A untreated exception occur:%s\n",e.what());
 	}
-
 
 
 	return 0;
