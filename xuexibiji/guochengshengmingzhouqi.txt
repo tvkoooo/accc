@@ -1,0 +1,46 @@
+全过程：
+```
+mm_uuu_init  5416
+mm_uuu_start  5416
+mm_uuu_join 开始  5416
+__static_uuu_poll_wait_thread开始  11904
+mm_uuu_poll_wait 开始 11904
+xxx 11904
+xxx 11904
+xxx 11904
+xxx 11904
+xxx 11904
+xxx 11904
+xxx 11904
+mm_uuu_shutdown  9148
+mm_uuu_poll_wait 结束  11904
+__static_uuu_poll_wait_thread结束  11904
+mm_uuu_join 结束 5416
+mm_uuu_destroy  5416
+```
+5416线程周期
+```
+mm_uuu_init  5416
+mm_uuu_start  5416
+mm_uuu_join 开始  5416
+mm_uuu_join 结束 5416
+mm_uuu_destroy  5416
+```
+11904线程周期
+```
+__static_uuu_poll_wait_thread开始  11904
+mm_uuu_poll_wait 开始 11904
+xxx 11904
+xxx 11904
+xxx 11904
+xxx 11904
+xxx 11904
+xxx 11904
+xxx 11904
+mm_uuu_poll_wait 结束  11904
+__static_uuu_poll_wait_thread结束  11904
+```
+9148线程周期
+```
+mm_uuu_shutdown  9148
+```

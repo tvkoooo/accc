@@ -19,16 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_1\appaction.c" />
     <ClCompile Include="..\..\src\lizi_1\application.cpp" />
-    <ClCompile Include="..\..\src\lizi_1\mm_uuu.c" />
+    <ClCompile Include="..\..\src\lizi_1\mm_uuu.cpp" />
     <ClCompile Include="..\..\src\lizi_1\pthread_1.c" />
     <ClCompile Include="..\..\src\lizi_1\pthread_2.c" />
     <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.c" />
     <ClCompile Include="windows\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\lizi_1\appaction.h" />
     <ClInclude Include="..\..\src\lizi_1\application.h" />
     <ClInclude Include="..\..\src\lizi_1\lizhi1_all.h" />
     <ClInclude Include="..\..\src\lizi_1\mm_uuu.h" />

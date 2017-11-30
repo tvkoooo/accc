@@ -23,6 +23,7 @@
     <ClCompile Include="..\..\src\lizi_4\os\windows\errno_lizi4.cpp" />
     <ClCompile Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.cpp" />
     <ClCompile Include="..\..\src\lizi_4\wangluo.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\wangluo_fuwu.cpp" />
     <ClCompile Include="..\..\src\lizi_4\wangluo_kehu.cpp" />
     <ClCompile Include="windows\main.cpp" />
   </ItemGroup>

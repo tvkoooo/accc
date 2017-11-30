@@ -15,12 +15,6 @@
     <ClCompile Include="windows\main.cpp">
       <Filter>windows</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\mm_uuu.c">
-      <Filter>src\lizi_1</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\lizi_1\appaction.c">
-      <Filter>src\lizi_1</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.c">
       <Filter>src\lizi_1</Filter>
     </ClCompile>
@@ -31,6 +25,9 @@
       <Filter>src\lizi_1</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\lizi_1\application.cpp">
+      <Filter>src\lizi_1</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_1\mm_uuu.cpp">
       <Filter>src\lizi_1</Filter>
     </ClCompile>
   </ItemGroup>
@@ -48,9 +45,6 @@
       <Filter>src\lizi_1</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_1\pthread_huidiao.h">
-      <Filter>src\lizi_1</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\lizi_1\appaction.h">
       <Filter>src\lizi_1</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_1\application.h">

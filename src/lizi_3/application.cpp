@@ -28,3 +28,13 @@ void application_join(struct application* p)
 {
 
 }
+
+void application_fuzhi(struct application* p,int argc,char **argv)
+{
+	printf("int argc:%d",argc);
+	while(argc-->1)
+	{
+		printf("%s",*++argv);
+	}
+
+}

@@ -49,6 +49,9 @@ int main(int argc,char **argv)
 	try
 	{
 		application_init(&g_application);
+
+		application_fuzhi(&g_application,argc,argv);
+
 		application_start(&g_application);
 		application_join(&g_application);
 		application_destroy(&g_application);
@@ -57,9 +60,7 @@ int main(int argc,char **argv)
 	{
 		printf("A untreated exception occur:%s\n",e.what());
 	}
-
-
-
+	
 	return 0;
 }
 
