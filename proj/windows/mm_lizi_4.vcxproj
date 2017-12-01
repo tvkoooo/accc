@@ -22,17 +22,22 @@
     <ClCompile Include="..\..\src\lizi_4\application.cpp" />
     <ClCompile Include="..\..\src\lizi_4\os\windows\errno_lizi4.cpp" />
     <ClCompile Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.cpp" />
-    <ClCompile Include="..\..\src\lizi_4\wangluo.cpp" />
-    <ClCompile Include="..\..\src\lizi_4\wangluo_fuwu.cpp" />
-    <ClCompile Include="..\..\src\lizi_4\wangluo_kehu.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\wangluo_fw _sel.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\wangluo_fw.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\wangluo_fw_accept.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\wangluo_kh.cpp" />
     <ClCompile Include="windows\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_4\application.h" />
+    <ClInclude Include="..\..\src\lizi_4\mm_thread_state_t.h" />
     <ClInclude Include="..\..\src\lizi_4\os\windows\errno_lizi4.h" />
     <ClInclude Include="..\..\src\lizi_4\os\windows\platform_config.h" />
     <ClInclude Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.h" />
-    <ClInclude Include="..\..\src\lizi_4\wangluo.h" />
+    <ClInclude Include="..\..\src\lizi_4\wangluo_fw.h" />
+    <ClInclude Include="..\..\src\lizi_4\wangluo_fw_accept.h" />
+    <ClInclude Include="..\..\src\lizi_4\wangluo_fw_sel.h" />
+    <ClInclude Include="..\..\src\lizi_4\wangluo_kh.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4E4CE887-B4B0-4B0F-8188-FF99E6D14953}</ProjectGuid>

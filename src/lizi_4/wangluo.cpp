@@ -84,6 +84,13 @@ void wangluo_start(struct wangluo* p)
 		}
 	}
 }
+
+void wangluo_wait(struct wangluo* p)
+{
+
+}
+
+
 void wangluo_interrupt(struct wangluo* p)
 {
 	
@@ -92,6 +99,7 @@ void wangluo_shutdown(struct wangluo* p)
 {
 	printf("\n程序被打断,请继续上步操作正常关闭退出\n");
 	p->wangluoshut=0;
+	//shutdown(p->slisten,2);
 }
 void wangluo_join(struct wangluo* p)
 {

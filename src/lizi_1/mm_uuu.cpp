@@ -48,8 +48,11 @@ void mm_uuu_poll_wait(struct mm_uuu* p)
 	{
 		DWORD id2=GetCurrentThreadId();
 		// the first quick size checking.
-		printf("xxx %d\n",id2);
-		mm_msleep(1000);
+		//while (true)
+		//{
+			printf("xxx %d\n",id2);
+			mm_msleep(1000);
+		//}
 	}
 	DWORD id3=GetCurrentThreadId();
 	printf("mm_uuu_poll_wait ½áÊø  %d\n",id3);
