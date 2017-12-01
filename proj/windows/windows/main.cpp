@@ -18,6 +18,10 @@
 #endif
 #endif // _DEBUG
 
+#ifdef use_vld_check_memory_leak
+#include <vld.h>
+#endif
+
 struct application g_application;
 
 

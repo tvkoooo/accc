@@ -4,8 +4,8 @@
 #include "socket_context_lizi4.h"
 #include <map>
 
-//维护socket的状态（包含启动和结束）
-//做一个accept的线程，并维护他的生命周期
+// 维护select线程状态
+//接受sClient，维护表
 //处理接收过来的recv的等待。
 
 
@@ -15,8 +15,8 @@ struct wangluo_fw_sel
 {
 	int flag;
 	socket_type sClient;
-	std::map <socket_type,fd_set *> map_sel;
 	struct timeval map_timeout;
+	//std::map <socket_type,fd_set *> map_sel;
 };
     
 extern void *wangluo_fw_sel_pro(void *p);

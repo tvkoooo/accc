@@ -9,23 +9,50 @@ void *wangluo_fw_sel_pro(void *p)
 {
 	struct wangluo_fw_sel *ps;
 	ps=(struct wangluo_fw_sel *)p;
-	int sel_fh;
-	int maxfd=-1;
+	int sel_fh=88;
+	int ret;
+	int max_nfds=0;
+	char revData[255];
+
 	ps->map_timeout.tv_sec=1;
 	ps->map_timeout.tv_usec=0;
+
+	fd_set fds;
+	FD_ZERO(&fds);
 	while (1)
 	{		
-		if (ps->flag==1)
+		max_nfds=ps->sClient;
+		FD_SET(ps->sClient,&fds);
+		sel_fh=select(max_nfds+1,&fds,0,0,&ps->map_timeout);
+
+		if (0>sel_fh)
 		{
-			fd_set fds;
-			FD_ZERO(&fds);
-			FD_SET(0,&fds);
-			FD_SET(ps->sClient,&fds);
-			maxfd=ps->sClient;
-			sel_fh=select(ps->sClient+1,&fds,0,0,&ps->map_timeout);
+			//socket_context_closed(ps->slisten);
+			break;
+		}
+		else if(0==sel_fh)
+		{
+			continue;
+		}
+		else
+		{
+			if (FD_ISSET(ps->sClient,&fds))
+			{
+				ret = recv(ps->sClient,revData,255,0);
+				if(ret > 0)
+				{
+					revData[ret] = 0x00;
+					printf("客户端消息\t:");
+					printf(revData);
+				}
+				const char * sendData = "\n服务器：你好，TCP客户端！\n";
+				send(ps->sClient,sendData,strlen(sendData),0);
+			}
 		}
 
+		//socket_context_closed(ps->sClient);
 	}
+	return NULL;
 }
 
 
