@@ -1,0 +1,64 @@
+##需要做的事
+mm_mailbox 不知道mm_fw和mm_xxx,他是事件生产者.
+mm_xxx     不知道mm_fw和mm_mailbox,他是事件消费者.
+mm_fw      知道mm_mailbox和mm_xxx,他是构建者
+
+mm_fw 创建了mm_mailbox和mm_xxx.并且将mm_xxx和mm_mailbox连接起来.
+
+##达到这个目的的方法
+mm_mailbox (A)的
+```
+typedef void (*mailbox_handle)( void* obj, void* u, struct mm_packet* pack );
+struct mm_mailbox_callback
+{
+	mailbox_handle handle;
+	void* obj;// weak ref. user data for callback.
+};
+
+mm_mailbox 的一个设置函数
+MM_EXPORT_DLL void mm_mailbox_assign_callback(struct mm_mailbox* p,struct mm_mailbox_callback callback);
+
+mm_mailbox 里会将消息发布
+(*(p->callback))(p,id,pack);
+```
+
+mm_xxx (B)的
+```
+mm_xxx 会实现自己的处理函数
+void xxx_mailbox_handle( struct mm_xxx* p, void* u, struct mm_packet* pack )
+{
+	// 用xxx
+}
+```
+
+mm_fw (C)的
+```
+mm_fw的大致结构
+struct mm_fw
+{
+	mm_mailbox a;
+	mm_xxx     b;
+}
+
+// 前置函数声明
+void __static_mailbox_handle_fw( void* obj, void* u, struct mm_packet* pack );
+
+void mm_fw_init()
+{
+	mm_mailbox_init(&p->a);
+	mm_xxx_init(&p->b);
+	
+	struct mm_mailbox_callback callback;
+	callback.handle = &__static_mailbox_handle_fw;
+	callback.obj = &p->b;
+	mm_mailbox_assign_callback(&p->a,&callback);
+}
+
+fw 会实现A的回调函数
+void __static_mailbox_handle_fw( void* obj, void* u, struct mm_packet* pack )
+{
+	struct mm_mailbox* mailbox = (struct mm_mailbox*)(obj);
+	struct mm_xxx* xxx = (struct mm_xxx*)(mailbox->callback.obj);
+	xxx_mailbox_handle(xxx,u,pack);
+}
+```
