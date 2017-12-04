@@ -1,64 +1,74 @@
 ##需要做的事
-mm_mailbox 不知道mm_fw和mm_xxx,他是事件生产者.
-mm_xxx     不知道mm_fw和mm_mailbox,他是事件消费者.
-mm_fw      知道mm_mailbox和mm_xxx,他是构建者
+mm_producer 不知道mm_builder和mm_consumer,他是事件生产者.
+mm_consumer 不知道mm_builder和mm_producer,他是事件消费者.
+mm_builder  知道 mm_producer和mm_consumer,他是构建者
 
-mm_fw 创建了mm_mailbox和mm_xxx.并且将mm_xxx和mm_mailbox连接起来.
+mm_builder 创建了mm_producer和mm_consumer.并且将mm_consumer和mm_producer连接起来.
 
 ##达到这个目的的方法
-mm_mailbox (A)的
+mm_producer (A)的
 ```
-typedef void (*mailbox_handle)( void* obj, void* u, struct mm_packet* pack );
-struct mm_mailbox_callback
+typedef void (*producer_handle)( void* obj, struct mm_message* message );
+struct mm_producer_callback
 {
-	mailbox_handle handle;
+	producer_handle handle;
 	void* obj;// weak ref. user data for callback.
 };
 
-mm_mailbox 的一个设置函数
-MM_EXPORT_DLL void mm_mailbox_assign_callback(struct mm_mailbox* p,struct mm_mailbox_callback callback);
+mm_producer的大致结构
+struct mm_builder
+{
+	struct mm_producer_callback callback;
+	// 和其他东西
+}
 
-mm_mailbox 里会将消息发布
-(*(p->callback))(p,id,pack);
+mm_producer 的一个设置函数
+MM_EXPORT_DLL void mm_producer_assign_callback(struct mm_producer* p,struct mm_producer_callback callback);
+
+mm_producer 里会将消息发布
+(*(p->callback))(p,message);
 ```
 
-mm_xxx (B)的
+mm_consumer (B)的
 ```
-mm_xxx 会实现自己的处理函数
-void xxx_mailbox_handle( struct mm_xxx* p, void* u, struct mm_packet* pack )
+mm_consumer 会实现自己的处理函数
+void mm_consumer_handle( struct mm_consumer* p, struct mm_message* message )
 {
 	// 用xxx
 }
 ```
 
-mm_fw (C)的
+mm_builder (C)的
 ```
-mm_fw的大致结构
-struct mm_fw
+mm_builder的大致结构
+struct mm_builder
 {
-	mm_mailbox a;
-	mm_xxx     b;
+	mm_producer producer
+	mm_consumer consumer;
+	// 和其他东西
 }
 
 // 前置函数声明
-void __static_mailbox_handle_fw( void* obj, void* u, struct mm_packet* pack );
+void __static_builder_producer_handle( void* obj, struct mm_message* message );
 
-void mm_fw_init()
+void mm_builder_init()
 {
-	mm_mailbox_init(&p->a);
-	mm_xxx_init(&p->b);
+	mm_producer_init(&p->producer);
+	mm_consumer_init(&p->consumer);
 	
-	struct mm_mailbox_callback callback;
-	callback.handle = &__static_mailbox_handle_fw;
-	callback.obj = &p->b;
-	mm_mailbox_assign_callback(&p->a,&callback);
+	struct mm_producer_callback callback;
+	callback.handle = &__static_builder_producer_handle;
+	callback.obj = &p->consumer;
+	// 连接起来
+	mm_producer_assign_callback(&p->producer,&callback);
 }
 
-fw 会实现A的回调函数
-void __static_mailbox_handle_fw( void* obj, void* u, struct mm_packet* pack )
+mm_builder 会实现mm_producer(A)的回调函数
+void __static_builder_producer_handle( void* obj, struct mm_message* message )
 {
-	struct mm_mailbox* mailbox = (struct mm_mailbox*)(obj);
-	struct mm_xxx* xxx = (struct mm_xxx*)(mailbox->callback.obj);
-	xxx_mailbox_handle(xxx,u,pack);
+	struct mm_producer* producer = (struct mm_producer*)(obj);
+	struct mm_consumer* consumer = (struct mm_consumer*)(producer->callback.obj);
+	// 驱动过程
+	mm_consumer_handle(consumer,message);
 }
 ```
