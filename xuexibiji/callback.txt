@@ -1,7 +1,8 @@
 ##需要做的事
-mm_producer 不知道mm_builder和mm_consumer,他是事件生产者.
-mm_consumer 不知道mm_builder和mm_producer,他是事件消费者.
-mm_builder  知道 mm_producer和mm_consumer,他是构建者
+mm_producer 不知道mm_builder和mm_consumer的结构,他是事件生产者.
+mm_consumer 不知道mm_builder和mm_producer的结构,他是事件消费者.
+mm_builder  知道 mm_producer和mm_consumer的结构,他是构建者
+三者可以共用一个mm_message结构.
 
 mm_builder 创建了mm_producer和mm_consumer.并且将mm_consumer和mm_producer连接起来.
 
@@ -16,7 +17,7 @@ struct mm_producer_callback
 };
 
 mm_producer的大致结构
-struct mm_builder
+struct mm_producer
 {
 	struct mm_producer_callback callback;
 	// 和其他东西

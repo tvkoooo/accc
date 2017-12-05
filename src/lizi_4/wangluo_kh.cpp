@@ -7,42 +7,54 @@ static void* __static_uuu_poll_wait_thread(void* arg);
 
 void wangluo_kh_init(struct wangluo_kh* p)
 {
+	p->sclient=PP_INVALID_SOCKET;
 	p->state = ts_closed;
 	socket_context_init();
 
 }
 void wangluo_kh_destroy(struct wangluo_kh* p)
 {
+	p->sclient=PP_INVALID_SOCKET;
 	p->state = ts_closed;
 	socket_context_destroy();
 }
 //
 void wangluo_kh_poll_wait(struct wangluo_kh* p)
 {
+	int pscl,kh_talk=0;
+	char scl[100];
+	char shuju[100]="    数据kh_talk：  ";
+	p->sclient = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+	if(p->sclient == PP_INVALID_SOCKET)  
+	{  
+		printf("客户invalid socket!");  
+		return ;  
+	} 
+	struct sockaddr_in serAddr; 
+	memset(&serAddr,0,sizeof(struct sockaddr_in));		
+	serAddr.sin_family = AF_INET;  
+	serAddr.sin_port = htons(57000);
+	inet_pton(AF_INET, "127.0.0.1", &serAddr.sin_addr);
+	int err_x;
+	err_x=connect(p->sclient, (struct sockaddr *)&serAddr, sizeof(serAddr));
+	if(-1==err_x) 
+	{  //连接失败  
+		int err = pp_errno();
+		printf("客户connect error %s",errnomber(err));  
+		socket_context_closed(p->sclient);  
+		return ;  
+	}
+
 	while( ts_motion == p->state )
 	{
-		p->sclient = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
-		if(p->sclient == PP_INVALID_SOCKET)  
-		{  
-			printf("invalid socket!");  
-			return ;  
-		} 
-		struct sockaddr_in serAddr; 
-		memset(&serAddr,0,sizeof(struct sockaddr_in));		
-		serAddr.sin_family = AF_INET;  
-		serAddr.sin_port = htons(57000);
-		inet_pton(AF_INET, "127.0.0.1", &serAddr.sin_addr);
-		int err_x;
-		err_x=connect(p->sclient, (struct sockaddr *)&serAddr, sizeof(serAddr));
-		if(-1==err_x) 
-		{  //连接失败  
-			int err = pp_errno();
-			printf("connect error %s",errnomber(err));  
-			socket_context_closed(p->sclient);  
-			return ;  
-		}  
-		char data[200]="0";
-		scanf(" %[^\n]",data);
+		char data[200]="客户socket sclient=";
+		pscl=p->sclient;
+		sprintf(scl,"%d",pscl);
+		strcat(data,scl);
+		strcat(data,shuju);
+		sprintf(scl,"%d",kh_talk);
+		strcat(data,scl);
+		//scanf(" %[^\n]",data);
 		send(p->sclient, data, strlen(data), 0); 
 		char recData[255];  
 		int ret = recv(p->sclient, recData, 255, 0);  
@@ -51,8 +63,10 @@ void wangluo_kh_poll_wait(struct wangluo_kh* p)
 			recData[ret] = 0x00;  
 			printf(recData);  
 		}   
-		socket_context_closed(p->sclient);
+		Sleep(1500);
+		kh_talk++;
 	}
+		socket_context_closed(p->sclient);
 }
 //
 void wangluo_kh_start(struct wangluo_kh* p)
@@ -68,7 +82,10 @@ void wangluo_kh_interrupt(struct wangluo_kh* p)
 }
 void wangluo_kh_shutdown(struct wangluo_kh* p)
 {
+	shutdown(p->sclient,2);
+	socket_context_closed(p->sclient);
 	p->state = ts_finish;
+
 }
 void wangluo_kh_join(struct wangluo_kh* p)
 {

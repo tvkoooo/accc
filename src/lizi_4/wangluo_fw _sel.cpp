@@ -3,56 +3,136 @@
 #include "mm_thread_state_t.h"
 #include "socket_context_lizi4.h"
 #include "wangluo_fw_sel.h"
+#include <set>
 
-
-void *wangluo_fw_sel_pro(void *p)
+static void* __static_uuu_poll_wait_thread(void* arg)
 {
-	struct wangluo_fw_sel *ps;
-	ps=(struct wangluo_fw_sel *)p;
+	struct wangluo_fw_sel* p = (struct wangluo_fw_sel*)(arg);
+	wangluo_fw_sel_poll_wait(p);
+	return NULL;
+}
+
+
+void wangluo_fw_sel_shujuchuandi(struct wangluo_fw_sel *p,socket_type sClient)
+{
+	pthread_mutex_lock(&p->mute_sClient);
+	p->fw_sel_map1[sClient]=sClient;
+	pthread_mutex_unlock(&p->mute_sClient);
+	printf("\n 服务器shujuchuandi sClient:\t%d\n",sClient);
+}
+
+void wangluo_fw_sel_init(struct wangluo_fw_sel* p)
+{
+	p->map_timeout.tv_sec=1;
+	p->map_timeout.tv_usec=0;
+	pthread_mutex_init(&p->mute_sClient,NULL);
+	p->state = ts_closed;
+	//
+	p->fw_sel_map1.clear();
+}
+void wangluo_fw_sel_destroy(struct wangluo_fw_sel* p)
+{
+	pthread_mutex_destroy(&p->mute_sClient);
+	p->state = ts_closed;
+	p->fw_sel_map1.clear();
+}
+
+void wangluo_fw_sel_poll_wait(struct wangluo_fw_sel* p)
+{
 	int sel_fh=88;
 	int ret;
-	int max_nfds=0;
+	int now_nfds,max_nfds=0;
 	char revData[255];
-
-	ps->map_timeout.tv_sec=1;
-	ps->map_timeout.tv_usec=0;
-
+	std::map<socket_type,int>::iterator it;
 	fd_set fds;
-	FD_ZERO(&fds);
-	while (1)
-	{		
-		max_nfds=ps->sClient;
-		FD_SET(ps->sClient,&fds);
-		sel_fh=select(max_nfds+1,&fds,0,0,&ps->map_timeout);
+	while( ts_motion == p->state )
+	{
 
-		if (0>sel_fh)
+		FD_ZERO(&fds);
+		if (p->fw_sel_map1.empty())
 		{
-			//socket_context_closed(ps->slisten);
-			break;
-		}
-		else if(0==sel_fh)
-		{
-			continue;
+			socket_context_sleep(500);
 		}
 		else
 		{
-			if (FD_ISSET(ps->sClient,&fds))
+			pthread_mutex_lock(&p->mute_sClient);
+			it =p->fw_sel_map1.begin();
+			max_nfds=it->first;
+			while(it != p->fw_sel_map1.end())
 			{
-				ret = recv(ps->sClient,revData,255,0);
-				if(ret > 0)
+				FD_SET(it->first,&fds);
+				it ++; 
+			}
+			pthread_mutex_unlock(&p->mute_sClient);
+			sel_fh=select(max_nfds+1,&fds,0,0,&p->map_timeout);
+
+			if (0>sel_fh)
+			{
+				break;
+			}
+			else if(0==sel_fh)
+			{
+				continue;
+			}
+			else
+			{
+				std::set<socket_type> lin_set1;
+
+				pthread_mutex_lock(&p->mute_sClient);
+				it =p->fw_sel_map1.begin();
+				while(it != p->fw_sel_map1.end())
 				{
-					revData[ret] = 0x00;
-					printf("客户端消息\t:");
-					printf(revData);
+					if (FD_ISSET(it->first,&fds))
+					{
+						lin_set1.insert(it->first);
+					}
+					it++;
 				}
-				const char * sendData = "\n服务器：你好，TCP客户端！\n";
-				send(ps->sClient,sendData,strlen(sendData),0);
+				pthread_mutex_unlock(&p->mute_sClient);
+
+
+				std::set<socket_type>::iterator set_find;
+				set_find=lin_set1.begin();
+				while(set_find != lin_set1.end())
+				{
+					now_nfds=*set_find;
+					ret = recv(now_nfds,revData,255,0);
+					if(ret > 0)
+					{
+						revData[ret] = 0x00;
+						printf("服务器收到信息：\t:");
+						printf(revData);
+						printf("\n");
+					}
+					const char * sendData = "\n服务器：你好，TCP客户端！\n";
+					send(now_nfds,sendData,strlen(sendData),0);
+					set_find++;
+				}
 			}
 		}
-
-		//socket_context_closed(ps->sClient);
 	}
-	return NULL;
 }
+
+void wangluo_fw_sel_start(struct wangluo_fw_sel* p)
+{
+	p->state = ts_finish == p->state ? ts_closed : ts_motion;
+	pthread_create(&p->poll_thread, NULL, &__static_uuu_poll_wait_thread, p);
+}
+
+
+void wangluo_fw_sel_interrupt(struct wangluo_fw_sel* p)
+{
+	p->state = ts_closed;
+}
+void wangluo_fw_sel_shutdown(struct wangluo_fw_sel* p)
+{
+	p->state = ts_finish;
+}
+void wangluo_fw_sel_join(struct wangluo_fw_sel* p)
+{
+	pthread_join(p->poll_thread, NULL);
+}
+
+
 
 

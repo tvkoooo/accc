@@ -20,20 +20,29 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\lizi_4\application.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\builder.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\consumer.cpp" />
     <ClCompile Include="..\..\src\lizi_4\os\windows\errno_lizi4.cpp" />
     <ClCompile Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\producer.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\wangluo.cpp" />
     <ClCompile Include="..\..\src\lizi_4\wangluo_fw _sel.cpp" />
     <ClCompile Include="..\..\src\lizi_4\wangluo_fw.cpp" />
     <ClCompile Include="..\..\src\lizi_4\wangluo_fw_accept.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\wangluo_kehu.cpp" />
     <ClCompile Include="..\..\src\lizi_4\wangluo_kh.cpp" />
     <ClCompile Include="windows\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_4\application.h" />
+    <ClInclude Include="..\..\src\lizi_4\builder.h" />
+    <ClInclude Include="..\..\src\lizi_4\consumer.h" />
     <ClInclude Include="..\..\src\lizi_4\mm_thread_state_t.h" />
     <ClInclude Include="..\..\src\lizi_4\os\windows\errno_lizi4.h" />
     <ClInclude Include="..\..\src\lizi_4\os\windows\platform_config.h" />
     <ClInclude Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.h" />
+    <ClInclude Include="..\..\src\lizi_4\producer.h" />
+    <ClInclude Include="..\..\src\lizi_4\wangluo.h" />
     <ClInclude Include="..\..\src\lizi_4\wangluo_fw.h" />
     <ClInclude Include="..\..\src\lizi_4\wangluo_fw_accept.h" />
     <ClInclude Include="..\..\src\lizi_4\wangluo_fw_sel.h" />
@@ -58,7 +67,7 @@
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
@@ -103,7 +112,7 @@
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
-    <TargetExt>.dll</TargetExt>
+    <TargetExt>.exe</TargetExt>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
