@@ -36,9 +36,6 @@
     <ClCompile Include="..\..\src\lizi_4\wangluo_kh.cpp">
       <Filter>src\mm_lizi_4</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lizi_4\wangluo_fw _sel.cpp">
-      <Filter>src\mm_lizi_4</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\lizi_4\wangluo_fw_accept.cpp">
       <Filter>src\mm_lizi_4</Filter>
     </ClCompile>
@@ -51,10 +48,10 @@
     <ClCompile Include="..\..\src\lizi_4\producer.cpp">
       <Filter>src\mm_lizi_4</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lizi_4\wangluo.cpp">
+    <ClCompile Include="..\..\src\lizi_4\wangluo_fw_sel.cpp">
       <Filter>src\mm_lizi_4</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\lizi_4\wangluo_kehu.cpp">
+    <ClCompile Include="..\..\src\lizi_4\savestore.cpp">
       <Filter>src\mm_lizi_4</Filter>
     </ClCompile>
   </ItemGroup>
@@ -95,8 +92,11 @@
     <ClInclude Include="..\..\src\lizi_4\producer.h">
       <Filter>src\mm_lizi_4</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\lizi_4\wangluo.h">
+    <ClInclude Include="..\..\src\lizi_4\savestore.h">
       <Filter>src\mm_lizi_4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\os\windows\platform_config_type_int.h">
+      <Filter>src\mm_lizi_4\os\windows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

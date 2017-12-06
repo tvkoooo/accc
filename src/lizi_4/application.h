@@ -3,15 +3,18 @@
 #include "wangluo_fw.h"
 #include "wangluo_kh.h"
 //#include "builder.h"
+#include "savestore.h"
 
 struct application
 {
-	struct wangluo_fw fw1;
-	int flag_fw1;
-	struct wangluo_kh kh1;
-	int flag_kh1;
-	int	argc;
-	char **argv;
+	//struct wangluo_fw fw1;
+	//int flag_fw1;
+	//struct wangluo_kh kh1;
+	//int flag_kh1;
+	//int	argc;
+	//char **argv;
+
+	savestore s1;
 };
 
 extern void application_init(struct application* p);
