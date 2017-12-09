@@ -8,6 +8,7 @@
 #include "fun_log_dll.h"
 #include "mm_uuu.h"
 #include "pthread_huidiao.h"
+#include "ccc.h"
 
 static void* __static_rtrr(void* arg)
 {
@@ -16,6 +17,10 @@ static void* __static_rtrr(void* arg)
 
 void application_init(struct application* p)
 {
+	int b = mm::AAAA::bbbb;
+
+	mm::AAAA a;
+	a.func();
 	//lizhi1_huidiao_init(&p->huidiaotest_1);
 	mm_uuu_init(&p->m1);
 }

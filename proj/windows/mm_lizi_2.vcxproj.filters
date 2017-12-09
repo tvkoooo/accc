@@ -21,9 +21,15 @@
     <ClInclude Include="..\..\src\lizi_2\c_start.h">
       <Filter>src\lizi_2</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\lizi_2\ccc.h">
+      <Filter>src\lizi_2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\lizi_2\fun_log_dll.c">
+      <Filter>src\lizi_2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_2\ccc.cpp">
       <Filter>src\lizi_2</Filter>
     </ClCompile>
   </ItemGroup>
