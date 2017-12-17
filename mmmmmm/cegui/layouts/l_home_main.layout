@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout version="4" >
+    <Window type="DefaultWindow" name="l_home_main" >
+        <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Property name="MaxSize" value="{{1,0},{1,0}}" />
+        <Window type="TaharezLook/StaticImage" name="StaticImage" >
+            <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+            <Property name="Text" value="=" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="ZOrderingEnabled" value="false" />
+        </Window>
+        <Window type="DefaultWindow" name="l_trolley" >
+            <Property name="Area" value="{{0,0},{0,0},{1,0},{0.0625,0}}" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Window type="TaharezLook/Button" name="Button_trolley" >
+                <Property name="Area" value="{{0.25,0},{0,0},{1,0},{1,0}}" />
+                <Property name="Text" value="=====vvv=====" />
+            </Window>
+            <Window type="TaharezLook/Button" name="Button_cancel" >
+                <Property name="Area" value="{{0,0},{0,-1},{0.25,0},{1,-1}}" />
+                <Property name="Text" value="cancel" />
+                <Property name="PushedImage" value="TaharezLook/ComboboxListBottom" />
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>
