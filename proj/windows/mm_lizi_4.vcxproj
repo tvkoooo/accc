@@ -22,9 +22,13 @@
     <ClCompile Include="..\..\src\lizi_4\application.cpp" />
     <ClCompile Include="..\..\src\lizi_4\builder.cpp" />
     <ClCompile Include="..\..\src\lizi_4\consumer.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\mysql_co.cpp" />
     <ClCompile Include="..\..\src\lizi_4\os\windows\errno_lizi4.cpp" />
     <ClCompile Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.cpp" />
     <ClCompile Include="..\..\src\lizi_4\producer.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\redis_connect.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\robot_state_contrl.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\robot_state_contrl_map.cpp" />
     <ClCompile Include="..\..\src\lizi_4\savestore.cpp" />
     <ClCompile Include="..\..\src\lizi_4\wangluo_fw.cpp" />
     <ClCompile Include="..\..\src\lizi_4\wangluo_fw_accept.cpp" />
@@ -37,11 +41,15 @@
     <ClInclude Include="..\..\src\lizi_4\builder.h" />
     <ClInclude Include="..\..\src\lizi_4\consumer.h" />
     <ClInclude Include="..\..\src\lizi_4\mm_thread_state_t.h" />
+    <ClInclude Include="..\..\src\lizi_4\mysql_co.h" />
     <ClInclude Include="..\..\src\lizi_4\os\windows\errno_lizi4.h" />
     <ClInclude Include="..\..\src\lizi_4\os\windows\platform_config.h" />
     <ClInclude Include="..\..\src\lizi_4\os\windows\platform_config_type_int.h" />
     <ClInclude Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.h" />
     <ClInclude Include="..\..\src\lizi_4\producer.h" />
+    <ClInclude Include="..\..\src\lizi_4\redis_connect.h" />
+    <ClInclude Include="..\..\src\lizi_4\robot_state_contrl.h" />
+    <ClInclude Include="..\..\src\lizi_4\robot_state_contrl_map.h" />
     <ClInclude Include="..\..\src\lizi_4\savestore.h" />
     <ClInclude Include="..\..\src\lizi_4\wangluo_fw.h" />
     <ClInclude Include="..\..\src\lizi_4\wangluo_fw_accept.h" />
@@ -136,7 +144,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <CompileAs>Default</CompileAs>
-      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_2;../../src/lizi_4;../../src/lizi_4/os/windows;./windows;$(LIB_HOME)/src/pthread</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VLD_HOME)/include;$(MYSQL_HOME)/include;../../src;../../src/lizi_2;../../src/lizi_4;../../src/lizi_4/os/windows;./windows;$(LIB_HOME)/src/pthread;$(LIB_HOME)/src/hiredis</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
@@ -148,11 +156,12 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>ws2_32.lib;vld.lib;pthread_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;vld.lib;libmysql.lib;mysqlclient.lib;hiredis_d.lib;pthread_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(MYSQL_HOME)/lib;$(LIB_HOME)/build/pthread/proj_windows/bin/Debug;$(LIB_HOME)/build/hiredis/proj_windows/bin/Debug</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>xcopy $(LIB_HOME)\\build\\pthread\\proj_windows\\bin\\Debug\pthread_d.dll                          bin\\Debug\* /s /e /h /d /y
+xcopy "$(MYSQL_HOME)\\lib\libmysql.dll"                          bin\\Debug\* /s /e /h /d /y
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -196,7 +205,7 @@
       <DebugInformationFormat>
       </DebugInformationFormat>
       <CompileAs>Default</CompileAs>
-      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_2;../../src/lizi_4;../../src/lizi_4/os/windows;./windows;$(LIB_HOME)/src/pthread</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VLD_HOME)/include;$(MYSQL_HOME)/include;../../src;../../src/lizi_2;../../src/lizi_4;../../src/lizi_4/os/windows;./windows;$(LIB_HOME)/src/pthread;$(LIB_HOME)/src/hiredis</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
@@ -211,12 +220,13 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>ws2_32.lib;vld.lib;pthread.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;vld.lib;libmysql.lib;mysqlclient.lib;hiredis.lib;pthread.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(MYSQL_HOME)/lib;$(LIB_HOME)/build/pthread/proj_windows/bin/Release;$(LIB_HOME)/build/hiredis/proj_windows/bin/Release</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy $(LIB_HOME)\\build\\pthread\\proj_windows\\bin\\Release\pthread.dll                          bin\\Release\* /s /e /h /d /y</Command>
+      <Command>xcopy $(LIB_HOME)\\build\\pthread\\proj_windows\\bin\\Release\pthread.dll                          bin\\Release\* /s /e /h /d /y
+xcopy "$(MYSQL_HOME)\\lib\libmysql.dll"                          bin\\Debug\* /s /e /h /d /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

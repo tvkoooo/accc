@@ -7,6 +7,7 @@
 //#include <time.h>
 //#include <vld.h>
 //#include <string.h>
+
 #include "pthread.h"
 
 typedef void (*pthread_huidiao_type) (void);

@@ -47,15 +47,38 @@ void wangluo_kh_poll_wait(struct wangluo_kh* p)
 
 	while( ts_motion == p->state )
 	{
-		char data[200]="客户socket sclient=";
+		//char data[250]="客户socket  sclient==";
 		pscl=p->sclient;
 		sprintf(scl,"%d",pscl);
-		strcat(data,scl);
-		strcat(data,shuju);
-		sprintf(scl,"%d",kh_talk);
-		strcat(data,scl);
+		//strcat(data,scl);
+		//strcat(data,shuju);
+		//sprintf(scl,"%d",kh_talk);
+		//strcat(data,scl);
+
+		char body[100]="wo cao ni mmp de";
+		int bodylengh=strlen(body);
+
+		UINT16 mes_size=56+bodylengh;
+		UINT16 head_size=48;
+		UINT32 mid=10000630;
+		UINT32 pid=30808;
+		UINT64 sid=40005000600088;
+		UINT64 uid=9000193254;
+
+		char data[250];
+		memset(data,0,250);
+		memcpy(data,&mes_size,4);
+		memcpy(data+4,&head_size,4);
+		memcpy(data+8,&mid,8);
+		memcpy(data+16,&pid,8);
+		memcpy(data+24,&sid,16);
+		memcpy(data+40,&uid,16);
+		memcpy(data+56,&body,bodylengh);
+
 		//scanf(" %[^\n]",data);
-		send(p->sclient, data, strlen(data), 0); 
+		//send(p->sclient, data,strlen(data), 0);
+		send(p->sclient, data,mes_size,0);
+
 		char recData[255];  
 		int ret = recv(p->sclient, recData, 255, 0);  
 		if(ret>0)

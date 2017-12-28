@@ -1,11 +1,6 @@
 有这些大概
 ls -trl   查看当前目录的文件夹和文件
 tail 检测一个文件的附加写入
-```
-tail -f 文件名 | grep  关键字（比如： id号，包体关键字）
-tail -f 2017-12-22.log | grep -E 'test_io_robot_comein_Success|robot_talk_model'        或者
-tail -f 2017-12-22.log | grep 'test_io_robot_comein_Success' | grep 'robot_talk_model'  且
-```
 top  查看进程
 grep 这个一般复合用，用于筛选字符串
 ```

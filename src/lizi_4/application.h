@@ -1,9 +1,14 @@
 #ifndef _INC_application
 #define _INC_application
+
 #include "wangluo_fw.h"
 #include "wangluo_kh.h"
 //#include "builder.h"
-#include "savestore.h"
+//#include "savestore.h"
+
+#include "mysql_co.h"
+#include "redis_connect.h"
+#include "robot_state_contrl_map.h"
 
 struct application
 {
@@ -14,8 +19,12 @@ struct application
 	//int	argc;
 	//char **argv;
 
-	savestore s1;
+	struct robot_contrl_map ma1;
+
+	//savestore s1;
 };
+
+
 
 extern void application_init(struct application* p);
 extern void application_destroy(struct application* p);

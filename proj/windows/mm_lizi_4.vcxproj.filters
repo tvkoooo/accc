@@ -54,6 +54,18 @@
     <ClCompile Include="..\..\src\lizi_4\savestore.cpp">
       <Filter>src\mm_lizi_4</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_4\mysql_co.cpp">
+      <Filter>src\mm_lizi_4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_4\redis_connect.cpp">
+      <Filter>src\mm_lizi_4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_4\robot_state_contrl.cpp">
+      <Filter>src\mm_lizi_4</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_4\robot_state_contrl_map.cpp">
+      <Filter>src\mm_lizi_4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_4\application.h">
@@ -97,6 +109,18 @@
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_4\os\windows\platform_config_type_int.h">
       <Filter>src\mm_lizi_4\os\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\mysql_co.h">
+      <Filter>src\mm_lizi_4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\redis_connect.h">
+      <Filter>src\mm_lizi_4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\robot_state_contrl.h">
+      <Filter>src\mm_lizi_4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\robot_state_contrl_map.h">
+      <Filter>src\mm_lizi_4</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

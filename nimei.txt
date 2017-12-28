@@ -1,10 +1,4 @@
-#include<stdio.h>
-int main()
-{
-int a;
-int b;
-printf("nimei!");
-
-uyguyug
-
-}
+×÷Òµ²¿Âä
+tvkoooo
+abuabu2017
+huolong-2010@163.com

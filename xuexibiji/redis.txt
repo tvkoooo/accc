@@ -1,0 +1,29 @@
+查看redis进程
+ps -ef | grep redis
+
+登陆redis命令
+redis-cli  该命令会连接本地的 redis 服务
+redis-cli -h host -p port -a password 在远程服务上执行命令
+例：
+redis-cli -h 101.200.169.28 -p 50500
+
+redis 127.0.0.1:6379> PING      该命令用于检测 redis 服务是否启动
+PONG
+
+ netstat -anp | grep 50500  查看网络连接
+
+ 
+ 
+ 内测服
+  redis-cli -h 112.126.70.236 -p 6379 -a xcTeRed#@0526
+  hget sys_parameters 156
+hset sys_parameters 156 "{\"id\":156,\"parm2\":0,\"parm3\":\"\",\"parm1\":5}"
+ 
+ 
+ 
+
+redis 帮助文档
+http://doc.redisfans.com/index.html
+
+构思数据结构，用基础数据结构类比构建
+查询基础操作，可以类比基础数据结构的操作映射

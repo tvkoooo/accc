@@ -5,13 +5,43 @@
 #include "pthread.h"
 #include "platform_config.h"
 
+#define xunhuancishu_default 3
 
+static void nininin(struct robot_contrl* obj)
+{
 
+	if (xunhuancishu_default <= obj->xunhuanceshu)
+	{
+		robot_contrl_shutdown(obj);
+		printf("robot_contrl_shutdown fff \n");
+	}
+	else
+	{
+		uint32_t uAddCnt1 = obj->uaddtotalnum / obj->chushijiqiren;
+		uint32_t uAddCnt2 = obj->uaddtotalnum % obj->suijijiqiqren;
+		//log(Info, "SessionConn::StartStreamAddUserThread: cmd=RSC_LIVE_START, sid=%u, uAddCnt=%u", sid, uAddTotalNum);
+		if(obj->chushijiqiren == obj->xunhuanceshu)
+		{
+			uAddCnt1 += uAddCnt2;
+		}
+		//RobotMgr::instance().addChannelGroupRobots(sid, uAddCnt, 5);
+		//RobotMgr* mgr = (RobotMgr*)(obj->u);
+		//mgr->addChannelGroupRobots(sid, uAddCnt, 5);
+
+		printf("yosudofusd fff \n");
+	}
+	obj->xunhuanceshu++;
+}
 
 
 void application_init(struct application* p)
 {
-	savestore_init(&p->s1);
+
+	robot_contrl_map_init(&p->ma1);
+
+	robot_contrl_map_fuzhi(&p->ma1,&nininin,NULL);
+
+	////savestore_init(&p->s1);
 
 	//wangluo_fw_init(&p->fw1);
 	//p->flag_fw1=0;
@@ -26,7 +56,9 @@ void application_init(struct application* p)
 void application_destroy(struct application* p)
 {
 
-	savestore_destroy(&p->s1);
+	robot_contrl_map_destroy(&p->ma1);
+	////savestore_destroy(&p->s1);
+
 	//wangluo_fw_destroy(&p->fw1);
 	//p->flag_fw1=0;
 	////builder_destroy(&p->b1);
@@ -67,7 +99,13 @@ void application_fuzhi(struct application* p,int argc,char **argv)
 
 void application_start(struct application* p)
 {	
-	savestore_start(&p->s1);
+	robot_contrl_map_kaibo(&p->ma1,101);
+	robot_contrl_map_kaibo(&p->ma1,101);
+	robot_contrl_map_start(&p->ma1);
+	//fun_redis();
+	//fun_mysql_test1();
+	////savestore_start(&p->s1);
+
 	//if (1==p->flag_fw1)
 	//{
 	//	wangluo_fw_start(&p->fw1);
@@ -83,7 +121,10 @@ void application_start(struct application* p)
 
 void application_interrupt(struct application* p)
 {
-	savestore_interrupt(&p->s1);
+	robot_contrl_map_interrupt(&p->ma1);
+
+	////savestore_interrupt(&p->s1);
+
 	//if (1==p->flag_fw1)
 	//{
 	//wangluo_fw_interrupt(&p->fw1);
@@ -96,7 +137,10 @@ void application_interrupt(struct application* p)
 }
 void application_shutdown(struct application* p)
 {
-	savestore_shutdown(&p->s1);
+	robot_contrl_map_shutdown(&p->ma1);
+
+	////savestore_shutdown(&p->s1);
+
 	//printf("Ctrl+c ½øÐÐÖÐ¶Ï\n");
 	//if (1==p->flag_fw1)
 	//{
@@ -110,7 +154,10 @@ void application_shutdown(struct application* p)
 }
 void application_join(struct application* p)
 {
-	savestore_join(&p->s1);
+	robot_contrl_map_join(&p->ma1);
+
+	////savestore_join(&p->s1);
+
 	//if (1==p->flag_fw1)
 	//{
 	//wangluo_fw_join(&p->fw1);

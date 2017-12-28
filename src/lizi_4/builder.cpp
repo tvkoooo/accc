@@ -15,6 +15,8 @@ void __static_builder_producer_handle( void* obj, int mes[5]);
 
 void builder_init(struct builder* p)
 {
+	//std::map<int,int,int> luobo;
+
 		producer_init(&p->pro_1);
 		consumer_init(&p->con_1);
 		//p->state = ts_closed;

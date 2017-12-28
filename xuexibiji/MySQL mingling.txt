@@ -1,0 +1,202 @@
+修改字段名：       alter table 表名 CHANGE 旧字段 新字段 类型;
+添加表字段:        alter table t_easytab add last_2date date not Null;
+清空表：           truncate table 表名（完全删除无记录）；delete from 表名（一条一条记录删除）；
+删除表：DROP TABLE t_easytab;   删除过程：drop procedure if exists p_chat_easydb_t_easytab;
+增加id首号：AUTO_INCREMENT=52010000
+ 
+
+Mysql关键字
+*代表所有   
+LIKE %代表0个或多个，_代表一个（文件名/行名/列名/字段所有   例如有foo/fox/ftt/foz  LIKE ‘fo%’ 代表foo/fox/foz）
+AUTO_INCREMENT：自动加一
+PRIMARY KEY  主键
+CREATE：创建
+DROP：删除
+DATABASE：数据库  
+TABLE：表 （表的名字/ 表.a）
+NULL：空（IS NULL /IS NOT NULL/<=>）
+FROM：来自（通常用于 命令来自哪个表）
+AS：别名作为（列的别名，通常是新建一个列来存放处理已知列的运算）
+WHERE：那里是（通常用于 哪个表在那·····些行）
+SELECT：选择  （通常是选择哪些列）
+AND：与 OR：或  （通常用于条件）
+IN：在（通常是列当中某些枚举）  BETWEEN：在之间（通常是列当中两者直接）
+DISTINCT：不同的（通常是列当中过滤掉相同的元素，只显示一个）
+INSERT INTO：向数据库中插入新数据   INTO：复制入（区别一个是已有的，一个是没有的）
+SHOW：显示
+ORDER BY:排序  （通过什么来排序）
+GROUP BY:分组   (通过什么来分组)
+REGEXP：匹配（通过模糊来匹配已有数据）
+ALTER：修改
+INDEX：索引
+UPDATE：更新
+CHECK：检查  （例：CHECK (P_Id>0)；如果是多个检查CONSTRAINT chk_Person CHECK (P_Id>0 AND City='Sandnes')）
+DEFAULT：默认值  （例：字符串DEFAULT 'Sandnes'  ；例日期：DEFAULT GETDATE()）
+
+创建 数据库
+CREATE DATABASE `db_lj1`
+
+删除 数据库
+DROP DATABASE `db_lj1`;
+
+选择（类似dos的cd） 数据库
+USE `db_lj1`;
+
+
+创建表
+CREATE TABLE w3cschool_tbl(
+	`w3cschool_id` INT NOT NULL AUTO_INCREMENT,
+	`w3cschool_title` VARCHAR(100) NOT NULL,
+	`w3cschool_author` VARCHAR(40) NOT NULL,
+	`submission_date` DATE,
+	PRIMARY KEY ( w3cschool_id )
+);
+
+`w3cschool_author` VARCHAR(40) NOT NULL,
+名字               类型           属性(缺省值,主键,是否自增)
+
+插入表的行
+INSERT INTO `db_lj1`.`w3cschool_tbl` (`w3cschool_title`, `w3cschool_author`) VALUES ('aab', '231');
+
+查询表行
+SELECT * FROM db_lj1.w3cschool_tbl WHERE w3cschool_id = 1;
+
+
+索引和主键
+索引：是对数据库表中一列或多列的值进行排序的一种结构，使用索引可快速访问数据库表中的特定信息。
+主键：指的是一个列或多列的组合，其值能唯一地标识表中的每一行，通过它可强制表的实体完整性。
+	主键主要是用于其他表的外键关联，以及本记录的修改与删除。
+
+struct w3cschool_tbl
+{
+	`w3cschool_id` INT NOT NULL AUTO_INCREMENT,
+	`w3cschool_title` VARCHAR(100) NOT NULL,
+	`w3cschool_author` VARCHAR(40) NOT NULL,
+	`submission_date` DATE,
+	PRIMARY KEY ( w3cschool_id )
+}	
+map<w3cschool_id,w3cschool_tbl*> a;
+
+w3cschool_id 主键
+w3cschool_title 不是索引
+数据总量N行(N行记录)
+查询速度O(log (k1,N)),k1为常量 SELECT * FROM `db_lj1`.`w3cschool_tbl` WHERE `w3cschool_id` = 1;
+查询速度O(N)                 SELECT * FROM `db_lj1`.`w3cschool_tbl` WHERE `w3cschool_title` = 'aab';
+
+如果将w3cschool_author作索引
+map<w3cschool_author,w3cschool_tbl*> b;
+查询速度O(log (k2,N)),k2为常量 SELECT * FROM `db_lj1`.`w3cschool_tbl` WHERE `w3cschool_title` = 'aab';
+
+每作一个索引，会增加一张索引表(以本索引为key)的开销，以获得快速访问数据库表(以本索引为key)中的特定信息的能力。
+
+删除数据表
+DROP TABLE table_name ;
+
+插入数据
+INSERT INTO table_name ( field1, field2,...fieldN )
+                       VALUES
+                       ( value1, value2,...valueN );
+例子：
+INSERT INTO `w3cschool`.`w3cschool_tbl` (`w3cschool_title`, `w3cschool_author`, `submission_date`) VALUES ('gousi', 'maomao', '1984-6-3');
+插入            `库名`   .`表名`         (对应输入的结构)   VALUES (对应输入的值)   以;结束
+在以上实例中，我们并没有提供 w3cschool_id 的数据，因为该字段我们在创建表的时候已经设置它为 AUTO_INCREMENT(自动增加) 属性。
+所以，该字段会自动递增而不需要我们去设置。实例中可以用 NOW()， 是一个 MySQL 函数，该函数返回日期和时间。
+
+选择数据的命令
+SELECT w3cschool_title from w3cschool_tbl WHERE w3cschool_id=6000202;
+SELECT * from w3cschool_tbl;
+*代表列，可以查询字段列，*是所有列；
+WHERE w3cschool_id=6000202，WHERE 后面是代表条件行，找到w3cschool_id=6000202条件成立的行，忽略代表所有行。
+SELECT * from w3cschool_tbl WHERE w3cschool_author LIKE '%jay';  =用LIKE '%jay'  %相当于*，_jay所有数据
+
+通过 PHP 函数 mysql_fetch_array() 来使用或输出所有查询的数据
+while($row = mysql_fetch_array($retval, MYSQL_ASSOC))
+{
+    echo "Tutorial ID :{$row['w3cschool_id']}  <br> ".   ·············
+
+UPDATE table_name SET field1=new-value1, field2=new-value2
+
+删除数据表记录
+如果没有指定 WHERE 子句，MySQL表中的所有记录将被删除。
+你可以在 WHERE 子句中指定任何条件
+您可以在单个表中一次性删除记录。
+
+排序：
+ SELECT * from w3cschool_tbl ORDER BY w3cschool_author ASC
+ BY w3cschool_author BY取字段     ASC代表升序，DESC代表降序
+
+分组：
+选区域    SELECT * FROM employee_tbl;
+分组      SELECT name, COUNT(*) FROM   employee_tbl GROUP BY name;
+        选择两列   name 和   COUNT(*)  （出来两列）   employee_tbl表名   用name 来分组，COUNT(*)统计表中同一个name个数（类似函数SUM,AVG,COUNT）
+分组      SELECT name, SUM(singin) as singin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;
+        选择两列   name 和   singin_count（里面内容是singin求和）     来自 表employee_tbl
+          BY name WITH ROLLUP;  //通过name 来分组，WITH ROLLUP是函数，取了函数SUM(singin)；WITH ROLLUP有SUM,AVG,COUNT····
+分组      SELECT coalesce(name, '总数'), SUM(singin) as singin_count FROM  employee_tbl GROUP BY name WITH ROLLUP;
+		选择两列 coalesce(name, '总数') 和   singin_count（里面内容是singin求和）     来自 表employee_tbl
+		coalesce(a,b,c);//如果a==null,则选择b；如果b==null,则选择c；如果a!=null,则选择a；如果a b c 都为null ，则返回为null（没意义）。
+		  BY name WITH ROLLUP;  //通过name 来分组，WITH ROLLUP是函数，取了函数SUM(singin)；WITH ROLLUP有SUM,AVG,COUNT····
+		  
+MySQL 连接的使用  INNER JOIN（内连接,或等值连接）：	  
+连接	SELECT a.w3cschool_id, a.w3cschool_author, b.w3cschool_count FROM w3cschool_tbl a INNER JOIN tcount_tbl b ON a.w3cschool_author = b.w3cschool_author;	  
+		 选择表a的w3cschool_id列，表a的w3cschool_author列，表b的w3cschool_count列（出来3列）  来自w3cschool_tbl 表a
+		 INNER JOIN内连接  tcount_tbl 表b    ON 在表a的w3cschool_author列 和 表b的w3cschool_author作内连接（=  来连接）;取共有数据
+		 
+MySQL 连接的使用  INNER LEFT JOIN（左连接）：		  
+		 SELECT a.w3cschool_id, a.w3cschool_author, b.w3cschool_count FROM w3cschool_tbl a LEFT JOIN tcount_tbl b ON a.w3cschool_author = b.w3cschool_author; 
+		  选择表a的w3cschool_id列，表a的w3cschool_author列，表b的w3cschool_count列（出来3列）  来自w3cschool_tbl 表a
+		 INNER JOIN内连接  tcount_tbl 表b    ON 在表a的w3cschool_author列 和 表b的w3cschool_author作左连接（=  来连接）;取左表a（LEFT JOIN左边）所有数据，右边数据是空则 出填入null
+MySQL 连接的使用  INNER RIGHT JOIN（左连接）：
+         使用类似左连接，取右表b（RIGHT JOIN左边）所有数据，左边数据是空则 出填入null。备注左右只是join的左右，不是列位置		  
+		  
+MySQL NULL 值处理。你不能使用 = NULL 或 != NULL 在列中查找 NULL 值 。在MySQL中，NULL值与任何其它值的比较（即使是NULL）永远返回false，即 NULL = NULL 返回false 。	  
+IS NULL: 当列的值是NULL,此运算符返回true。		  
+IS NOT NULL: 当列的值不为NULL, 运算符返回true。		  
+<=>: 比较操作符（不同于=运算符），当比较的的两个值为NULL时返回true。		  
+		  
+MySQL 事务//事务用来管理insert,update,delete语句		  
+		事务是必须满足4个条件（ACID）： Atomicity（原子性）、Consistency（稳定性）、Isolation（隔离性）、Durability（可靠性）  
+		  事务的原子性：一组事务，要么成功；要么撤回。
+		  稳定性 ： 有非法数据（外键约束之类），事务撤回。
+		  隔离性：事务独立运行。一个事务处理后的结果，影响了其他事务，那么其他事务会撤回。事务的100%隔离，需要牺牲速度。
+		  可靠性：软、硬件崩溃后，InnoDB数据表驱动会利用日志文件重构修改。可靠性和高速度不可兼得， innodb_flush_log_at_trx_commit选项 决定什么时候吧事务保存到日志里。
+在MySQL控制台使用事务来操作：		  
+		  1/开始一个事务  start transaction
+		  2/做保存点     savepoint
+		  3/操作
+		  4/可以回滚，可以提交，没有问题，就提交，有问题就回滚。
+		  
+MySQL ALTER命令	//修改数据表名或者修改数据表字段	  
+	
+MySQL 普通索引////：这是最基本的索引，它没有任何限制
+创建	CREATE INDEX indexName ON mytable(username(length)); //如果是CHAR，VARCHAR类型，length可以小于字段实际长度；如果是BLOB和TEXT类型，必须指定 length。
+修改    ALTER mytable ADD INDEX [indexName] ON (username(length)) 
+创建表的时候直接指定   表内容最后添加索引   INDEX [indexName] (username(length))
+删除索引的语法   DROP INDEX [indexName] ON mytable;
+MySQL 唯一索引////它与前面的普通索引类似，不同的就是：索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一。它有以下几种创建方式
+创建	CREATE UNIQUE INDEX indexName ON mytable(username(length)) 
+修改	ALTER mytable ADD UNIQUE [indexName] ON (username(length)) 
+创建表的时候直接指定   UNIQUE [indexName] (username(length))
+
+SELECT ... INTO OUTFILE 语句导出数据
+	SELECT * FROM tutorials_tbl
+	INTO OUTFILE '/tmp/tutorials.txt';
+在UNIX中，该文件被创建后是可读的，权限由MySQL服务器所拥有。这意味着，虽然你就可以读取该文件，但可能无法将其删除
+
+使用 LOAD DATA 导入数据
+	LOAD DATA LOCAL INFILE 'dump.txt' INTO TABLE mytbl;
+当列不一致：在数据文件中的列顺序是 a,b,c，但在插入表的列顺序为b,c,a，则数据导入语法如下：
+	LOAD DATA LOCAL INFILE 'dump.txt'
+	INTO TABLE mytbl (b, c, a);
+
+当前时间
+SELECT NOW(),CURDATE(),CURTIME()
+
+MySQL字符串连接函数 
+	返回结果为连接参数产生的字符串。如有任何一个参数为NULL ，则返回值为 NULL。
+
+
+
+
+	
+		  

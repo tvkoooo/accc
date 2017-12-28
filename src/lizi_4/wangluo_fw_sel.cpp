@@ -42,7 +42,15 @@ void wangluo_fw_sel_poll_wait(struct wangluo_fw_sel* p)
 	int sel_fh=88;
 	int ret;
 	int now_nfds,max_nfds=0;
-	char revData[255];
+	char revData[255],rev_body[100];
+	memset(revData,0,250);
+	memset(rev_body,0,100);
+	UINT16 mes_size=0;
+	UINT16 head_size=0;
+	UINT32 mid=0;
+	UINT32 pid=0;
+	UINT64 sid=0;
+	UINT64 uid=0;
 	std::map<socket_type,int>::iterator it;
 	fd_set fds;
 	while( ts_motion == p->state )
@@ -63,6 +71,7 @@ void wangluo_fw_sel_poll_wait(struct wangluo_fw_sel* p)
 				FD_SET(it->first,&fds);
 				it ++; 
 			}
+
 			pthread_mutex_unlock(&p->mute_sClient);
 			sel_fh=select(max_nfds+1,&fds,0,0,&p->map_timeout);
 
@@ -100,8 +109,17 @@ void wangluo_fw_sel_poll_wait(struct wangluo_fw_sel* p)
 					if(ret > 0)
 					{
 						revData[ret] = 0x00;
-						printf("服务器收到信息：\t:");
-						printf(revData);
+						printf("服务器收到 %d 信息：\t:",ret);
+						memcpy(&mes_size,revData,4);
+						memcpy(&head_size,revData+4,4);
+						memcpy(&mid,revData+8,8);
+						memcpy(&pid,revData+16,8);
+						memcpy(&sid,revData+24,16);
+						memcpy(&uid,revData+40,16);
+						memcpy(rev_body,revData+56,mes_size-head_size);
+
+						printf("mes_size=%d;head_size=%d;mid=%d;pid=%d;sid=%lld;uid=%lld\n",mes_size,head_size,mid,pid,sid,uid);
+						printf("rev_body=%s",rev_body);
 						printf("\n");
 					}
 					const char * sendData = "\n服务器：你好，TCP客户端！\n";

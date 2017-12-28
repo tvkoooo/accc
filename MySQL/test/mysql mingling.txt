@@ -1,0 +1,74 @@
+﻿/*删除表，慎用：truncate table 表名（完全删除无记录）；delete from 表名（一条一条记录删除）；*/
+create table `t_user_log`(/*新建一个表*/
+`user_id` int(11) unsigned NOT NULL AUTO_INCREMENT comment '用户id',
+`user_name` char(20) NOT NULL  comment '用户名',
+`user_aplydate` date NOT NULL  comment '申请日期',
+`user_joindate` date NOT NULL  comment '登陆日期',
+PRIMARY KEY (`user_id`)
+)ENGINE=InnoDB AUTO_INCREMENT=10010000 DEFAULT CHARSET=utf8 comment='用户配置数据表';
+/*增加id首号：AUTO_INCREMENT=52010000     默认参数用：default 0/now()/''  */
+select * from t_user_log;/*查看表*/
+/*已经存在的表不能随便更改和删除*/
+alter table t_user_log CHANGE 旧字段 新字段 类型;/*修改原有字段，包括名字或者类型*/
+alter table t_user_log add 新字段 类型;/*增加字段，包括名字或者类型*/
+alter table `t_user_log` drop column 字段;/*删除列*/
+ALTER TABLE t_user_log ADD UNIQUE KEY(resource_name,resource_type);/*增加约束条件*/
+alter table t_user_log DROP INDEX 约束的字段名;/*删除约束*/
+select * from t_user_log;/*查看表*/
+
+drop procedure if exists test;/*查看过程*/
+
+insert into t_user_log(user_name,user_aplydate,user_joindate) select user_name,logdate,last_2date from t_easytab;/*复制某些列到新表列*/
+select * from t_user_log;/*查看表*/
+
+/*通过创建视图重构一个视图表，可对视图表字段进行操作*/
+drop view v_user_log;/*删除视图，视图可以随时删除，数据不会清除*/
+create view v_user_log as select user_name,user_aplydate,user_joindate,user_joindate-user_aplydate as 次日访问 from t_user_log;/*重建视图*/
+select * from v_user_log;/*查看视图*/
+
+实用函数例子：
+select lastdate,last_2date,lastdate-last_2date as 次日访问 from t_easytab where (lastdate-last_2date='1');/*两列相减*/
+
+set @last_money=-1; /*两行相减*/
+select @last_money,if(@last_money<0,null,money-@last_money) as result,@last_money:=money from t_easytab;
+
+/*多表联合查询：t_easytab.*可以具体到表的列   on t_easytab.user_name=t_user_log.user_name  具体连接的字段*/
+select t_easytab.*,t_user_log.* from t_easytab inner join t_user_log on t_easytab.user_name=t_user_log.user_name;
+
+/*逻辑控制*/
+declare a INT;/*设置变量*/
+select count(t_easytab.user_name) into a FROM easydb.t_easytab where user_name=_user_name;/*变量赋值*/
+if a='0'/*条件判断开始*/
+THEN
+INSERT INTO t_easytab (user_name,user_password,comefrom,money,sun) VALUES (_user_name,_user_password,'beijing','1000','0');/*执行命令*/
+SET _COMBACK='Success';/*执行命令*/
+else
+SET _COMBACK='Fail';/*执行命令*/
+END IF;/*条件判断结束*/
+
+/*密码加密措施*/
+alter table t_easytab add user_password_aesnew char(100) not null;/*插入字段或者建表时候设定，字段是char型*/
+update t_easytab set user_password_new=HEX(AES_ENCRYPT(user_password,'key')) where user_name='dasbi';/*加密后需要HEX转换*/
+update t_easytab set user_password_aesnew=AES_DECRYPT(UNHEX(user_password_new), 'key') where user_name='dasbi';/*解密需要HEX反转换*/
+/*如果是查询，正确是blob，错误是null，实际保存会变为使用者输入密码*/
+
+/*!50003 DROP PROCEDURE IF EXISTS  `p_easydb_zhuce` */;    /*选择性执行，当sql超过50003版本进行执行，否则是注释 */
+
+declare bianlian_a INT; /*在函数体或者过程当中作为定义变量使用，如果是sql 下面可以使用set @_a='5'  set @_a='test'定义变量使用*/
+select count(t_easytab.user_name) into @_a FROM easydb.t_easytab where user_name=_user_name;/*变量@_a赋值*/
+select @_a:='5'/*变量@_a赋值,在语句中，=通常是判断是否相等，因此用:=进行赋值操作*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
