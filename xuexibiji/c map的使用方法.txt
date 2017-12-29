@@ -1,0 +1,22 @@
+	typedef std::map<int,float>  map_type;//类型实例化，泛型要实例化操作
+	map_type map_a_a;// 对象实例化
+
+	map_type::iterator it = map_a_a.find(123);
+	if (it == map_a_a.end())
+	{
+
+		//没有找到
+		map_a_a.insert(map_type::value_type(123,1.25f));
+	}
+	else
+	{
+		//找到
+		//it->first;
+		//it->second;
+
+	}
+	
+	
+char c[20]; 
+string s="1234"; 
+strcpy(c,s.c_str()); 

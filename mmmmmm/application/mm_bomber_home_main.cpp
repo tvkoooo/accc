@@ -1,7 +1,7 @@
 #include "mm_bomber_home_main.h"
 
 
-//#include "core/mm_logger.h"
+#include "core/mm_logger.h"
 //
 //#include "dish/mm_file_context.h"
 //#include "dish/mm_lua_context.h"
@@ -14,6 +14,7 @@
 #include "CEGUI/widgets/DefaultWindow.h"
 
 #include "CEGUI/XMLParserModules/TinyXML/XMLParserModule.h"
+
 //
 //#include "mm_cegui_ogre_renderer/ImageCodec.h"
 //#include "mm_cegui_ogre_renderer/ResourceProvider.h"
@@ -46,9 +47,17 @@ namespace mm
 
 	//////////////////////////////////////////////////////////////////////////
 	bomber_home_main::bomber_home_main()
-		: d_window(NULL)
+		: show_text("Wo men dou shi da SB")
+		, d_window(NULL)
 		, l_ensure(NULL)
 		, l_home_main(NULL)
+		,_frameWindow(NULL)
+		,l_ensure_Label_table(NULL)
+		,l_ensure_Button_exit(NULL)
+		,l_ensure_Button_login(NULL)
+		,l_ensure_Button_apply(NULL)
+		,l_ensure_Editbox_username(NULL)
+		,l_ensure_Editbox_password(NULL)
 	{
 
 	}
@@ -124,11 +133,18 @@ namespace mm
 			_gui_context->setRootWindow(this->d_window);
 
 			//////////////////////////////////////////////////////////////////////////
-			CEGUI::Window* _frameWindow = this->l_ensure->getChild("FrameWindow");
-			CEGUI::Window* l_ensure_Button_ensure = _frameWindow->getChild("Button_ensure");
-			CEGUI::Window* l_ensure_Button_cancel = _frameWindow->getChild("Button_cancel");
-			this->l_ensure_ensure_conn = l_ensure_Button_ensure->subscribeEvent(CEGUI::Window::EventMouseClick,  CEGUI::Event::Subscriber(&bomber_home_main::on_handle_l_ensure_ensure_clicked, this));
-			this->l_ensure_cancel_conn = l_ensure_Button_cancel->subscribeEvent(CEGUI::Window::EventMouseClick,  CEGUI::Event::Subscriber(&bomber_home_main::on_handle_l_ensure_cancel_clicked, this));
+			_frameWindow = this->l_ensure->getChild("FrameWindow");
+			l_ensure_Label_table = _frameWindow->getChild("Label_table");
+			l_ensure_Button_exit = _frameWindow->getChild("Button_exit");
+			l_ensure_Button_login = _frameWindow->getChild("Button_login");
+			l_ensure_Button_apply = _frameWindow->getChild("Button_apply");
+			l_ensure_Editbox_username = _frameWindow->getChild("Editbox_username");
+			l_ensure_Editbox_password = _frameWindow->getChild("Editbox_password");
+
+			l_ensure_Label_table ->setText(this->show_text);
+			this->l_ensure_Button_exit_conn = l_ensure_Button_exit->subscribeEvent(CEGUI::Window::EventMouseClick,  CEGUI::Event::Subscriber(&bomber_home_main::on_handle_l_ensure_exit_clicked, this));
+			this->l_ensure_Button_login_conn = l_ensure_Button_login->subscribeEvent(CEGUI::Window::EventMouseClick,  CEGUI::Event::Subscriber(&bomber_home_main::on_handle_l_ensure_login_clicked, this));
+			this->l_ensure_Button_apply_conn = l_ensure_Button_apply->subscribeEvent(CEGUI::Window::EventMouseClick,  CEGUI::Event::Subscriber(&bomber_home_main::on_handle_l_ensure_apply_clicked, this));
 			//////////////////////////////////////////////////////////////////////////
 			CEGUI::Window* _StaticImage = this->l_home_main->getChild("StaticImage");
 			CEGUI::Window* _l_trolley = this->l_home_main->getChild("l_trolley");
@@ -139,6 +155,29 @@ namespace mm
 
 			this->l_ensure->setVisible(1);
 			this->l_home_main->setVisible(0);
+
+			do 
+			{
+				std::ifstream user_info_map;
+				user_info_map.open("user_info.daSB");
+				if(user_info_map.fail())
+				{
+					break;
+				}				
+				while(!user_info_map.eof())
+				{
+					std::string key;
+					std::string value;
+					user_info_map>>key>>value;
+					if (key!="")
+					{
+						this->user_info.insert(std::map<std::string,std::string>::value_type(key,value));
+					}
+
+				}
+				user_info_map.close();
+			} while (0);
+
 		}
 
 	void bomber_home_main::bomber_home_main_terminate( mm_flake_surface* surface )
@@ -146,8 +185,13 @@ namespace mm
 		struct mm_logger* g_logger = mm_logger_instance();
 		CEGUI::WindowManager& _window_manager = CEGUI::WindowManager::getSingleton();
 
-		this->l_ensure_ensure_conn->disconnect();
-		this->l_ensure_cancel_conn->disconnect();
+		this->l_ensure_Button_exit_conn->disconnect();
+		this->l_ensure_Button_login_conn->disconnect();
+
+		this->l_ensure_Button_apply_conn->disconnect();
+
+		this->l_home_main_trolley_conn->disconnect();
+		this->l_home_main_cancel_conn->disconnect();
 
 		this->d_window->removeChild(this->l_ensure);
 		this->d_window->removeChild(this->l_home_main);
@@ -160,7 +204,7 @@ namespace mm
 		mm_logger_log_I(g_logger,"mm_bomber::%s %d success.",__FUNCTION__,__LINE__);
 	}
 
-	bool bomber_home_main::on_handle_l_ensure_ensure_clicked(const CEGUI::EventArgs& args)
+	bool bomber_home_main::on_handle_l_ensure_exit_clicked(const CEGUI::EventArgs& args)
 	{
 		mm_flake_context* flake_context = this->flake_context_home_main;
 		flake_context->shutdown();
@@ -168,14 +212,65 @@ namespace mm
 		return false;
 	}
 
-	bool bomber_home_main::on_handle_l_ensure_cancel_clicked(const CEGUI::EventArgs& args)
+	bool bomber_home_main::on_handle_l_ensure_login_clicked(const CEGUI::EventArgs& args)
 	{
 		mm_flake_context* flake_context = this->flake_context_home_main;
-		this->l_ensure->setVisible(0);
-		this->l_home_main->setVisible(1);
+
+		std::string user_name=l_ensure_Editbox_username->getText().c_str();
+		std::string pass_word=l_ensure_Editbox_password->getText().c_str();		
+
+		std::map<std::string,std::string>::iterator it;
+		it= this->user_info.find(user_name);
+		if (it == this->user_info.end())
+		{
+			//没有找到
+			l_ensure_Label_table->setText("You haven't applied this yet");
+		}
+		else
+		{
+			//找到
+			if (it->second!=pass_word)
+			{
+				l_ensure_Label_table->setText("The password error");
+			} 
+			else
+			{
+				this->l_ensure->setVisible(0);
+				this->l_home_main->setVisible(1);
+			}
+
+		}
+		return false;
+	}
+
+	bool bomber_home_main::on_handle_l_ensure_apply_clicked(const CEGUI::EventArgs& args)
+	{
+		mm_flake_context* flake_context = this->flake_context_home_main;
+
+
+		std::string user_name=l_ensure_Editbox_username->getText().c_str();
+		std::string pass_word=l_ensure_Editbox_password->getText().c_str();
+		std::map<std::string,std::string>::iterator it= this->user_info.find(user_name);
+		if (it == this->user_info.end())
+		{
+			//没有找到
+			this->user_info.insert(std::map<std::string,std::string>::value_type(user_name,pass_word));
+			l_ensure_Label_table->setText("Welcome SB Club");
+
+			std::ofstream user_info_map;
+			user_info_map.open("user_info.daSB",std::ofstream::app);
+			user_info_map<<user_name<<"\t"<<pass_word<<std::endl;
+			user_info_map.close();
+		}
+		else
+		{
+			//找到
+			l_ensure_Label_table->setText("You are late,NC");
+		}
 
 		return false;
 	}
+
 
 	bool bomber_home_main::on_handle_l_home_main_Button_trolley_clicked(const CEGUI::EventArgs& args)
 	{

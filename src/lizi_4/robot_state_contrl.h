@@ -27,7 +27,7 @@ enum mm_thread_state_t
 
 #define chushijiqiren_default 100
 #define suijijiqiqren_default 20
-#define shuimin_time_default 6000
+#define shuimin_time_default 600
 
 
 

@@ -5,7 +5,7 @@
 #include "pthread.h"
 #include "platform_config.h"
 
-#define xunhuancishu_default 3
+#define xunhuancishu_default 100
 
 static void nininin(struct robot_contrl* obj)
 {
@@ -18,7 +18,7 @@ static void nininin(struct robot_contrl* obj)
 	else
 	{
 		uint32_t uAddCnt1 = obj->uaddtotalnum / obj->chushijiqiren;
-		uint32_t uAddCnt2 = obj->uaddtotalnum % obj->suijijiqiqren;
+		uint32_t uAddCnt2 = obj->uaddtotalnum % obj->chushijiqiren;
 		//log(Info, "SessionConn::StartStreamAddUserThread: cmd=RSC_LIVE_START, sid=%u, uAddCnt=%u", sid, uAddTotalNum);
 		if(obj->chushijiqiren == obj->xunhuanceshu)
 		{
@@ -28,7 +28,7 @@ static void nininin(struct robot_contrl* obj)
 		//RobotMgr* mgr = (RobotMgr*)(obj->u);
 		//mgr->addChannelGroupRobots(sid, uAddCnt, 5);
 
-		printf("yosudofusd fff \n");
+		printf("uAddCnt1:%d  fff \n",uAddCnt1);
 	}
 	obj->xunhuanceshu++;
 }

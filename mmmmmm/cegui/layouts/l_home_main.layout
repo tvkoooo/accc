@@ -2,20 +2,45 @@
 
 <GUILayout version="4" >
     <Window type="DefaultWindow" name="l_home_main" >
-        <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Property name="Area" value="{{0,2},{0,0},{1,0},{1,0}}" />
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
         <Window type="TaharezLook/StaticImage" name="StaticImage" >
-            <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+            <Property name="Area" value="{{0,0},{0,51},{1,0},{1,0}}" />
             <Property name="Text" value="=" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="ZOrderingEnabled" value="false" />
+            <Window type="TaharezLook/HorizontalScrollbar" name="HorizontalScrollbar" >
+                <Property name="Area" value="{{0.0166667,0},{0.962617,0},{0.791667,0},{0.983979,0}}" />
+            </Window>
+            <Window type="TaharezLook/HorizontalScrollbarThumb" name="HorizontalScrollbarThumb" >
+                <Property name="Area" value="{{0.0145833,0},{0.925234,0},{0.114583,0},{0.946595,0}}" />
+            </Window>
+            <Window type="TaharezLook/ImageButton" name="ImageButton" >
+                <Property name="Area" value="{{0,326},{0,626},{0,377},{0,660}}" />
+                <Property name="HoverImage" value="TaharezLook/WindowRightEdge" />
+                <Property name="NormalImage" value="TaharezLook/AltProgressHalf" />
+                <Property name="PushedImage" value="TaharezLook/ListboxBottom" />
+                <Property name="TooltipText" value="o" />
+            </Window>
+            <Window type="TaharezLook/Button" name="Button" >
+                <Property name="Area" value="{{0,280},{0,677},{0,376},{0,709}}" />
+                <Property name="HoverImage" value="TaharezLook/HeaderBarBackdropNormal" />
+                <Property name="NormalImage" value="TaharezLook/AltProgressLight5" />
+                <Property name="PushedImage" value="TaharezLook/AltProgressLight3" />
+            </Window>
+            <Window type="TaharezLook/LargeVerticalScrollbar" name="LargeVerticalScrollbar" >
+                <Property name="Area" value="{{0.32636,234},{0.304406,128},{0.359833,234},{0.809079,128}}" />
+            </Window>
+            <Window type="TaharezLook/LargeVerticalScrollbarThumb" name="LargeVerticalScrollbarThumb" >
+                <Property name="Area" value="{{0.868201,0},{0.623498,0},{0.889121,0},{0.666222,0}}" />
+            </Window>
         </Window>
         <Window type="DefaultWindow" name="l_trolley" >
             <Property name="Area" value="{{0,0},{0,0},{1,0},{0.0625,0}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Window type="TaharezLook/Button" name="Button_trolley" >
                 <Property name="Area" value="{{0.25,0},{0,0},{1,0},{1,0}}" />
-                <Property name="Text" value="=====vvv=====" />
+                <Property name="Text" value="=====exit=====" />
             </Window>
             <Window type="TaharezLook/Button" name="Button_cancel" >
                 <Property name="Area" value="{{0,0},{0,-1},{0.25,0},{1,-1}}" />
