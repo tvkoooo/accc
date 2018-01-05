@@ -1,9 +1,20 @@
 #ifndef _INC_application
 #define _INC_application
+#include <assert.h>
+#include <stdio.h>
+#include "fuwuqi.h"
+#include "kehuduan.h"
+
+
 
 struct application
 {
-
+	lj_lizhi3::fuwuqi f1;
+	lj_lizhi3::kehuduan k1;
+	int argc;
+	char **argv;
+	int flag_f1;
+	int flag_k1;
 };
 
 extern void application_init(struct application* p);

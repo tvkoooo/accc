@@ -1,4 +1,8 @@
-﻿/*删除表，慎用：truncate table 表名（完全删除无记录）；delete from 表名（一条一条记录删除）；*/
+﻿关于MySql Workbench 启动时会弹出许多窗口的问题
+Edit->Preferences->选中左边SQL Editor，右边的Save snapshot of open editors on close取消勾选。
+
+
+/*删除表，慎用：truncate table 表名（完全删除无记录）；delete from 表名（一条一条记录删除）；*/
 create table `t_user_log`(/*新建一个表*/
 `user_id` int(11) unsigned NOT NULL AUTO_INCREMENT comment '用户id',
 `user_name` char(20) NOT NULL  comment '用户名',

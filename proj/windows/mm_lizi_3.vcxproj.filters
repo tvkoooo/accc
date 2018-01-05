@@ -27,6 +27,15 @@
     <ClCompile Include="..\..\src\lizi_3\application.cpp">
       <Filter>src\lizi_3</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_3\fankuui.cpp">
+      <Filter>src\lizi_3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_3\fuwuqi.cpp">
+      <Filter>src\lizi_3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_3\kehuduan.cpp">
+      <Filter>src\lizi_3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_3\test1.h">
@@ -39,6 +48,15 @@
       <Filter>src\lizi_3</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_3\application.h">
+      <Filter>src\lizi_3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_3\fankuui.h">
+      <Filter>src\lizi_3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_3\fuwuqi.h">
+      <Filter>src\lizi_3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_3\kehuduan.h">
       <Filter>src\lizi_3</Filter>
     </ClInclude>
   </ItemGroup>

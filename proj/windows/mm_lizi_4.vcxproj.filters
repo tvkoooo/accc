@@ -66,6 +66,9 @@
     <ClCompile Include="..\..\src\lizi_4\robot_state_contrl_map.cpp">
       <Filter>src\mm_lizi_4</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_4\robot_add_peo.cpp">
+      <Filter>src\mm_lizi_4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_4\application.h">
@@ -120,6 +123,9 @@
       <Filter>src\mm_lizi_4</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_4\robot_state_contrl_map.h">
+      <Filter>src\mm_lizi_4</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\robot_add_peo.h">
       <Filter>src\mm_lizi_4</Filter>
     </ClInclude>
   </ItemGroup>

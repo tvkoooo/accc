@@ -56,6 +56,10 @@ namespace mm
 		: d_scene_manager(NULL)
 		, d_camera(NULL)
 
+		,boy_x(0)
+		,boy_y(0)
+		,boy_z(0)
+
 		, d_root_node(NULL)
 		, d_light_node(NULL)
 		, d_dir_light(NULL)
@@ -94,8 +98,19 @@ namespace mm
 
 	}
 
+	void mm_bomber::test_s_fuzhi( mm_flake_surface* surface )
+	{
+		this->bomber_home_main_u1.boy_x=this->boy_x;
+		this->bomber_home_main_u1.boy_y=this->boy_y;
+		this->bomber_home_main_u1.boy_z=this->boy_z;
+		//this->bomber_home_main_u1.bomber_home_main_exit1=&on_handle_go_left_changed;
+
+	}
+
+
 	void mm_bomber::on_finish_launching()
 	{
+		
 		struct mm_logger* g_logger = mm_logger_instance();
 		mm_logger_log_I(g_logger,"%s %d 1.",__FUNCTION__,__LINE__);
 		mm_flake_context* flake_context = this->get_context();
@@ -139,6 +154,8 @@ namespace mm
 		this->test_s_launching(flake_surface);
 		this->bomber_home_main_u1.mm_flake_context_assignment(flake_context);
 		this->bomber_home_main_u1.bomber_home_main_launching(flake_surface);
+		//this->bomber_reconfirm_r1.bomber_reconfirm_launching(flake_surface);
+
 		//////////////////////////////////////////////////////////////////////////
 		//double f = 0;
 		//for (int i = 0;i< 99999999;++i)
@@ -162,7 +179,9 @@ namespace mm
 		mm_flake_surface* flake_surface = flake_context->get_main_flake_surface();
 		/////½áÊø  ³ö¿Ú//////////////////////////////////////////////////////////////
 		this->test_s_terminate(flake_surface);
+		//this->bomber_reconfirm_r1.bomber_reconfirm_terminate(flake_surface);
 		this->bomber_home_main_u1.bomber_home_main_terminate(flake_surface);
+
 		////////////////////////////////////////////////////////////////////////
 		// destroy all windows manual.
 		CEGUI::WindowManager& _winMgr = CEGUI::WindowManager::getSingleton();
@@ -200,6 +219,7 @@ namespace mm
 	void mm_bomber::test_s_launching( mm_flake_surface* surface )
 	{
 		float d = 0;
+		
 		//////////////////////////////////////////////////////////////////////////
 		mm_flake_context* flake_context = this->get_context();
 		//////////////////////////////////////////////////////////////////////////
@@ -212,7 +232,7 @@ namespace mm
 		Ogre::RTShader::ShaderGenerator::getSingletonPtr()->addSceneManager(this->d_scene_manager);
 		// Create and initialise the camera
 		this->d_camera = d_scene_manager->createCamera("main_camera");
-		this->d_camera->setPosition(Ogre::Vector3(0,0,200));
+		this->d_camera->setPosition(Ogre::Vector3(0,0,400));
 		this->d_camera->lookAt(Ogre::Vector3(0,0,-300));
 		this->d_camera->setNearClipDistance(1.0f);
 		this->d_camera->setFarClipDistance(100000.0f);
@@ -236,8 +256,18 @@ namespace mm
 		this->d_ogrehead_node_0->attachObject(this->d_ogrehead_mesh_0);
 		this->d_ogrehead_node_0->yaw(Ogre::Radian(d));
 
+		this->d_ogrehead_node_0->setPosition(Ogre::Vector3(this->boy_x,this->boy_y,this->boy_z));
+
 		this->d_viewport = surface->d_render_window->addViewport(this->d_camera);
 		this->d_camera->setAspectRatio(Ogre::Real(this->d_viewport->getActualWidth()) / Ogre::Real(this->d_viewport->getActualHeight()));
+
+		//this->bomber_home_main_u1.l_ensure->setVisible(1);
+		//this->bomber_home_main_u1.l_home_main->setVisible(0);
+		//this->bomber_reconfirm_r1.l_reconfirm->setVisible(0);
+
+		//this->bomber_home_main_u1.bomber_home_main_exit1=&mm_bomber::on_handle_go_left_changed;
+
+
 	}
 	void mm_bomber::test_s_terminate( mm_flake_surface* surface )
 	{
@@ -356,4 +386,14 @@ namespace mm
 		this->d_camera->setAspectRatio(_aspect_ratio);
 		return false;
 	}
+
+
+	static void on_handle_go_left_changed(bomber_home_main * p)
+	{
+		//p->boy_x-=10;
+
+		//p->d_ogrehead_node_0->setPosition(Ogre::Vector3(p->boy_x,p->boy_y,p->boy_z));
+		/*return false;*/
+	}
+
 }

@@ -27,6 +27,7 @@
     <ClCompile Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.cpp" />
     <ClCompile Include="..\..\src\lizi_4\producer.cpp" />
     <ClCompile Include="..\..\src\lizi_4\redis_connect.cpp" />
+    <ClCompile Include="..\..\src\lizi_4\robot_add_peo.cpp" />
     <ClCompile Include="..\..\src\lizi_4\robot_state_contrl.cpp" />
     <ClCompile Include="..\..\src\lizi_4\robot_state_contrl_map.cpp" />
     <ClCompile Include="..\..\src\lizi_4\savestore.cpp" />
@@ -48,6 +49,7 @@
     <ClInclude Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.h" />
     <ClInclude Include="..\..\src\lizi_4\producer.h" />
     <ClInclude Include="..\..\src\lizi_4\redis_connect.h" />
+    <ClInclude Include="..\..\src\lizi_4\robot_add_peo.h" />
     <ClInclude Include="..\..\src\lizi_4\robot_state_contrl.h" />
     <ClInclude Include="..\..\src\lizi_4\robot_state_contrl_map.h" />
     <ClInclude Include="..\..\src\lizi_4\savestore.h" />

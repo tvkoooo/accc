@@ -21,9 +21,16 @@ namespace mm
 		 bomber_home_main bomber_home_main_u1;
 
 
+
 	public:
 		Ogre::SceneManager* d_scene_manager;
 		Ogre::Camera* d_camera;
+
+		///////////
+		Ogre::Real boy_x;
+		Ogre::Real boy_y;
+		Ogre::Real boy_z;
+		///////////
 
 		Ogre::SceneNode* d_root_node;
 		Ogre::SceneNode* d_light_node;
@@ -44,6 +51,7 @@ namespace mm
 	public:
 		void test_s_terminate( mm_flake_surface* surface );
 		void test_s_launching( mm_flake_surface* surface );
+		void test_s_fuzhi( mm_flake_surface* surface );
 
 	//	void test_l_terminate( mm_flake_surface* surface );
 	//	void test_l_launching( mm_flake_surface* surface );
@@ -63,6 +71,7 @@ namespace mm
 	//	bool on_handle_open_cancel_clicked(const CEGUI::EventArgs& args);
 
 		bool on_handle_window_size_changed(const mm_event_args& args);
+
 
 	//public:
 	//	bomber_home_main lllk;

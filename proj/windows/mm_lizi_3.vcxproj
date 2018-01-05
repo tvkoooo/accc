@@ -20,6 +20,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\lizi_3\application.cpp" />
+    <ClCompile Include="..\..\src\lizi_3\fankuui.cpp" />
+    <ClCompile Include="..\..\src\lizi_3\fuwuqi.cpp" />
+    <ClCompile Include="..\..\src\lizi_3\kehuduan.cpp" />
     <ClCompile Include="..\..\src\lizi_3\test1.cpp" />
     <ClCompile Include="..\..\src\lizi_3\test2.cpp" />
     <ClCompile Include="..\..\src\lizi_3\test3.cpp" />
@@ -27,6 +30,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_3\application.h" />
+    <ClInclude Include="..\..\src\lizi_3\fankuui.h" />
+    <ClInclude Include="..\..\src\lizi_3\fuwuqi.h" />
+    <ClInclude Include="..\..\src\lizi_3\kehuduan.h" />
     <ClInclude Include="..\..\src\lizi_3\test1.h" />
     <ClInclude Include="..\..\src\lizi_3\test2.h" />
     <ClInclude Include="..\..\src\lizi_3\test3.h" />
@@ -119,7 +125,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <CompileAs>Default</CompileAs>
-      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_3;./windows;$(LIB_HOME)/src/pthread</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_3;./windows;$(LIB_HOME)/src/pthread;$(CORE_HOME)/mm/src;$(CORE_HOME)/mm/src/os/windows</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
@@ -131,12 +137,13 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>ws2_32.lib;vld.lib;pthread_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;vld.lib;pthread_d.lib;mm_net_d.lib;mm_core_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration);$(CORE_HOME)\mm\proj\windows\bin\Debug</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>xcopy $(LIB_HOME)\\build\\pthread\\proj_windows\\bin\\Debug\pthread_d.dll                          bin\\Debug\* /s /e /h /d /y
-</Command>
+xcopy $(CORE_HOME)\\mm\\proj\\windows\\bin\\Debug\mm_net_d.dll                                     bin\\Debug\* /s /e /h /d /y
+xcopy $(CORE_HOME)\\mm\\proj\\windows\\bin\\Debug\mm_core_d.dll                                    bin\\Debug\* /s /e /h /d /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -179,7 +186,7 @@
       <DebugInformationFormat>
       </DebugInformationFormat>
       <CompileAs>Default</CompileAs>
-      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_1;./windows;$(LIB_HOME)/src/pthread</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_1;./windows;$(LIB_HOME)/src/pthread;$(CORE_HOME)/mm/src;$(CORE_HOME)/mm/src/os/windows</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
@@ -194,12 +201,14 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>ws2_32.lib;vld.lib;pthread.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;vld.lib;pthread.lib;mm_net.lib;mm_core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration);$(CORE_HOME)\mm\proj\windows\bin\Release</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy $(LIB_HOME)\\build\\pthread\\proj_windows\\bin\\Release\pthread.dll                          bin\\Release\* /s /e /h /d /y</Command>
+      <Command>xcopy $(LIB_HOME)\\build\\pthread\\proj_windows\\bin\\Release\pthread.dll                          bin\\Release\* /s /e /h /d /y
+xcopy $(CORE_HOME)\\mm\\proj\\windows\\bin\\Release\mm_net.dll                                     bin\\Debug\* /s /e /h /d /y
+xcopy $(CORE_HOME)\\mm\\proj\\windows\\bin\\Release\mm_core.dll                                    bin\\Debug\* /s /e /h /d /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

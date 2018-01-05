@@ -1,0 +1,4 @@
+如何打开多个cmd并执行
+@echo off
+start cmd /k "D:\github\tvkoooo\accc\proj\windows\bin\Debug\mm_lizi_3_d.exe 0"
+start cmd /k "D:\github\tvkoooo\accc\proj\windows\bin\Debug\mm_lizi_3_d.exe 1"

@@ -36,7 +36,7 @@ static void nininin(struct robot_contrl* obj)
 
 void application_init(struct application* p)
 {
-
+	
 	robot_contrl_map_init(&p->ma1);
 
 	robot_contrl_map_fuzhi(&p->ma1,&nininin,NULL);
@@ -55,7 +55,7 @@ void application_init(struct application* p)
 }
 void application_destroy(struct application* p)
 {
-
+	
 	robot_contrl_map_destroy(&p->ma1);
 	////savestore_destroy(&p->s1);
 

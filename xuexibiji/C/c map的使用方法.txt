@@ -1,3 +1,6 @@
+	map初始化
+	p->map_uid.clear();
+	
 	typedef std::map<int,float>  map_type;//类型实例化，泛型要实例化操作
 	map_type map_a_a;// 对象实例化
 

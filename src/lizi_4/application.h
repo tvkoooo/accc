@@ -20,7 +20,7 @@ struct application
 	//char **argv;
 
 	struct robot_contrl_map ma1;
-
+	
 	//savestore s1;
 };
 
