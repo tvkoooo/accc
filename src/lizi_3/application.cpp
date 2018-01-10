@@ -29,6 +29,9 @@ void application_destroy(struct application* p)
 
 	struct mm_os_context* g_os_context = mm_os_context_instance();
 	mm_os_context_destroy(g_os_context);
+	// Optional:  Delete all global objects allocated by libprotobuf.
+	google::protobuf::ShutdownProtobufLibrary();
+
 }
 
 void application_start(struct application* p)

@@ -36,6 +36,21 @@
     <ClCompile Include="..\..\src\lizi_3\kehuduan.cpp">
       <Filter>src\lizi_3</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_3\lc_message_package.pb.cc">
+      <Filter>src\lizi_3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_3\c_dialogue_com.pb.cc">
+      <Filter>src\lizi_3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_3\b_error.pb.cc">
+      <Filter>src\lizi_3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_3\c_dialogue_baseinfo.pb.cc">
+      <Filter>src\lizi_3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_3\c_dialogue_baseinfo_data.cpp">
+      <Filter>src\lizi_3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_3\test1.h">
@@ -57,6 +72,21 @@
       <Filter>src\lizi_3</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_3\kehuduan.h">
+      <Filter>src\lizi_3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_3\lc_message_package.pb.h">
+      <Filter>src\lizi_3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_3\c_dialogue_com.pb.h">
+      <Filter>src\lizi_3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_3\b_error.pb.h">
+      <Filter>src\lizi_3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_3\c_dialogue_baseinfo.pb.h">
+      <Filter>src\lizi_3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_3\c_dialogue_baseinfo_data.h">
       <Filter>src\lizi_3</Filter>
     </ClInclude>
   </ItemGroup>

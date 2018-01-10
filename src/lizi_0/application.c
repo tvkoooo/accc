@@ -6,6 +6,8 @@
 #include "tou.h"
 #include <stdio.h>
 #include "juzhen_gf.h"
+
+
  int shuijishu()
 {
 	return rand();

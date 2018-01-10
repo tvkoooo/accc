@@ -12,3 +12,4 @@ obj/
 gen/
 libs/
 log/
+protobuf/src/protodef/

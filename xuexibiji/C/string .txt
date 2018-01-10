@@ -1,0 +1,57 @@
+using namespace std;  
+int main()  
+{  
+    string a;  
+    a.resize(100); //需要预先分配空间  
+    scanf("%s", &a[0]);  
+    puts(a.c_str());  
+    return 0;  
+}  
+
+
+
+//字符串分割
+using namespace std;
+void main()
+{
+string str1 = "qwe  bbb  333";
+string str2,str3,str4;
+istringstream is(str1);
+is>>str2>>str3>>str4;
+cout<<str2<<","<<str3<<","<<str4<<endl;
+}
+
+int main()
+{
+    string str("babccbabcaabcccbabccabcabcabbabcc");
+    int num = 0;
+    size_t fi = str.find("abc", 0);    
+    while (fi!=str.npos)
+    {
+        cout << fi << "   ";
+        num++;
+        fi = str.find("abc", fi + 1);
+    }
+    if (0 == num)
+        cout << "not find!";
+    cout << endl;
+    return 0;
+}
+//运行结果：
+//1   6   10   16   20   23   29
+
+#include <iostream>
+#include <sstream>
+using namespace std;
+int main()
+{
+    istringstream istr ("123 56.7");
+    cout << istr.str()<<endl;
+    int a;
+    istr>>a;
+    cout<<"int a="<<a<<endl;
+    float b;
+    istr>>b;
+    cout<<"float b="<<b<<endl;
+    return 0;
+}

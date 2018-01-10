@@ -1,0 +1,27 @@
+syntax = "proto2";
+package c_dialogue_baseinfo;
+
+option java_package = "protodef";
+option java_outer_classname = "c_dialogue_baseinfo";
+option objc_class_prefix = "C_dialogue_baseinfo_";
+option go_package = "protodef/c_dialogue_baseinfo";
+option csharp_namespace = "c_dialogue_baseinfo";
+option optimize_for = LITE_RUNTIME;
+
+
+
+////////////////////////////////////////////////////////////////////////
+message dialogue_baseinfo
+{
+    optional uint32 enum_msg           = 1 ; // 包号，enum_msg=0x0260000
+    optional uint32 error_state        = 2 [default =  0  ]; // 错误状态
+    optional string error_desc         = 3 [default =  "" ]; // 错误描述 
+    optional uint64 user_id            = 4 [default =  0  ]; // 说话用户id    
+    optional string user_nick          = 5 [default =  "" ]; // 说话用户昵称
+    optional string user_password      = 6 [default =  "" ]; // 说话用户密码    
+    optional uint64 to_user_id         = 7 [default =  0  ]; // 听者用户id    
+    optional string to_user_nick       = 8 [default =  "" ]; // 听者用户昵称
+    optional string talking            = 9 [default =  "" ]; // 说话内容
+    optional uint32 system_state       = 10[default =  0  ]; // 系统状态
+    optional string system_desc        = 11[default =  "" ]; // 系统描述   
+}

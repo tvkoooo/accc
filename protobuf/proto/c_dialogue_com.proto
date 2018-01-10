@@ -1,0 +1,94 @@
+syntax = "proto2";
+package c_dialogue_com;
+
+option java_package = "protodef";
+option java_outer_classname = "c_dialogue_com";
+option objc_class_prefix = "C_dialogue_com_";
+option go_package = "protodef/c_dialogue_com";
+option csharp_namespace = "c_dialogue_com";
+
+
+
+import "b_error.proto";
+////////////////////////////////////////////////////////////////////////
+// 用户登录请求
+message dialogue_login_rq
+{
+    enum msg{ id=0x02600001;}
+    optional uint64 user_id            = 1 [default =  0  ]; // 用户id
+    optional string user_nick          = 2 [default =  "" ]; // 用户昵称
+    optional string user_password      = 3 [default =  "" ]; // 用户密码
+}
+// 用户登录返回
+message dialogue_login_rs
+{
+    enum msg{ id=0x02600002;}
+    optional b_error.info error        = 1                ; // error info
+    optional uint64 user_id            = 2 [default =  0  ]; // 用户id
+    optional string user_nick          = 3 [default =  "" ]; // 用户昵称    
+    optional uint32 login_state        = 4 [default =  0  ]; // 登录状态
+    optional bytes login_desc          = 5 [default =  "" ]; // 登录描述
+    optional uint32 socket             = 6 [default =  0  ]; // 用户连接号		
+}
+// 用户查询目标用户请求
+message dialogue_seek_rq
+{
+    enum msg{ id=0x02600011;}
+    optional uint64 user_id            = 1 [default =  0  ]; // 用户id
+    optional string user_nick          = 2 [default =  "" ]; // 用户昵称
+    optional uint64 to_user_id         = 3 [default =  0  ]; // 目标用户id
+    optional string to_user_nick       = 4 [default =  "" ]; // 目标用户昵称
+    optional uint32 socket             = 5 [default =  0  ]; // 用户连接号		
+}
+// 用户查询目标用户返回
+message dialogue_seek_rs
+{
+    enum msg{ id=0x02600012;}
+    optional b_error.info error        = 1                ; // error info
+    optional uint64 user_id            = 2 [default =  0  ]; // 用户id
+    optional string user_nick          = 3 [default =  "" ]; // 用户昵称
+    optional uint64 to_user_id         = 4 [default =  0  ]; // 目标用户id  
+    optional string to_user_nick       = 5 [default =  "" ]; // 目标用户昵称	
+    optional uint32 seek_state         = 6 [default =  0  ]; // 查询状态
+    optional bytes seek_desc           = 7 [default =  "" ]; // 查询描述
+    optional uint32 socket             = 8 [default =  0  ]; // 用户连接号		
+    optional uint32 to_socket          = 9 [default =  0  ]; // 目标用户连接号		
+}
+// 用户对话用户请求
+message dialogue_talk_rq
+{
+    enum msg{ id=0x02600021;}
+    optional uint64 user_id            = 1 [default =  0  ]; // 用户id
+    optional string user_nick          = 2 [default =  "" ]; // 用户昵称
+    optional uint64 to_user_id         = 3 [default =  0  ]; // 目标用户id  
+    optional string to_user_nick       = 4 [default =  "" ]; // 目标用户昵称
+    optional bytes talking             = 5 [default =  "" ]; // 说话内容
+    optional uint32 socket             = 6 [default =  0  ]; // 用户连接号	
+    optional uint32 to_socket          = 7 [default =  0  ]; // 目标用户连接号		
+}
+// 用户对话用户返回
+message dialogue_talk_rs
+{
+    enum msg{ id=0x02600022;}
+    optional b_error.info error        = 1                ; // error info
+    optional uint64 user_id            = 2 [default =  0  ]; // 用户id
+    optional string user_nick          = 3 [default =  "" ]; // 用户昵称    
+    optional uint32 talk_rs_state      = 4 [default =  0  ]; // 对话状态
+    optional bytes talk_rs_desc        = 5 [default =  "" ]; // 对话描述
+    optional uint32 socket             = 6 [default =  0  ]; // 用户连接号		
+    optional uint32 to_socket          = 7 [default =  0  ]; // 目标用户连接号		
+}
+message dialogue_talk_nt
+{
+    enum msg{ id=0x02600023;}
+    optional b_error.info error        = 1                ; // error info
+    optional uint64 user_id            = 2 [default =  0  ]; // 说话用户id    
+    optional string user_nick          = 3 [default =  "" ]; // 说话用户昵称
+    optional uint64 to_user_id         = 4 [default =  0  ]; // 听者用户id    
+    optional string to_user_nick       = 5 [default =  "" ]; // 听者用户昵称
+    optional bytes talking             = 6 [default =  "" ]; // 说话内容
+    optional uint32 talk_nt_state      = 7 [default =  0  ]; // 对话状态
+    optional bytes talk_nt_desc        = 8 [default =  "" ]; // 对话描述
+    optional uint32 socket             = 9 [default =  0  ]; // 说话用户连接号		
+    optional uint32 to_socket          = 10[default =  0  ]; // 听者用户连接号		
+}
