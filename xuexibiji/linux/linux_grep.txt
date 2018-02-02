@@ -1,0 +1,5 @@
+或者
+grep -E 'pattern1|pattern2'
+
+且
+grep -E 'pattern1' filename | grep -E 'pattern2'

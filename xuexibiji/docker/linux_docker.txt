@@ -1,0 +1,45 @@
+查看linux操作系统发行版本    uname -r
+lsb_release -a
+
+查看如何启动docker 容器(docker run -d -i -t <imageID> /bin/bash)  如果不用"-d",可以跳过'进入容器环境',直接进入
+docker run -d -i -t ff426288ea90 /bin/bash
+
+进入容器环境(docker attach <ContainerID>)
+docker attach <ContainerID>
+
+关闭容器(docker stop <ContainerID>)
+docker stop <ContainerID>
+
+列出当前运行容器
+docker ps 
+
+
+运行镜像
+docker run -p ip:hostPort:containerPort redis
+docker run -dit -p 9091:9090 --name mm_ionet_1 57886165a0ee
+
+dockerfile 案例
+# Use an official centos runtime as a parent image
+FROM centos
+
+# maintainer
+MAINTAINER longcheng
+
+# shell mkdir application.
+SHELL ["mkdir", "application"]
+
+# Set the working directory to /application
+WORKDIR /application
+
+# Copy the current directory contents into the container at /application
+# ADD . /application
+COPY web_images /application/
+
+# Make port available to the world outside this container
+EXPOSE 9090
+
+# Run application when the container launches
+CMD ["./web_images"]
+
+
+

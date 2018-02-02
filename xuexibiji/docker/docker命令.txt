@@ -1,0 +1,11 @@
+查看本机docker版本
+$docker version
+
+搜索可用的docker镜像
+$docker search tutorial
+
+下载容器镜像
+$docker pull learn/tutorial  //用户名/镜像名
+
+docker容器运行镜像，两个参数：镜像名，运行的参数
+$docker run learn/tutorial echo "hello word"

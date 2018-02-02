@@ -128,5 +128,11 @@
     <ClInclude Include="..\..\src\lizi_4\robot_add_peo.h">
       <Filter>src\mm_lizi_4</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\os\windows\c_start.h">
+      <Filter>src\mm_lizi_4\os\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\os\windows\c_end.h">
+      <Filter>src\mm_lizi_4\os\windows</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

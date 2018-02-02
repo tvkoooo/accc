@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{8beab597-1d24-4876-8516-e5b61390d06c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="windows">
+      <UniqueIdentifier>{2817d8a5-192e-4546-95d8-ef6ad1796d58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lizi_5">
+      <UniqueIdentifier>{a392cd4e-2ceb-455e-97f5-456c7de67acb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lizi_5\os">
+      <UniqueIdentifier>{ece676ba-a4c0-49a2-902d-fbffda65e5cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\lizi_5\os\windows">
+      <UniqueIdentifier>{fbf78e8e-b554-4acb-bca6-57afe68a86d5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="windows\main.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_5\application.cpp">
+      <Filter>src\lizi_5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_5\wangluo_kehu.cpp">
+      <Filter>src\lizi_5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_4\os\windows\errno_lizi4.cpp">
+      <Filter>src\lizi_5\os\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.cpp">
+      <Filter>src\lizi_5\os\windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_5\mm_buffer_queue.cpp">
+      <Filter>src\lizi_5</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_5\mm_locker_queue.cpp">
+      <Filter>src\lizi_5</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\lizi_5\application.h">
+      <Filter>src\lizi_5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_5\mm_thread_state_t.h">
+      <Filter>src\lizi_5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_5\wangluo_kehu.h">
+      <Filter>src\lizi_5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\os\windows\errno_lizi4.h">
+      <Filter>src\lizi_5\os\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\os\windows\platform_config.h">
+      <Filter>src\lizi_5\os\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\os\windows\platform_config_type_int.h">
+      <Filter>src\lizi_5\os\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.h">
+      <Filter>src\lizi_5\os\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\os\windows\c_start.h">
+      <Filter>src\lizi_5\os\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_4\os\windows\c_end.h">
+      <Filter>src\lizi_5\os\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_5\mm_archive_endian.h">
+      <Filter>src\lizi_5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_5\robot_queue_data.h">
+      <Filter>src\lizi_5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_5\mm_buffer_queue.h">
+      <Filter>src\lizi_5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_5\mm_locker_queue.h">
+      <Filter>src\lizi_5</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

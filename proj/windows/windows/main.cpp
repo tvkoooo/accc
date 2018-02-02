@@ -59,6 +59,7 @@ int main(int argc,char **argv)
 		application_start(&g_application);
 		application_join(&g_application);
 		application_destroy(&g_application);
+
 	}
 	catch (std::exception& e)
 	{

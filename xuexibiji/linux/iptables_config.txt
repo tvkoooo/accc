@@ -1,0 +1,26 @@
+sudo vim /etc/sysconfig/iptables
+
+sudo service iptables restart
+
+iptables -L -n
+
+/etc/iptables/rules.v4
+/etc/iptables/rules.v6
+
+sudo service iptables status
+sudo service iptables stop
+sudo service iptables start
+sudo service iptables restart
+sudo chkconfig iptables off
+sudo chkconfig iptables on
+
+sudo vim /etc/sysconfig/ip6tables
+
+sudo ip6tables -L -n
+
+sudo service ip6tables status
+sudo service ip6tables stop
+sudo service ip6tables start
+sudo service ip6tables restart
+sudo chkconfig ip6tables off
+sudo chkconfig ip6tables on

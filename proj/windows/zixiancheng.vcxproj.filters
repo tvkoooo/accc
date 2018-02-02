@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{8beab597-1d24-4876-8516-e5b61390d06c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="windows">
+      <UniqueIdentifier>{2817d8a5-192e-4546-95d8-ef6ad1796d58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\duoxiancheng">
+      <UniqueIdentifier>{812828ab-26d9-4820-876a-f8059f032e6d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="windows\main.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\duoxiancheng\application.cpp">
+      <Filter>src\duoxiancheng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\duoxiancheng\mm_buffer_queue.cpp">
+      <Filter>src\duoxiancheng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\duoxiancheng\mm_locker_queue.cpp">
+      <Filter>src\duoxiancheng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\duoxiancheng\zixiancheng.cpp">
+      <Filter>src\duoxiancheng</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>src\duoxiancheng</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\lizi_5\logger_file.cpp">
+      <Filter>src\duoxiancheng</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\duoxiancheng\application.h">
+      <Filter>src\duoxiancheng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\duoxiancheng\mm_buffer_queue.h">
+      <Filter>src\duoxiancheng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\duoxiancheng\mm_locker_queue.h">
+      <Filter>src\duoxiancheng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\duoxiancheng\mm_thread_state_t.h">
+      <Filter>src\duoxiancheng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\duoxiancheng\zixiancheng.h">
+      <Filter>src\duoxiancheng</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_5\logger_file.h">
+      <Filter>src\duoxiancheng</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

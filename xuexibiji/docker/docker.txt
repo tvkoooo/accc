@@ -1,0 +1,38 @@
+docker run -d -i -t <imageID> /bin/bash
+docker run -dit <imageID>
+docker attach <ContainerID>
+docker stop <ContainerID>
+docker ps
+docker ps -a
+docker rm <ContainerID>
+
+Ctrl+P+Q
+
+https://docs.docker.com/registry/deploying/#run-a-local-registry
+
+docker pull registry:2
+docker run -d -p 5000:5000 --restart=always --name registry registry:2
+
+docker pull ubuntu:16.04
+docker tag ubuntu:16.04 localhost:5000/my-ubuntu
+docker push localhost:5000/my-ubuntu
+
+docker image remove ubuntu:16.04
+docker image remove localhost:5000/my-ubuntu
+
+docker pull localhost:5000/my-ubuntu
+docker stop registry
+docker rm -v registry
+
+docker rmi -f registry:2
+
+docker build
+docker build -t mm/web_images:2.0 -f Dockerfile .
+.dockerignore 
+
+docker run -d -i -t -p 5000:5000 --restart=always --name registry_localhost -v /data/registry:/mnt/registry registry
+docker run -dit -p 9090:9090 --name web_images_localhost 2dddff2dd85e
+
+docker logs -f -t --tail 10 45bd868335bd
+
+service docker restart

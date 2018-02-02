@@ -1,0 +1,36 @@
+linkd       网关,客户端连上来以后负责将业务包发给具体的服比如战斗和任务
+lbsd        网关地址管理,客户端连上来以后来获取网关地址
+session_fe  房间服,客户端说他连上来以后会有个按房间号分组
+smanager-db 房间管理,房间启动以后会发一个包给这个,这个服写一条记录到某数据库A
+daemon      地址服,里面有所有服务的地址
+datacenter  内嵌php解释器的服务和另外一个php的web服务不一样
+dchelper    和php交互的数据格式协议
+taskd       任务逻辑
+battled     战斗逻辑
+battle_new  战斗逻辑
+curl_proxy     连fpm服务的代理,房间会把业务包发过来,这里再把包转给fpm
+fpm            别人的服务,负责管理php解释器的服务
+php            解释php脚本的服务
+php脚本        我们写的业务
+nginx_fcgi     nginx的fcgi模块插件
+nginx          tcp udp 反向代理()
+zmq_proxy         发布订阅的当前消息队列
+redis              内存数据库,非关系型数据库
+mysql              持久化数据库,关系型数据库
+
+nginx那些是别人的
+
+
+客户端测试：
+网关linkd 日志
+cd /data/raidcall/log/linkd_d
+查看网关
+netstat -anp | grep 4443
+
+13  00  04  23  00  00  ff  ff ff  c8  01  ff  ff  ff  ab  ff  ff  ff  86  10  10
+19     |8964   |0  |0  | 
+length |uri    |sid|rCo| 
+ 
+0x00000013    0x00002304   0x0000 0x00c8 0x01  0x000186ab   0x0001    
+13|00||00|00  04|23||00|00  00|00  c8|00  01  ab|86||01|00  01|00
+u32           u32           u16    u16    u8  u32           u16

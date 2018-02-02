@@ -1,0 +1,11 @@
+unsigned long int mm_current_thread_id()
+{
+	return (unsigned long int)pthread_self();
+}
+
+龙成 2018/1/22 19:35:19
+用这个拿线程号
+19:36:11
+龙成 2018/1/22 19:36:11
+void SessionConn::onSessionServerCmd(Request req)
+在这个里面把线程号打出来
