@@ -6,6 +6,7 @@
 #include <iostream>
 #include "mm_archive_endian.h"
 #include "core\mm_alloc.h"
+#include "cJSON.h"
 //#include "common\packet.h"
 //#include "request.h"
 //
@@ -158,6 +159,13 @@ void wangluo_kehu_poll_wait(struct wangluo_kehu* p)
 			char buffer[32] = {0};
 			mm_memcpy((void*)buffer, (void*)(streambuf.buff + streambuf.gptr), sz);
 			std::string sendtest_1 ="wocaonio";
+			sendword send_word;
+			send_word.Mid=800122002;
+			send_word.Pid=10087;
+			send_word.Datawords="hello world! i am c++ !";
+			std::string send_word_str;
+
+
 			int size_send = sendtest_1.size();
 			int iiiiii=send(p->sclient,sendtest_1.c_str(),size_send,0);
 		}

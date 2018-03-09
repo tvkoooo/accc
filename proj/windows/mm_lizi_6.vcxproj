@@ -19,39 +19,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_3\application.cpp" />
-    <ClCompile Include="..\..\src\lizi_3\b_error.pb.cc" />
-    <ClCompile Include="..\..\src\lizi_3\c_dialogue_baseinfo.pb.cc" />
-    <ClCompile Include="..\..\src\lizi_3\c_dialogue_baseinfo_data.cpp" />
-    <ClCompile Include="..\..\src\lizi_3\c_dialogue_com.pb.cc" />
-    <ClCompile Include="..\..\src\lizi_3\fankuui.cpp" />
-    <ClCompile Include="..\..\src\lizi_3\fuwuqi.cpp" />
-    <ClCompile Include="..\..\src\lizi_3\kehuduan.cpp" />
-    <ClCompile Include="..\..\src\lizi_3\lc_message_package.pb.cc" />
-    <ClCompile Include="..\..\src\lizi_3\test1.cpp" />
-    <ClCompile Include="..\..\src\lizi_3\test2.cpp" />
-    <ClCompile Include="..\..\src\lizi_3\test3.cpp" />
-    <ClCompile Include="..\..\src\lizi_3\xuhanshu.cpp" />
+    <ClCompile Include="..\..\src\lizi_6\application.cpp" />
+    <ClCompile Include="..\..\src\lizi_6\b_error.pb.cc" />
+    <ClCompile Include="..\..\src\lizi_6\c_dialogue_com.pb.cc" />
+    <ClCompile Include="..\..\src\lizi_6\fuwuqi.cpp" />
+    <ClCompile Include="..\..\src\lizi_6\kehuduan.cpp" />
     <ClCompile Include="windows\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\lizi_3\application.h" />
-    <ClInclude Include="..\..\src\lizi_3\b_error.pb.h" />
-    <ClInclude Include="..\..\src\lizi_3\c_dialogue_baseinfo.pb.h" />
-    <ClInclude Include="..\..\src\lizi_3\c_dialogue_baseinfo_data.h" />
-    <ClInclude Include="..\..\src\lizi_3\c_dialogue_com.pb.h" />
-    <ClInclude Include="..\..\src\lizi_3\fankuui.h" />
-    <ClInclude Include="..\..\src\lizi_3\fuwuqi.h" />
-    <ClInclude Include="..\..\src\lizi_3\kehuduan.h" />
-    <ClInclude Include="..\..\src\lizi_3\lc_message_package.pb.h" />
-    <ClInclude Include="..\..\src\lizi_3\test1.h" />
-    <ClInclude Include="..\..\src\lizi_3\test2.h" />
-    <ClInclude Include="..\..\src\lizi_3\test3.h" />
-    <ClInclude Include="..\..\src\lizi_3\xuhanshu.h" />
+    <ClInclude Include="..\..\src\lizi_6\application.h" />
+    <ClInclude Include="..\..\src\lizi_6\b_error.pb.h" />
+    <ClInclude Include="..\..\src\lizi_6\c_dialogue_com.pb.h" />
+    <ClInclude Include="..\..\src\lizi_6\fuwuqi.h" />
+    <ClInclude Include="..\..\src\lizi_6\kehuduan.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{1F78E655-C52C-4A78-BBAA-7D7BE915A289}</ProjectGuid>
-    <RootNamespace>mm_lizi_3</RootNamespace>
+    <ProjectGuid>{3566D92D-26E4-4262-914F-1E163F799F32}</ProjectGuid>
+    <RootNamespace>mm_lizi_6</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -137,7 +121,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <CompileAs>Default</CompileAs>
-      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_3;./windows;$(LIB_HOME)/src/pthread;$(CORE_HOME)/mm/src;$(CORE_HOME)/mm/src/os/windows;$(LIB_HOME)/src/protobuf/src;$(CORE_HOME)/data/src/protobuf</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VLD_HOME)/include;$(MYSQL_HOME)/include;../../src;../../src/lizi_6;./windows;$(LIB_HOME)/src/pthread;$(LIB_HOME)/src/hiredis;$(CORE_HOME)/mm/src;$(CORE_HOME)/mm/src/os/windows;$(LIB_HOME)/src/protobuf/src;$(CORE_HOME)/data/src/protobuf</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
@@ -150,14 +134,13 @@
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalDependencies>ws2_32.lib;vld.lib;pthread_d.lib;mm_net_d.lib;mm_core_d.lib;libprotobuf_d.lib;libprotoc_d.lib;mm_data_protobuf_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(LIB_HOME)/build/pthread/proj_windows/bin/Debug;$(CORE_HOME)\mm\proj\windows\bin\Debug;$(LIB_HOME)/build/protobuf/proj_windows/bin/Debug;$(CORE_HOME)\data\proj\windows\bin\Debug</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(MYSQL_HOME)/lib;$(LIB_HOME)/build/pthread/proj_windows/bin/Debug;$(LIB_HOME)/build/hiredis/proj_windows/bin/Debug;$(CORE_HOME)\mm\proj\windows\bin\Debug;$(CORE_HOME)\data\proj\windows\bin\Debug;$(LIB_HOME)/build/protobuf/proj_windows/bin/Debug</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>xcopy $(LIB_HOME)\\build\\pthread\\proj_windows\\bin\\Debug\pthread_d.dll                          bin\\Debug\* /s /e /h /d /y
 xcopy $(CORE_HOME)\\mm\\proj\\windows\\bin\\Debug\mm_net_d.dll                                     bin\\Debug\* /s /e /h /d /y
 xcopy $(CORE_HOME)\\mm\\proj\\windows\\bin\\Debug\mm_core_d.dll                                    bin\\Debug\* /s /e /h /d /y
-xcopy $(CORE_HOME)\\data\\proj\\windows\\bin\\Debug\mm_data_protobuf_d.dll                     bin\\Debug\* /s /e /h /d /y
-</Command>
+xcopy $(CORE_HOME)\\data\\proj\\windows\\bin\\Debug\mm_data_protobuf_d.dll                     bin\\Debug\* /s /e /h /d /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -200,7 +183,7 @@ xcopy $(CORE_HOME)\\data\\proj\\windows\\bin\\Debug\mm_data_protobuf_d.dll      
       <DebugInformationFormat>
       </DebugInformationFormat>
       <CompileAs>Default</CompileAs>
-      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_3;./windows;$(LIB_HOME)/src/pthread;$(CORE_HOME)/mm/src;$(CORE_HOME)/mm/src/os/windows;$(LIB_HOME)/src/protobuf/src;$(CORE_HOME)/data/src/protobuf</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VLD_HOME)/include;$(MYSQL_HOME)/include;../../src;../../src/lizi_6;./windows;$(LIB_HOME)/src/pthread;$(LIB_HOME)/src/hiredis;$(CORE_HOME)/mm/src;$(CORE_HOME)/mm/src/os/windows;$(LIB_HOME)/src/protobuf/src;$(CORE_HOME)/data/src/protobuf</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
@@ -216,15 +199,14 @@ xcopy $(CORE_HOME)\\data\\proj\\windows\\bin\\Debug\mm_data_protobuf_d.dll      
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalDependencies>ws2_32.lib;vld.lib;pthread.lib;mm_net.lib;mm_core.lib;libprotobuf.lib;libprotoc.lib;mm_data_protobuf.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(LIB_HOME)/build/pthread/proj_windows/bin/Release;$(CORE_HOME)\mm\proj\windows\bin\Release;$(LIB_HOME)/build/protobuf/proj_windows/bin/Release;$(CORE_HOME)\data\proj\windows\bin\Release</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(MYSQL_HOME)/lib;$(LIB_HOME)/build/pthread/proj_windows/bin/Release;$(LIB_HOME)/build/hiredis/proj_windows/bin/Release;$(CORE_HOME)\mm\proj\windows\bin\Release;$(LIB_HOME)/build/protobuf/proj_windows/bin/Release;$(CORE_HOME)\data\proj\windows\bin\Release</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
       <Command>xcopy $(LIB_HOME)\\build\\pthread\\proj_windows\\bin\\Release\pthread.dll                          bin\\Release\* /s /e /h /d /y
 xcopy $(CORE_HOME)\\mm\\proj\\windows\\bin\\Release\mm_net.dll                                     bin\\Debug\* /s /e /h /d /y
 xcopy $(CORE_HOME)\\mm\\proj\\windows\\bin\\Release\mm_core.dll                                    bin\\Debug\* /s /e /h /d /y
-xcopy $(CORE_HOME)\\data\\proj\\windows\\bin\\Release\mm_data_protobuf.dll                     bin\\Debug\* /s /e /h /d /y
-</Command>
+xcopy $(CORE_HOME)\\data\\proj\\windows\\bin\\Release\mm_data_protobuf.dll                     bin\\Debug\* /s /e /h /d /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

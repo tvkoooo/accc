@@ -22,6 +22,7 @@
     <ClCompile Include="..\..\src\lizi_4\os\windows\errno_lizi4.cpp" />
     <ClCompile Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.cpp" />
     <ClCompile Include="..\..\src\lizi_5\application.cpp" />
+    <ClCompile Include="..\..\src\lizi_5\cJSON.c" />
     <ClCompile Include="..\..\src\lizi_5\mm_buffer_queue.cpp" />
     <ClCompile Include="..\..\src\lizi_5\mm_locker_queue.cpp" />
     <ClCompile Include="..\..\src\lizi_5\wangluo_kehu.cpp" />
@@ -35,6 +36,7 @@
     <ClInclude Include="..\..\src\lizi_4\os\windows\platform_config_type_int.h" />
     <ClInclude Include="..\..\src\lizi_4\os\windows\socket_context_lizi4.h" />
     <ClInclude Include="..\..\src\lizi_5\application.h" />
+    <ClInclude Include="..\..\src\lizi_5\cJSON.h" />
     <ClInclude Include="..\..\src\lizi_5\mm_archive_endian.h" />
     <ClInclude Include="..\..\src\lizi_5\mm_buffer_queue.h" />
     <ClInclude Include="..\..\src\lizi_5\mm_locker_queue.h" />

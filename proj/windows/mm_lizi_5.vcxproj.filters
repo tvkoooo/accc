@@ -39,6 +39,9 @@
     <ClCompile Include="..\..\src\lizi_5\mm_locker_queue.cpp">
       <Filter>src\lizi_5</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_5\cJSON.c">
+      <Filter>src\lizi_5</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_5\application.h">
@@ -78,6 +81,9 @@
       <Filter>src\lizi_5</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_5\mm_locker_queue.h">
+      <Filter>src\lizi_5</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_5\cJSON.h">
       <Filter>src\lizi_5</Filter>
     </ClInclude>
   </ItemGroup>

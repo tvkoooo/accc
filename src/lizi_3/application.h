@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "fuwuqi.h"
 #include "kehuduan.h"
-
+#include "xuhanshu.h"
 
 
 struct application

@@ -14,14 +14,14 @@ static void fan_tcp_back_broken(void* obj)
 
 }
 
-static void lj_lizhi3::_static_fuwuqi_rec(struct mm_tcp* p_tcp,struct fuwuqi* p_fwq, struct mm_packet* rq_pack)
+static void lj_lizhi6::_static_fuwuqi_rec(struct mm_tcp* p_tcp,struct fuwuqi* p_fwq, struct mm_packet* rq_pack)
 {
 
 
 }
 
 
-void lj_lizhi3::fuwuqi_init(struct fuwuqi* p)
+void lj_lizhi6::fuwuqi_init(struct fuwuqi* p)
 {
 	p->map_id_socket.clear();
 	p->map_nick_id.clear();
@@ -30,7 +30,7 @@ void lj_lizhi3::fuwuqi_init(struct fuwuqi* p)
 	pthread_mutex_init(&p->t_map,NULL);
 	mm_mailbox_init(&p->fw_net_0);
 }
-void lj_lizhi3::fuwuqi_destroy(struct fuwuqi* p)
+void lj_lizhi6::fuwuqi_destroy(struct fuwuqi* p)
 {
 	p->map_id_socket.clear();
 	p->map_nick_id.clear();
@@ -40,7 +40,7 @@ void lj_lizhi3::fuwuqi_destroy(struct fuwuqi* p)
 	mm_mailbox_destroy(&p->fw_net_0);
 }
 ///////////////////////////////////////////////////
-void lj_lizhi3::fuwuqi_fuzhi(struct fuwuqi* p)
+void lj_lizhi6::fuwuqi_fuzhi(struct fuwuqi* p)
 {
 	do 
 	{
@@ -88,7 +88,7 @@ void lj_lizhi3::fuwuqi_fuzhi(struct fuwuqi* p)
 
 }
 
-void lj_lizhi3::fuwuqi_start(struct fuwuqi* p)
+void lj_lizhi6::fuwuqi_start(struct fuwuqi* p)
 {	
 	mm_mailbox_start(&p->fw_net_0);
 }
@@ -96,22 +96,22 @@ void lj_lizhi3::fuwuqi_start(struct fuwuqi* p)
 
 
 
-void lj_lizhi3::fuwuqi_interrupt(struct fuwuqi* p)
+void lj_lizhi6::fuwuqi_interrupt(struct fuwuqi* p)
 {
 
 	mm_mailbox_interrupt(&p->fw_net_0);
 }
-void lj_lizhi3::fuwuqi_shutdown(struct fuwuqi* p)
+void lj_lizhi6::fuwuqi_shutdown(struct fuwuqi* p)
 {
 
 	mm_mailbox_shutdown(&p->fw_net_0);
 }
-void lj_lizhi3::fuwuqi_join(struct fuwuqi* p)
+void lj_lizhi6::fuwuqi_join(struct fuwuqi* p)
 {
 	mm_mailbox_join(&p->fw_net_0);
 }
 
-void lj_lizhi3::fuwuqi_huidiao_dialogue_login(void* obj, void* u, struct mm_packet* rs_pack)
+void lj_lizhi6::fuwuqi_huidiao_dialogue_login(void* obj, void* u, struct mm_packet* rs_pack)
 {
 	struct fuwuqi* fwq = (struct fuwuqi*)u;
 	struct mm_tcp* tcp = (mm_tcp*)obj;
@@ -199,7 +199,7 @@ void lj_lizhi3::fuwuqi_huidiao_dialogue_login(void* obj, void* u, struct mm_pack
 
 }
 
-void lj_lizhi3::fuwuqi_huidiao_dialogue_seek(void* obj, void* u, struct mm_packet* rs_pack)
+void lj_lizhi6::fuwuqi_huidiao_dialogue_seek(void* obj, void* u, struct mm_packet* rs_pack)
 {
 	struct fuwuqi* fwq = (struct fuwuqi*)u;
 	struct mm_tcp* tcp = (mm_tcp*)obj;
@@ -271,7 +271,7 @@ void lj_lizhi3::fuwuqi_huidiao_dialogue_seek(void* obj, void* u, struct mm_packe
 	}while(0);
 }
 
-void lj_lizhi3::fuwuqi_huidiao_dialogue_talk(void* obj, void* u, struct mm_packet* rs_pack)
+void lj_lizhi6::fuwuqi_huidiao_dialogue_talk(void* obj, void* u, struct mm_packet* rs_pack)
 {
 	struct fuwuqi* fwq = (struct fuwuqi*)u;
 	struct mm_tcp* tcp = (mm_tcp*)obj;

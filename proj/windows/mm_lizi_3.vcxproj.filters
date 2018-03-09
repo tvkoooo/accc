@@ -51,6 +51,9 @@
     <ClCompile Include="..\..\src\lizi_3\c_dialogue_baseinfo_data.cpp">
       <Filter>src\lizi_3</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\lizi_3\xuhanshu.cpp">
+      <Filter>src\lizi_3</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\lizi_3\test1.h">
@@ -87,6 +90,9 @@
       <Filter>src\lizi_3</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\lizi_3\c_dialogue_baseinfo_data.h">
+      <Filter>src\lizi_3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\lizi_3\xuhanshu.h">
       <Filter>src\lizi_3</Filter>
     </ClInclude>
   </ItemGroup>
