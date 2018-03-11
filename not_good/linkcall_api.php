@@ -37,9 +37,9 @@ class linkcall_api
         //linkcall_set_state_rs包回包，default
         $rs = array();
         $rs['cmd'] = 'linkcall_set_state_rs';
-        $rs['error'] = &$error;
+        $rs['error'] = $error;
         $rs['sid'] = $sid;
-        $rs['linkcall_state'] = -1;
+        $rs['linkcall_state'] = $linkcall_state = -1;
         //////////rq包验证////////////////////////////////////////////////////////////////////////////////////////////////        
         do
         {
@@ -61,7 +61,7 @@ class linkcall_api
             //判断主播运行状态和本次请求是否合理
             if ( $linkcall_state == $op_code)
             {
-                // 合理，主播切换连麦功能
+                // 合理，主播切换连麦功能,保存主播本操作连麦状态
                 $linkcall_state = !$op_code;
                 $m->set_singer_linkcall_state(&$error,$sid,$linkcall_state);
                 if (0 != $error['code']) 
@@ -81,20 +81,108 @@ class linkcall_api
             //判断：主播由关闭状态  $LINKCALL_STATE_CLOSED 到   开启状态 $LINKCALL_STATE_OPEN
             if (linkcall_model::$LINKCALL_STATE_OPEN == $linkcall_state) 
             {
-                //广播直播间，当前连麦连接状态
-                $m->linkcall_room_state_nt(&$error,$sid,$linkcall_state);
+                // 1 广播直播间，当前连麦连接状态
+                $m->linkcall_room_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state);
             }
             else 
             {
-                //广播直播间，当前连麦连接状态                
-                $m->linkcall_room_state_nt(&$error,$sid,$linkcall_state);
-                //单播连麦申请用户，拒绝申请
-                $linkcall_apply1 = linkcall_model::$LINKCALL_APPLY_NO;
-                $m->linkcall_user_state_nt(&$error,$sid,$user_id,$linkcall_apply1);
-                //单播连麦连接用户，断开连接
-                $linkcall_apply2 = linkcall_model::$LINKCALL_APPLY_DEL;
-                $m->linkcall_user_state_nt(&$error,$sid,$user_id,$linkcall_apply2);                
+                // 1 广播直播间，当前连麦连接状态                
+                $m->linkcall_room_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state);
+                
+                // 2 单播当前连麦所有申请用户，拒绝申请
+                {
+                    // A 查询当前连麦申请列表，取出连麦申请user_id
+                    $apply_list=array();
+                    $m->get_user_apply_time_index(&$error,$sid,&$apply_list);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }
+                    // B 用查询到的user_id，登记用户申请记录，去推送到相应的用户，主播拒绝申请
+                    $linkcall_apply = linkcall_model::LINKCALL_APPLY_NO;
+                    foreach ($apply_list as $uid => $score)
+                    {
+                        $data_get = array ();
+                        $data_get['time_apply'] = $score;
+                        $data_get['user_id'] = $uid ;
+                        //根据 $uid登记用户状态   主播拒绝
+                        $m->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
+                        if (0 != $error['code'])
+                        {
+                            //出现了一些逻辑错误
+                            break;
+                        }
+                        //根据 $uid去推送给用户   主播拒绝
+                        $m->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
+                        if (0 != $error['code'])
+                        {
+                            //出现了一些逻辑错误
+                            break;
+                        }
+                        //清空当前所有申请列表
+                        $m->del_user_apply_time_index(&$error,$sid);
+                        if (0 != $error['code'])
+                        {
+                            //出现了一些逻辑错误
+                            break;
+                        }
+                        
+                    }
+                }
+                
+                // 3 单播连麦连接所有用户，断开连接
+                {
+                    // A 查询当前连麦link 连接列表，取出连麦申请user_id
+                    $link_list=array();
+                    $m->get_user_link_time_index(&$error,$sid,&$link_list);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }
+                    // B 用查询到的user_id，去推送到相应的用户，主播拒绝申请
+                    $linkcall_apply = linkcall_model::$LINKCALL_APPLY_DEL;                    
+                    foreach ($link_list as $uid => $score)
+                    {
+                        $data_get = array ();
+                        $data_get['time_allow'] = $score;
+                        $data_get['user_id'] = $uid ;                        
+                        //根据 $uid登记用户   主播删除
+                        $m->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
+                        if (0 != $error['code'])
+                        {
+                            //出现了一些逻辑错误
+                            break;
+                        }
+                        //根据 $uid去推送给用户   主播删除
+                        $m->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
+                        if (0 != $error['code'])
+                        {
+                            //出现了一些逻辑错误
+                            break;
+                        }
+                        //清空当前所有连接列表
+                        $m->del_user_link_time_index(&$error,$sid);
+                        if (0 != $error['code'])
+                        {
+                            //出现了一些逻辑错误
+                            break;
+                        }
+                    }
+                    
+                }
+                // 4 清除本房间所有用户连麦状态列表
+                $m->del_user_apply_state(&$error,$sid);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                                
             }
+            $rs['linkcall_state'] = $linkcall_state;
+            
         }while(FALSE);
         //rs回包
         $return[] = array
@@ -107,50 +195,7 @@ class linkcall_api
         return $return;  
     }       
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
     // B用户（听众）发起/取消/退出连麦
     public static function on_linkcall_apply_rq($params)
@@ -189,9 +234,9 @@ class linkcall_api
         //linkcall_set_state_rs包回包，default
         $rs = array();
         $rs['cmd'] = 'on_linkcall_apply_rs';
-        $rs['error'] = &$error;
+        $rs['error'] = $error;
         $rs['sid'] = $sid;
-        $rs['time_apply'] = $time_apply;
+        $rs['time_apply'] = $linkcall_apply;
         $rs['singer_id']  = $singer_id;
         $rs['singer_nick']  = $singer_nick;
         $rs['linkcall_state'] = $linkcall_state = -1;
@@ -223,46 +268,38 @@ class linkcall_api
                 break;
             }
             //逻辑功能（主播是开启连麦状态）////////////////////////////////////////////////////////////////////////////////
-            
+            $linkcall_state = linkcall_model::$LINKCALL_STATE_OPEN;
             //情景1：用户发起连麦申请    1 == $op_code
+            if ( 1 == $op_code)
             {
-                if ( 1 == $op_code)
-                {
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////
-                    //用户发起申请
-                    $m->user_apply_apply_linkcall(&$error,$sid,$singer_id,$singer_nick,$user_id,&$time_apply,&$data_cache);
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////
-                }
+                //用户发起申请
+                $linkcall_apply = linkcall_model::LINKCALL_APPLY_APPLY;
+                $m->user_apply_apply_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$data_cache,&$linkcall_apply,&$linkcall_state);
             }
-
+            
             //情景2：用户取消连麦申请    2 == $op_code
-            {
-                if ( 2 == $op_code)
-                {                       
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////
-                    //用取消起申请
-                    $m->user_apply_desapply_linkcall(&$error,$sid,$singer_id,$user_id,&$data_cache,&$linkcall_state);
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////                    
+            if ( 2 == $op_code)
+            {                       
+                //用取消起申请
+                $linkcall_apply = linkcall_model::LINKCALL_APPLY_DESAPPLY;
+                $m->user_apply_desapply_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_apply,&$linkcall_state);
 
-                }
             }
             
             //情景3：用户退出连麦功能    3 == $op_code
+            if ( 3 == $op_code)
             {
-                if ( 3 == $op_code)
-                {
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////
-                    //用户退出连麦连接
-                    $m->user_apply_out_linkcall(&$error,$sid,$singer_id,$user_id,&$data_cache,&$linkcall_state);
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////                   
- 
-                }
-            }  
+                //用户退出连麦连接
+                $linkcall_apply = linkcall_model::LINKCALL_APPLY_OUT;
+                $m->user_apply_out_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_apply,&$linkcall_state);
+
+            }
         
-            //逻辑功能（主播是开启连麦状态）结束////////////////////////////////////////////////////////////////////////////
-             //rs 回包拼装
+            //逻辑功能（主播是开启连麦状态）结束//////////////////////////////////////////////////////////////          
+            
+            //rs 回包拼装
             $rs['error'] = &$error;
-            $rs['time_apply'] = $time_apply;
+            $rs['time_apply'] = $linkcall_apply;
             $rs['linkcall_state'] = $linkcall_state; 
         }while(FALSE);
         $return[] = array
@@ -313,7 +350,7 @@ class linkcall_api
         //linkcall_allow_rs包回包，default
         $rs = array();
         $rs['cmd'] = 'linkcall_allow_rs';
-        $rs['error'] = &$error;
+        $rs['error'] = $error;
         $rs['sid'] = $sid;
         $rs['time_apply'] = 0;
         $rs['singer_id']  = $singer_id;
@@ -333,51 +370,39 @@ class linkcall_api
             $m = new linkcall_model();            
 
             //逻辑功能（主播是开启连麦状态）////////////////////////////////////////////////////////////////////////////////
-            //连接用户列表
-            $link_list =array();
-            //申请用户列表
-            $apply_list =array();
-            
-            //情景1：主播允许连麦申请    1 == $op_code
-            {
-                if ( 1 == $op_code)
-                {
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////
-                    //主播允许申请
-                    $m->singer_apply_yes_linkcall(&$error,$sid,$singer_id,$user_id,&$user_data,&$rs,&$link_list,&$apply_list);
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////
-                    
+            $linkcall_state = linkcall_model::$LINKCALL_STATE_OPEN;
 
-                 }
+            //情景1：主播允许连麦申请    1 == $op_code
+            if ( 1 == $op_code)
+            {
+                //主播允许申请
+                $linkcall_apply = linkcall_model::LINKCALL_APPLY_YES;
+                $m->singer_apply_yes_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_state,&$linkcall_apply);
             }
 
             //情景2：主播拒绝连麦申请    2 == $op_code
-            {
-                if ( 2 == $op_code)
-                {   
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////
-                    //主播拒绝申请
-                    $m->singer_apply_no_linkcall(&$error,$sid,$singer_id,$user_id,&$user_data,&$rs,&$link_list,&$apply_list);
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////                  
-                    
-
-                }
+            if ( 2 == $op_code)
+            {   
+                //主播拒绝申请
+                $linkcall_apply = linkcall_model::$LINKCALL_APPLY_NO;
+                $m->singer_apply_no_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_state,&$linkcall_apply);
             }
+
             
             //情景3：主播删除连麦功能    3 == $op_code
+            if ( 3 == $op_code)
             {
-                if ( 3 == $op_code)
-                {
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////
-                    //主播删除连接
-                    $m->singer_apply_del_linkcall(&$error,$sid,$singer_id,$user_id,&$user_data,&$rs,&$link_list,&$apply_list);
-                    /////////////////////////////////////////////////////////////////////////////////////////////////////
-                    
-  
-                }
-            }  
+                //主播删除连接
+                $linkcall_apply = linkcall_model::$LINKCALL_APPLY_DEL;
+                $m->singer_apply_del_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_state,&$linkcall_apply);
+            }
+ 
    
         //逻辑功能（主播是开启连麦状态）结束////////////////////////////////////////////////////////////////////////////
+            $rs['error'] = $error;
+            //取出该用户信息
+            $m->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$user_data);            
+            $rs['data'] = $user_data;
         }while(FALSE);
         $return[] = array
         (
