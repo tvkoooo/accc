@@ -1,9 +1,9 @@
 <?php
-// °ïÅÉ¶áÆì½Ó¿Ú
+// å¸®æ´¾å¤ºæ——æŽ¥å£
 class linkcall_api
 {   
 
-    // A Ö÷²¥´ò¿ª/¹Ø±ÕÁ¬Âó¹¦ÄÜ
+    // A ä¸»æ’­æ‰“å¼€/å…³é—­è¿žéº¦åŠŸèƒ½
     public static function on_linkcall_set_state_rq($params)
     {
         LogApi::logProcess("on_linkcall_set_state_rq rq:".json_encode($params));
@@ -11,665 +11,757 @@ class linkcall_api
         $user_data  = array();
         $error = array();
         $data_cache = array();
-        //linkcall_set_state_rq°üÊý¾Ý£¬²ð½ârq°ü
+        //linkcall_set_state_rqåŒ…æ•°æ®ï¼Œæ‹†è§£rqåŒ…
         $sid         = $params['sid'];
         $singer_id   = $params['singer_id'];
         $singer_nick = $params['singer_nick'];        
         $op_code     = $params['op_code']; 
 
-        //b_error.info  rs»Ø°ü´íÎóÐÅÏ¢default
+        //b_error.info  rså›žåŒ…é”™è¯¯ä¿¡æ¯default
         $error['code'] = 0;
-        $error['desc'] = '';
-        
-        //³õÊ¼»¯ÓÃ»§Êý¾Ýdata
-        //linkcall_user_data ³õÊ¼»¯ÓÃ»§»º´æÊý¾Ý
-        $user_id     =$data_cache['user_id']     = $user_data['user_id']        = 0;
-        $user_level  =$data_cache['user_nick']   = $user_data['user_nick']      ="";
-        $user_icon   =$data_cache['user_icon']   = $user_data['user_icon']      ="";
-        $user_wealth =$data_cache['user_wealth'] = $user_data['user_wealth']    =0;
-        $user_nick   =$data_cache['user_level']  = $user_data['user_level']     =0;
-        $is_singer   =$data_cache['is_singer']   = $user_data['is_singer']      =0;
-        //³õÊ¼»¯ÓÃ»§¼ÇÂ¼Êý¾Ý
-        $linkcall_apply = $user_data['linkcall_apply']    =0;
-        $time_apply     = $user_data['time_apply']        =0;
-        $time_allow     = $user_data['time_allow']        =0;
-        
-        //linkcall_set_state_rs°ü»Ø°ü£¬default
-        $rs = array();
-        $rs['cmd'] = 'linkcall_set_state_rs';
-        $rs['error'] = $error;
-        $rs['sid'] = $sid;
-        $rs['linkcall_state'] = $linkcall_state = -1;
-        //////////rq°üÑéÖ¤////////////////////////////////////////////////////////////////////////////////////////////////        
+        $error['desc'] = '';      
+
+        $num_apply= 0;
+        $num_link = 0;
+
+        //////////rqåŒ…éªŒè¯////////////////////////////////////////////////////////////////////////////////////////////////        
         do
         {
             if (0 == $sid || (!(0 == $op_code || 1 == $op_code)))
             {
-                // 100000301(301)ÎÞÐ§µÄ²ÎÊý
-                $error['code'] = 100000301;
-                $error['desc'] = 'ÎÞÐ§µÄÇëÇó²ÎÊý';
+                // 403300010(010)æ— æ•ˆçš„å‚æ•°
+                $error['code'] = 403300010;
+                $error['desc'] = 'æ— æ•ˆçš„è¯·æ±‚å‚æ•°';
                 break;
             }
             $m = new linkcall_model();
-            //È¡³öÖ÷²¥Á¬ÂóÔËÐÐ×´Ì¬
+            //å–å‡ºä¸»æ’­è¿žéº¦è¿è¡ŒçŠ¶æ€
             $linkcall_state = $m->get_singer_linkcall_state(&$error,$sid);               
             if (0 != $error['code']) 
             {
-                  //³öÏÖÁËÒ»Ð©Âß¼­´íÎó      
+                  //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯      
                    break;
             }
-            //ÅÐ¶ÏÖ÷²¥ÔËÐÐ×´Ì¬ºÍ±¾´ÎÇëÇóÊÇ·ñºÏÀí
+            //åˆ¤æ–­ä¸»æ’­è¿è¡ŒçŠ¶æ€å’Œæœ¬æ¬¡è¯·æ±‚æ˜¯å¦åˆç†
             if ( $linkcall_state == $op_code)
             {
-                // ºÏÀí£¬Ö÷²¥ÇÐ»»Á¬Âó¹¦ÄÜ,±£´æÖ÷²¥±¾²Ù×÷Á¬Âó×´Ì¬
-                $linkcall_state = !$op_code;
+                // åˆç†ï¼Œä¸»æ’­åˆ‡æ¢è¿žéº¦åŠŸèƒ½,ä¿å­˜ä¸»æ’­æœ¬æ“ä½œè¿žéº¦çŠ¶æ€
+
+                $linkcall_state =  $op_code ? 0: 1;
                 $m->set_singer_linkcall_state(&$error,$sid,$linkcall_state);
                 if (0 != $error['code']) 
                 {
-                      //³öÏÖÁËÒ»Ð©Âß¼­´íÎó      
+                      //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯      
                        break;
                 }
             }
             else
             {
-                // ²»ºÏÀí£¬Ö÷²¥Á¬Âó¹¦ÄÜ¿ª¹Ø×´Ì¬±¾Éí´¦ÓÚ¸Ã×´Ì¬
+                // ä¸åˆç†ï¼Œä¸»æ’­è¿žéº¦åŠŸèƒ½å¼€å…³çŠ¶æ€æœ¬èº«å¤„äºŽè¯¥çŠ¶æ€
                 $error['code'] = 403300011;
-                $error['desc'] = 'Á¬Âó£ºÖ÷²¥µ±Ç°ºÍÐèÒªÉèÖÃµÄÔËÐÐ×´Ì¬Ò»ÖÂ';
+                $error['desc'] = 'è¿žéº¦ï¼šä¸»æ’­å½“å‰å’Œéœ€è¦è®¾ç½®çš„è¿è¡ŒçŠ¶æ€ä¸€è‡´';
                 break;
             }
-            //Âß¼­¹¦ÄÜ/////////////////////////////////////////////////////////////////////////////////////////////////
-            //ÅÐ¶Ï£ºÖ÷²¥ÓÉ¹Ø±Õ×´Ì¬  $LINKCALL_STATE_CLOSED µ½   ¿ªÆô×´Ì¬ $LINKCALL_STATE_OPEN
+            //é€»è¾‘åŠŸèƒ½/////////////////////////////////////////////////////////////////////////////////////////////////
+            //åˆ¤æ–­ï¼šä¸»æ’­ç”±å…³é—­çŠ¶æ€  $LINKCALL_STATE_CLOSED åˆ°   å¼€å¯çŠ¶æ€ $LINKCALL_STATE_OPEN
+
             if (linkcall_model::$LINKCALL_STATE_OPEN == $linkcall_state) 
             {
-                // 1 ¹ã²¥Ö±²¥¼ä£¬µ±Ç°Á¬ÂóÁ¬½Ó×´Ì¬
+                // 1 å¹¿æ’­ç›´æ’­é—´ï¼Œå½“å‰è¿žéº¦è¿žæŽ¥çŠ¶æ€
+
                 $m->linkcall_room_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state);
             }
             else 
             {
-                // 1 ¹ã²¥Ö±²¥¼ä£¬µ±Ç°Á¬ÂóÁ¬½Ó×´Ì¬                
-                $m->linkcall_room_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state);
-                
-                // 2 µ¥²¥µ±Ç°Á¬ÂóËùÓÐÉêÇëÓÃ»§£¬¾Ü¾øÉêÇë
+               
+                // 2 å•æ’­å½“å‰è¿žéº¦æ‰€æœ‰ç”³è¯·ç”¨æˆ·ï¼Œæ‹’ç»ç”³è¯·
                 {
-                    // A ²éÑ¯µ±Ç°Á¬ÂóÉêÇëÁÐ±í£¬È¡³öÁ¬ÂóÉêÇëuser_id
-                    $apply_list=array();
-                    $m->get_user_apply_time_index(&$error,$sid,&$apply_list);
+                    // æŸ¥è¯¢å½“å‰è¿žéº¦ç”³è¯·ä¸ªæ•°
+                    $num_apply = $m->get_user_apply_index_count(&$error,$sid);
                     if (0 != $error['code'])
                     {
-                        //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+                        //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
                         break;
                     }
-                    // B ÓÃ²éÑ¯µ½µÄuser_id£¬µÇ¼ÇÓÃ»§ÉêÇë¼ÇÂ¼£¬È¥ÍÆËÍµ½ÏàÓ¦µÄÓÃ»§£¬Ö÷²¥¾Ü¾øÉêÇë
-                    $linkcall_apply = linkcall_model::LINKCALL_APPLY_NO;
-                    foreach ($apply_list as $uid => $score)
+
+                    // A æŸ¥è¯¢å½“å‰è¿žéº¦ç”³è¯·åˆ—è¡¨ï¼Œå–å‡ºè¿žéº¦ç”³è¯·user_id
+                    $apply_list=array();
+                    $m->get_user_apply_index(&$error,$sid,&$apply_list);
+                    if (0 != $error['code'])
                     {
-                        $data_get = array ();
-                        $data_get['time_apply'] = $score;
-                        $data_get['user_id'] = $uid ;
-                        //¸ù¾Ý $uidµÇ¼ÇÓÃ»§×´Ì¬   Ö÷²¥¾Ü¾ø
-                        $m->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
+                        //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                        break;
+                    }
+
+                    // B ç”¨æŸ¥è¯¢åˆ°çš„user_idï¼Œç™»è®°ç”¨æˆ·ç”³è¯·è®°å½•ï¼ŒåŽ»æŽ¨é€åˆ°ç›¸åº”çš„ç”¨æˆ·ï¼Œä¸»æ’­æ‹’ç»ç”³è¯·
+                    $linkcall_apply1 = linkcall_model::$LINKCALL_APPLY_NO;
+                    foreach ($apply_list as $uid )
+                    {
+
+                        //æ ¹æ® $uidç™»è®°ç”¨æˆ·çŠ¶æ€   ä¸»æ’­æ‹’ç»
+                        $m->set_user_apply_state(&$error,$sid,$uid,$linkcall_apply1);
                         if (0 != $error['code'])
                         {
-                            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+                            //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
                             break;
                         }
-                        //¸ù¾Ý $uidÈ¥ÍÆËÍ¸øÓÃ»§   Ö÷²¥¾Ü¾ø
-                        $m->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
+                        //æ ¹æ® $uidåŽ»æŽ¨é€ç»™ç”¨æˆ·   ä¸»æ’­æ‹’ç»
+                        $m->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$uid);
                         if (0 != $error['code'])
                         {
-                            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+                            //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
                             break;
-                        }
-                        //Çå¿Õµ±Ç°ËùÓÐÉêÇëÁÐ±í
-                        $m->del_user_apply_time_index(&$error,$sid);
-                        if (0 != $error['code'])
-                        {
-                            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                            break;
-                        }
-                        
+                        }                        
                     }
                 }
-                
-                // 3 µ¥²¥Á¬ÂóÁ¬½ÓËùÓÐÓÃ»§£¬¶Ï¿ªÁ¬½Ó
+
+                // 3 å•æ’­è¿žéº¦è¿žæŽ¥æ‰€æœ‰ç”¨æˆ·ï¼Œæ–­å¼€è¿žæŽ¥
                 {
-                    // A ²éÑ¯µ±Ç°Á¬Âólink Á¬½ÓÁÐ±í£¬È¡³öÁ¬ÂóÉêÇëuser_id
-                    $link_list=array();
-                    $m->get_user_link_time_index(&$error,$sid,&$link_list);
+                    // æŸ¥è¯¢å½“å‰è¿žéº¦è¿žæŽ¥ä¸ªæ•°
+                    $num_link = $m->get_user_link_index_count(&$error,$sid);
                     if (0 != $error['code'])
                     {
-                        //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+                        //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
                         break;
                     }
-                    // B ÓÃ²éÑ¯µ½µÄuser_id£¬È¥ÍÆËÍµ½ÏàÓ¦µÄÓÃ»§£¬Ö÷²¥¾Ü¾øÉêÇë
-                    $linkcall_apply = linkcall_model::$LINKCALL_APPLY_DEL;                    
-                    foreach ($link_list as $uid => $score)
+                    
+                    // A æŸ¥è¯¢å½“å‰è¿žéº¦link è¿žæŽ¥åˆ—è¡¨ï¼Œå–å‡ºè¿žéº¦ç”³è¯·user_id
+                    $link_list=array();
+                    $m->get_user_link_index(&$error,$sid,&$link_list);
+                    if (0 != $error['code'])
                     {
-                        $data_get = array ();
-                        $data_get['time_allow'] = $score;
-                        $data_get['user_id'] = $uid ;                        
-                        //¸ù¾Ý $uidµÇ¼ÇÓÃ»§   Ö÷²¥É¾³ý
-                        $m->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
+                        //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                        break;
+                    }
+                    // B ç”¨æŸ¥è¯¢åˆ°çš„user_idï¼ŒåŽ»æŽ¨é€åˆ°ç›¸åº”çš„ç”¨æˆ·ï¼Œä¸»æ’­æ‹’ç»ç”³è¯·
+                    $linkcall_apply2 = linkcall_model::$LINKCALL_APPLY_DEL;                    
+                    foreach ($link_list as $uid )
+                    {                       
+                        //æ ¹æ® $uidç™»è®°ç”¨æˆ·   ä¸»æ’­åˆ é™¤
+                        $m->set_user_apply_state(&$error,$sid,$uid,$linkcall_apply2);
                         if (0 != $error['code'])
                         {
-                            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+                            //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
                             break;
                         }
-                        //¸ù¾Ý $uidÈ¥ÍÆËÍ¸øÓÃ»§   Ö÷²¥É¾³ý
-                        $m->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
+                        //æ ¹æ® $uidåŽ»æŽ¨é€ç»™ç”¨æˆ·   ä¸»æ’­åˆ é™¤
+                        $m->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$uid);
                         if (0 != $error['code'])
                         {
-                            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+                            //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
                             break;
-                        }
-                        //Çå¿Õµ±Ç°ËùÓÐÁ¬½ÓÁÐ±í
-                        $m->del_user_link_time_index(&$error,$sid);
-                        if (0 != $error['code'])
-                        {
-                            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                            break;
-                        }
+                        }   
                     }
                     
                 }
-                // 4 Çå³ý±¾·¿¼äËùÓÐÓÃ»§Á¬Âó×´Ì¬ÁÐ±í
-                $m->del_user_apply_state(&$error,$sid);
+
+                //æ¸…ç©ºå½“å‰æ‰€æœ‰ç”³è¯·åˆ—è¡¨
+                $m->del_user_apply_index(&$error,$sid);
                 if (0 != $error['code'])
                 {
-                    //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
                     break;
                 }
-                                
+
+                //æ¸…ç©ºå½“å‰æ‰€æœ‰è¿žæŽ¥åˆ—è¡¨
+                $m->del_user_link_index(&$error,$sid);
+                if (0 != $error['code'])
+                {
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                    break;
+                }               
+                // 1 å¹¿æ’­ç›´æ’­é—´ï¼Œå½“å‰è¿žéº¦è¿žæŽ¥çŠ¶æ€
+                $m->linkcall_room_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state);
             }
-            $rs['linkcall_state'] = $linkcall_state;
-            
+
+            //é€»è¾‘åŠŸèƒ½ç»“æŸ//////////////////////////////////////////////////////////////////////////////////////////////
+
         }while(FALSE);
-        //rs»Ø°ü
+  
+        //linkcall_set_state_rsåŒ…å›žåŒ…ï¼Œdefault
+        $rs = array();
+        $rs['cmd'] = 'linkcall_set_state_rs';
+        $rs['error'] = $error;
+        $rs['sid'] = $sid;
+        $rs['linkcall_state'] = $linkcall_state;
+        $rs['op_code'] = $op_code;
+        $rs['num_apply'] = $num_apply;
+        $rs['num_link'] = $num_link;     
         $return[] = array
         (
-            'broadcast' => 0,// ·¢rs°ü
+            'broadcast' => 0,// å‘rsåŒ…
             'data' => $rs,
         );
-        LogApi::logProcess("on_linkcall_set_state_rq sid:".$sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcall_set_state_rq sid:".$sid." return:".json_encode($return));
+        LogApi::logProcess("on_linkcall_set_state_rs sid:".$sid." rs:".json_encode($rs));
+        LogApi::logProcess("on_linkcall_set_state_rs sid:".$sid." return:".json_encode($return));
         return $return;  
     }       
 
 
     
-    // BÓÃ»§£¨ÌýÖÚ£©·¢Æð/È¡Ïû/ÍË³öÁ¬Âó
+    // Bç”¨æˆ·ï¼ˆå¬ä¼—ï¼‰å‘èµ·/å–æ¶ˆ/é€€å‡ºè¿žéº¦
     public static function on_linkcall_apply_rq($params)
     {
         $return      = array();
         $user_data  = array();
         $error = array();
         $data_cache = array();
-        LogApi::logProcess("on_linkcall_set_state_rq rq:".json_encode($params));
-        //linkcall_set_state_rq°üÊý¾Ý£¬²ð½ârq°ü        
+        LogApi::logProcess("on_linkcall_apply_rq rq:".json_encode($params));
+        //linkcall_set_state_rqåŒ…æ•°æ®ï¼Œæ‹†è§£rqåŒ…        
         $sid                         = $params['sid'];
         $singer_id                   = $params['singer_id']; 
         $singer_nick                 = $params['singer_nick'];
         $op_code                     = $params['op_code'];
-        $user_data                   = $params['data'];        
+        $user_data                   = $params['data'];
+        
+
         //
-        //³õÊ¼»¯»Ø°üÐÅÏ¢
-        //b_error.info  rs»Ø°ü´íÎóÐÅÏ¢default
+        //åˆå§‹åŒ–å›žåŒ…ä¿¡æ¯
+        //b_error.info  rså›žåŒ…é”™è¯¯ä¿¡æ¯default
         $error['code'] = 0;
         $error['desc'] = '';
         
-        //³õÊ¼»¯ÓÃ»§Êý¾Ýdata
-        //linkcall_user_data ³õÊ¼»¯ÓÃ»§»º´æÊý¾Ý
+        $pppppp = json_encode($user_data);
+        LogApi::logProcess("on_linkcall_apply_rq pppppp:$pppppp");
         
+        //åˆå§‹åŒ–ç”¨æˆ·æ•°æ®data
+        //linkcall_user_data åˆå§‹åŒ–ç”¨æˆ·ç¼“å­˜æ•°æ®    
         $user_id     =$data_cache['user_id']     = $user_data['user_id'];
-        $user_level  =$data_cache['user_nick']   = $user_data['user_nick'];
+        $user_nick  =$data_cache['user_nick']   = $user_data['user_nick'];
         $user_icon   =$data_cache['user_icon']   = $user_data['user_icon'];
         $user_wealth =$data_cache['user_wealth'] = $user_data['user_wealth'];
-        $user_nick   =$data_cache['user_level']  = $user_data['user_level'];
+        $user_level  =$data_cache['user_level']  = $user_data['user_level'];
         $is_singer   =$data_cache['is_singer']   = $user_data['is_singer'];
-        //³õÊ¼»¯ÓÃ»§¼ÇÂ¼Êý¾Ý
+        //åˆå§‹åŒ–ç”¨æˆ·è®°å½•æ•°æ®
         $linkcall_apply = $user_data['linkcall_apply']    =0;
         $time_apply     = $user_data['time_apply']        =0;
-        $time_allow     = $user_data['time_allow']        =0; 
+        $time_allow     = $user_data['time_allow']        =0;
         
-        //linkcall_set_state_rs°ü»Ø°ü£¬default
-        $rs = array();
-        $rs['cmd'] = 'on_linkcall_apply_rs';
-        $rs['error'] = $error;
-        $rs['sid'] = $sid;
-        $rs['time_apply'] = $linkcall_apply;
-        $rs['singer_id']  = $singer_id;
-        $rs['singer_nick']  = $singer_nick;
-        $rs['linkcall_state'] = $linkcall_state = -1;
-        //////////rq°üÑéÖ¤////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////rqåŒ…éªŒè¯////////////////////////////////////////////////////////////////////////////////////////////////
         do
         {
             if (0 == $sid || 0== $singer_id || (!(1 == $op_code || 2 == $op_code || 3 == $op_code)))
             {
-                // 100000301(301)ÎÞÐ§µÄ²ÎÊý
-                $error['code'] = 100000301;
-                $error['desc'] = 'ÎÞÐ§µÄÇëÇó²ÎÊý';
+                // 403300010(010)æ— æ•ˆçš„å‚æ•°
+                $error['code'] = 403300010;
+                $error['desc'] = 'æ— æ•ˆçš„è¯·æ±‚å‚æ•°';
                 break;
             }
             $m = new linkcall_model();
-            //È¡³öÖ÷²¥Á¬ÂóÔËÐÐ×´Ì¬
+            //å–å‡ºä¸»æ’­è¿žéº¦è¿è¡ŒçŠ¶æ€
             $linkcall_state = $m->get_singer_linkcall_state(&$error,$sid);
             if (0 != $error['code'])
             {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
                 break;
             }
-            //ÅÐ¶ÏÖ÷²¥Á¬Âó¹¦ÄÜÊÇ·ñÒÑ¾­¿ªÆô
+            //åˆ¤æ–­ä¸»æ’­è¿žéº¦åŠŸèƒ½æ˜¯å¦å·²ç»å¼€å¯
             if (linkcall_model::$LINKCALL_STATE_CLOSED == $linkcall_state)
             {
-                // 403300012(012)Ö÷²¥Î´¿ªÆôÁ¬Âó×´Ì¬
+                // 403300021(21)ä¸»æ’­æœªå¼€å¯è¿žéº¦çŠ¶æ€
                 $rs['linkcall_state'] = $linkcall_state;
-                $error['code'] = 403300012;
-                $error['desc'] = 'Ö÷²¥Î´¿ªÆôÁ¬Âó×´Ì¬';
+                $error['code'] = 403300021;
+                $error['desc'] = 'ä¸»æ’­æœªå¼€å¯è¿žéº¦çŠ¶æ€';
                 break;
             }
-            //Âß¼­¹¦ÄÜ£¨Ö÷²¥ÊÇ¿ªÆôÁ¬Âó×´Ì¬£©////////////////////////////////////////////////////////////////////////////////
+            //é€»è¾‘åŠŸèƒ½ï¼ˆä¸»æ’­æ˜¯å¼€å¯è¿žéº¦çŠ¶æ€ï¼‰////////////////////////////////////////////////////////////////////////////////
             $linkcall_state = linkcall_model::$LINKCALL_STATE_OPEN;
-            //Çé¾°1£ºÓÃ»§·¢ÆðÁ¬ÂóÉêÇë    1 == $op_code
+            //æƒ…æ™¯1ï¼šç”¨æˆ·å‘èµ·è¿žéº¦ç”³è¯·    1 == $op_code
             if ( 1 == $op_code)
             {
-                //ÓÃ»§·¢ÆðÉêÇë
-                $linkcall_apply = linkcall_model::LINKCALL_APPLY_APPLY;
+                //ç”¨æˆ·å‘èµ·ç”³è¯·
+                $linkcall_apply = linkcall_model::$LINKCALL_APPLY_APPLY;
                 $m->user_apply_apply_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$data_cache,&$linkcall_apply,&$linkcall_state);
             }
             
-            //Çé¾°2£ºÓÃ»§È¡ÏûÁ¬ÂóÉêÇë    2 == $op_code
+            //æƒ…æ™¯2ï¼šç”¨æˆ·å–æ¶ˆè¿žéº¦ç”³è¯·    2 == $op_code
             if ( 2 == $op_code)
             {                       
-                //ÓÃÈ¡ÏûÆðÉêÇë
-                $linkcall_apply = linkcall_model::LINKCALL_APPLY_DESAPPLY;
+                //ç”¨å–æ¶ˆèµ·ç”³è¯·
+                $linkcall_apply = linkcall_model::$LINKCALL_APPLY_DESAPPLY;
                 $m->user_apply_desapply_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_apply,&$linkcall_state);
 
             }
             
-            //Çé¾°3£ºÓÃ»§ÍË³öÁ¬Âó¹¦ÄÜ    3 == $op_code
+            //æƒ…æ™¯3ï¼šç”¨æˆ·é€€å‡ºè¿žéº¦åŠŸèƒ½    3 == $op_code
             if ( 3 == $op_code)
             {
-                //ÓÃ»§ÍË³öÁ¬ÂóÁ¬½Ó
-                $linkcall_apply = linkcall_model::LINKCALL_APPLY_OUT;
+                //ç”¨æˆ·é€€å‡ºè¿žéº¦è¿žæŽ¥
+                $linkcall_apply = linkcall_model::$LINKCALL_APPLY_OUT;
                 $m->user_apply_out_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_apply,&$linkcall_state);
 
             }
         
-            //Âß¼­¹¦ÄÜ£¨Ö÷²¥ÊÇ¿ªÆôÁ¬Âó×´Ì¬£©½áÊø//////////////////////////////////////////////////////////////          
-            
-            //rs »Ø°üÆ´×°
-            $rs['error'] = &$error;
-            $rs['time_apply'] = $linkcall_apply;
-            $rs['linkcall_state'] = $linkcall_state; 
+            //é€»è¾‘åŠŸèƒ½ï¼ˆä¸»æ’­æ˜¯å¼€å¯è¿žéº¦çŠ¶æ€ï¼‰ç»“æŸ//////////////////////////////////////////////////////////////
         }while(FALSE);
-        $return[] = array
-        (
-            'broadcast' => 0,// ·¢rs°ü
-            'data' => $rs,
-        );
-        LogApi::logProcess("on_linkcall_set_state_rq sid:".$sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcall_set_state_rq sid:".$sid." return:".json_encode($return));
+
         return $return;      
     }   
     
     
-    // C Ö÷²¥ÔÊÐí/¾Ü¾ø/É¾³ýÁ¬Âó
+    // C ä¸»æ’­å…è®¸/æ‹’ç»/åˆ é™¤è¿žéº¦
     public static function on_linkcall_allow_rq($params)
     {
         $return      = array();
         $user_data  = array();
         $error = array();
         $data_cache = array();
-        LogApi::logProcess("linkcall_allow_rq rq:".json_encode($params));
-        //linkcall_allow_rq°üÊý¾Ý£¬²ð½ârq°ü        
+        LogApi::logProcess("on_linkcall_allow_rq rq:".json_encode($params));
+
+        //linkcall_allow_rqåŒ…æ•°æ®ï¼Œæ‹†è§£rqåŒ…        
         $sid                         = $params['sid'];
         $singer_id                   = $params['singer_id']; 
         $singer_nick                 = $params['singer_nick'];
         $op_code                     = $params['op_code'];
-        $user_id                     = $params['user_id'];        
+        $user_id                     = $params['user_id'];
+        LogApi::logProcess("on_linkcall_allow_rq 8888 sid:$sid op_code:$op_code  singer_id:$singer_id user_id:$user_id");
         //
-        //³õÊ¼»¯»Ø°üÐÅÏ¢
-        //b_error.info  rs»Ø°ü´íÎóÐÅÏ¢default
+        //åˆå§‹åŒ–å›žåŒ…ä¿¡æ¯
+        //b_error.info  rså›žåŒ…é”™è¯¯ä¿¡æ¯default
         $error['code'] = 0;
         $error['desc'] = '';
-        
-        //³õÊ¼»¯ÓÃ»§Êý¾Ýdata
-        //linkcall_user_data ³õÊ¼»¯ÓÃ»§»º´æÊý¾Ý
-        $user_id     =$data_cache['user_id']     = $user_data['user_id']        = 0;
-        $user_level  =$data_cache['user_nick']   = $user_data['user_nick']      ="";
-        $user_icon   =$data_cache['user_icon']   = $user_data['user_icon']      ="";
-        $user_wealth =$data_cache['user_wealth'] = $user_data['user_wealth']    =0;
-        $user_nick   =$data_cache['user_level']  = $user_data['user_level']     =0;
-        $is_singer   =$data_cache['is_singer']   = $user_data['is_singer']      =0;
-        //³õÊ¼»¯ÓÃ»§¼ÇÂ¼Êý¾Ý
-        $linkcall_apply = $user_data['linkcall_apply']    =0;
-        $time_apply     = $user_data['time_apply']        =0;
-        $time_allow     = $user_data['time_allow']        =0;
-        
-        
-        //linkcall_allow_rs°ü»Ø°ü£¬default
-        $rs = array();
-        $rs['cmd'] = 'linkcall_allow_rs';
-        $rs['error'] = $error;
-        $rs['sid'] = $sid;
-        $rs['time_apply'] = 0;
-        $rs['singer_id']  = $singer_id;
-        $rs['singer_nick']  = $singer_nick;        
-        $rs['op_code'] = $op_code;
-        $rs['data'] = $user_data;
-        //////////rq°üÑéÖ¤////////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////rqåŒ…éªŒè¯////////////////////////////////////////////////////////////////////////////////////////////////
         do
         {
-            if (0 == $sid || 0== $singer_id || (!(1 == $op_code || 2 == $op_code || 3 == $op_code)) )
+            LogApi::logProcess("on_linkcall_allow_rq 9999 sid:$sid op_code:$op_code  singer_id:$singer_id user_id:$user_id");
+            if (0 == $sid || 0== $singer_id || (!(1 == $op_code || 2 == $op_code || 3 == $op_code)) || 0 == $user_id)
             {
-                // 100000301(301)ÎÞÐ§µÄ²ÎÊý
-                $error['code'] = 100000301;
-                $error['desc'] = 'ÎÞÐ§µÄÇëÇó²ÎÊý';
+                // 403300010(010)æ— æ•ˆçš„å‚æ•°
+                $error['code'] = 403300010;
+                $error['desc'] = 'æ— æ•ˆçš„è¯·æ±‚å‚æ•°';
                 break;
             }
-            $m = new linkcall_model();            
+            $m = new linkcall_model();
+            LogApi::logProcess("on_linkcall_allow_rq 9999 sid:$sid op_code:$op_code  singer_id:$singer_id user_id:$user_id");
+                        
 
-            //Âß¼­¹¦ÄÜ£¨Ö÷²¥ÊÇ¿ªÆôÁ¬Âó×´Ì¬£©////////////////////////////////////////////////////////////////////////////////
+            //é€»è¾‘åŠŸèƒ½ï¼ˆä¸»æ’­æ˜¯å¼€å¯è¿žéº¦çŠ¶æ€ï¼‰////////////////////////////////////////////////////////////////////////////////
             $linkcall_state = linkcall_model::$LINKCALL_STATE_OPEN;
-
-            //Çé¾°1£ºÖ÷²¥ÔÊÐíÁ¬ÂóÉêÇë    1 == $op_code
+            LogApi::logProcess("on_linkcall_allow_rq 77777 sid:$sid op_code:$op_code  user_id:$user_id");
+            //æƒ…æ™¯1ï¼šä¸»æ’­å…è®¸è¿žéº¦ç”³è¯·    1 == $op_code
             if ( 1 == $op_code)
             {
-                //Ö÷²¥ÔÊÐíÉêÇë
-                $linkcall_apply = linkcall_model::LINKCALL_APPLY_YES;
+                //ä¸»æ’­å…è®¸ç”³è¯·
+                LogApi::logProcess("on_linkcall_allow_rq 101010 sid:$sid op_code:$op_code  user_id:$user_id");
+                $linkcall_apply = linkcall_model::$LINKCALL_APPLY_YES;
                 $m->singer_apply_yes_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_state,&$linkcall_apply);
             }
 
-            //Çé¾°2£ºÖ÷²¥¾Ü¾øÁ¬ÂóÉêÇë    2 == $op_code
+            //æƒ…æ™¯2ï¼šä¸»æ’­æ‹’ç»è¿žéº¦ç”³è¯·    2 == $op_code
             if ( 2 == $op_code)
             {   
-                //Ö÷²¥¾Ü¾øÉêÇë
+                //ä¸»æ’­æ‹’ç»ç”³è¯·
                 $linkcall_apply = linkcall_model::$LINKCALL_APPLY_NO;
                 $m->singer_apply_no_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_state,&$linkcall_apply);
             }
 
             
-            //Çé¾°3£ºÖ÷²¥É¾³ýÁ¬Âó¹¦ÄÜ    3 == $op_code
+            //æƒ…æ™¯3ï¼šä¸»æ’­åˆ é™¤è¿žéº¦åŠŸèƒ½    3 == $op_code
             if ( 3 == $op_code)
             {
-                //Ö÷²¥É¾³ýÁ¬½Ó
+                //ä¸»æ’­åˆ é™¤è¿žæŽ¥
                 $linkcall_apply = linkcall_model::$LINKCALL_APPLY_DEL;
                 $m->singer_apply_del_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_state,&$linkcall_apply);
             }
  
    
-        //Âß¼­¹¦ÄÜ£¨Ö÷²¥ÊÇ¿ªÆôÁ¬Âó×´Ì¬£©½áÊø////////////////////////////////////////////////////////////////////////////
-            $rs['error'] = $error;
-            //È¡³ö¸ÃÓÃ»§ÐÅÏ¢
-            $m->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$user_data);            
-            $rs['data'] = $user_data;
+        //é€»è¾‘åŠŸèƒ½ï¼ˆä¸»æ’­æ˜¯å¼€å¯è¿žéº¦çŠ¶æ€ï¼‰ç»“æŸ////////////////////////////////////////////////////////////////////////////
+
         }while(FALSE);
-        $return[] = array
-        (
-            'broadcast' => 0,// ·¢rs°ü
-            'data' => $rs,
-        );
-        LogApi::logProcess("on_linkcall_set_state_rq sid:".$sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcall_set_state_rq sid:".$sid." return:".json_encode($return));
-        return $return;      
+        
     }
     
-    // D Ö÷²¥²éÑ¯×îÐÂÉêÇëÁÐ±í
+    // D ä¸»æ’­æŸ¥è¯¢æœ€æ–°ç”³è¯·åˆ—è¡¨
     public static function on_linkcall_list_singer_rq($params)
     {
         $return      = array();
         $user_data  = array();
         $error = array();
         $data_cache = array();
-        LogApi::logProcess("linkcall_list_singer_rq rq:".json_encode($params));
-        //linkcall_allow_rq°üÊý¾Ý£¬²ð½ârq°ü
+        LogApi::logProcess("on_linkcall_list_singer_rq rq:".json_encode($params));
+        //linkcall_allow_rqåŒ…æ•°æ®ï¼Œæ‹†è§£rqåŒ…
         $sid                         = $params['sid'];
-        $singer_id                   = $params['singer_id'];
+        $singer_id                   = $params['singer_id'];        
         $singer_nick                 = $params['singer_nick'];
 
         //
-        //³õÊ¼»¯»Ø°üÐÅÏ¢
-        //b_error.info  rs»Ø°ü´íÎóÐÅÏ¢default
+        //åˆå§‹åŒ–å›žåŒ…ä¿¡æ¯
+        //b_error.info  rså›žåŒ…é”™è¯¯ä¿¡æ¯default
         $error['code'] = 0;
         $error['desc'] = '';
-    
-        //³õÊ¼»¯ÓÃ»§Êý¾Ýdata
-        //linkcall_list_singer_rs ³õÊ¼»¯ÓÃ»§»º´æÊý¾Ý
-        $user_id     =$data_cache['user_id']     = $user_data['user_id']        = 0;
-        $user_level  =$data_cache['user_nick']   = $user_data['user_nick']      ="";
-        $user_icon   =$data_cache['user_icon']   = $user_data['user_icon']      ="";
-        $user_wealth =$data_cache['user_wealth'] = $user_data['user_wealth']    =0;
-        $user_nick   =$data_cache['user_level']  = $user_data['user_level']     =0;
-        $is_singer   =$data_cache['is_singer']   = $user_data['is_singer']      =0;
-        //³õÊ¼»¯ÓÃ»§¼ÇÂ¼Êý¾Ý
-        $linkcall_apply = $user_data['linkcall_apply']    =0;
-        $time_apply     = $user_data['time_apply']        =0;
-        $time_allow     = $user_data['time_allow']        =0;    
-    
-        //linkcall_list_singer_rs°ü»Ø°ü£¬default
+        $datas = array();
+        //////////rqåŒ…éªŒè¯////////////////////////////////////////////////////////////////////////////////////////////////
+        do
+        {
+            $m = new linkcall_model();
+            //å‚æ•°æ˜¯å¦åˆæ³•
+            if (0 == $sid || 0== $singer_id  )
+            {
+                // 403300010(010)æ— æ•ˆçš„å‚æ•°
+                $error['code'] = 403300010;
+                $error['desc'] = 'æ— æ•ˆçš„è¯·æ±‚å‚æ•°';
+                break;
+            }
+            //ä¸»æ’­æ˜¯å¦å¼€å¯è¿žéº¦
+            $linkcall_state = $m->get_singer_linkcall_state(&$error,$sid);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            if ($linkcall_state == linkcall_model::$LINKCALL_STATE_CLOSED) 
+            {
+                //ä¸»æ’­å…³é—­è¿žéº¦ï¼Œç›´æŽ¥è¿”å›žå½“å‰è¿žéº¦çŠ¶æ€ï¼Œè¿žéº¦æ•°æ®ä¸ºç©º     
+                $error['code'] = 403300021;
+                $error['desc'] = 'ä¸»æ’­æœªå¼€å¯è¿žéº¦çŠ¶æ€';
+                $rs['error'] = &$error;
+                $rs['linkcall_state'] = $linkcall_state;
+                $rs['datas'] = $datas;
+            }
+            $m = new linkcall_model();
+            //é€»è¾‘åŠŸèƒ½ï¼ˆä¸»æ’­æ˜¯å¼€å¯è¿žéº¦çŠ¶æ€ï¼‰////////////////////////////////////////////////////////////////////////////////
+
+            //1 å–å‡ºè¯¥ä¸»æ’­æ‰€æœ‰è¿žæŽ¥ç”¨æˆ·datas
+            $m->linkcall_link_all_user_datas(&$error,$sid,&$datas);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            //2 å–å‡ºè¯¥ä¸»æ’­æ‰€æœ‰ç”³è¯·ç”¨æˆ·datas
+            $m->linkcall_link_all_user_datas(&$error,$sid,&$datas);            
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            //é€»è¾‘åŠŸèƒ½ï¼ˆä¸»æ’­æ˜¯å¼€å¯è¿žéº¦çŠ¶æ€ï¼‰ç»“æŸ////////////////////////////////////////////////////////////////////////////
+        }while(FALSE);
         $rs = array();
-        $datas =array();        
         $rs['cmd'] = 'linkcall_allow_rs';
         $rs['error'] = &$error;
         $rs['sid'] = $sid;
         $rs['singer_id']  = $singer_id;
         $rs['singer_nick']  = $singer_nick;
-        $rs['linkcall_state'] = $linkcall_state = -1;
+        $rs['linkcall_state'] = $linkcall_state ;
         $rs['datas'] = $datas;
-        //////////rq°üÑéÖ¤////////////////////////////////////////////////////////////////////////////////////////////////
-        do
-        {
-            $m = new linkcall_model();
-            //²ÎÊýÊÇ·ñºÏ·¨
-            if (0 == $sid || 0== $singer_id  )
-            {
-                // 100000301(301)ÎÞÐ§µÄ²ÎÊý
-                $error['code'] = 100000301;
-                $error['desc'] = 'ÎÞÐ§µÄÇëÇó²ÎÊý';
-                break;
-            }
-            //Ö÷²¥ÊÇ·ñ¿ªÆôÁ¬Âó
-            $linkcall_state = $m->get_singer_linkcall_state(&$error,$sid);
-            if (0 != $error['code'])
-            {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                break;
-            }
-    
-            //Âß¼­¹¦ÄÜ£¨Ö÷²¥ÊÇ¿ªÆôÁ¬Âó×´Ì¬£©////////////////////////////////////////////////////////////////////////////////
-            //Á¬½ÓÓÃ»§ÁÐ±í
-            $link_list =array();
-            //ÉêÇëÓÃ»§ÁÐ±í
-            $apply_list =array();
-    
-            //È¡³öÁ¬½ÓÓÃ»§ÁÐ±íÓÃ»§£¬Æ´×°datas
-            //²éÑ¯µ±Ç°Á¬ÂóÁ¬½ÓÁÐ±í£¬È¡³öÁ¬ÂóÉêÇëuser_id
-            $m->get_user_link_time_index(&$error,$sid,&$link_list);
-            if (0 != $error['code'])
-            {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                break;
-            }
-            //ÓÃ²éÑ¯µ½µÄuser_id£¬È¥Æ´×°datas
-            $linkcall_apply1 = linkcall_model::LINKCALL_APPLY_YES;
-            foreach ($link_list as $uid => $score)
-            {
-                $data_get = array ();
-                $data = array ();
-                $data_get['time_allow'] = $score;
-                $data_get['user_id'] = $uid ;
-                //¸ù¾Ý $uidÈ¥Æ´×°data
-                $m->linkcall_user_link_list_to_data(&$error,$sid,$uid,$linkcall_apply1,&$data);
-                if (0 != $error['code'])
-                {
-                    //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                    break;
-                }
-                $datas[] = $data;
-            }
-            
-            //È¡³öÉêÇëÓÃ»§ÁÐ±íÓÃ»§£¬¼ÌÐøÆ´×°datas
-            //²éÑ¯µ±Ç°Á¬ÂóÉêÇëÁÐ±í£¬È¡³öÁ¬ÂóÉêÇëuser_id
-            $m->get_user_apply_time_index(&$error,$sid,&$apply_list);
-            if (0 != $error['code'])
-            {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                break;
-            }
-            //ÓÃ²éÑ¯µ½µÄuser_id£¬È¥Æ´×°datas
-            $linkcall_apply2 = linkcall_model::LINKCALL_APPLY_APPLY;
-            foreach ($apply_list as $uid => $score)
-            {
-                $data_get = array ();
-                $data = array ();
-                $data_get['time_apply'] = $score;
-                $data_get['user_id'] = $uid ;
-                //¸ù¾Ý $uidÈ¥Æ´×°data
-                $m->linkcall_user_applyt_list_to_data(&$error,$sid,$uid,$linkcall_apply2,&$data);
-                if (0 != $error['code'])
-                {
-                    //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                    break;
-                }
-                $datas[] = $data;
-            }
-            $rs['cmd'] = 'linkcall_allow_rs';
-            $rs['error'] = &$error;
-            $rs['sid'] = $sid;
-            $rs['singer_id']  = $singer_id;
-            $rs['singer_nick']  = $singer_nick;
-            $rs['linkcall_state'] = $linkcall_state ;
-            $rs['datas'] = $datas;
-
-            //Âß¼­¹¦ÄÜ£¨Ö÷²¥ÊÇ¿ªÆôÁ¬Âó×´Ì¬£©½áÊø////////////////////////////////////////////////////////////////////////////
-        }while(FALSE);
         $return[] = array
         (
-            'broadcast' => 0,// ·¢rs°ü
+            'broadcast' => 0,// å‘rsåŒ…
             'data' => $rs,
         );
-        LogApi::logProcess("on_linkcall_set_state_rq sid:".$sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcall_set_state_rq sid:".$sid." return:".json_encode($return));
+        LogApi::logProcess("on_linkcall_list_singer_rs sid:".$sid." rs:".json_encode($rs));
+        LogApi::logProcess("on_linkcall_list_singer_rs sid:".$sid." return:".json_encode($return));
         return $return;
     }
     
-    // E ÓÃ»§£¨Ö÷²¥/ÓÃ»§£©²éÑ¯µ±Ç°×îÐÂÁ¬ÂóÐÅÏ¢
+    // E ç”¨æˆ·ï¼ˆä¸»æ’­/ç”¨æˆ·ï¼‰æŸ¥è¯¢å½“å‰æœ€æ–°è¿žéº¦ä¿¡æ¯
     public static function on_linkcall_list_user_rq($params)
     {
         $return      = array();
         $user_data  = array();
         $error = array();
-        $data_cache = array();
-        LogApi::logProcess("linkcall_list_user_rq rq:".json_encode($params));
-        //linkcall_allow_rq°üÊý¾Ý£¬²ð½ârq°ü
-        $sid                         = $params['sid'];
-        $singer_id                   = $params['singer_id'];
-        $singer_nick                 = $params['singer_nick'];       
-    
-        //
-        //³õÊ¼»¯»Ø°üÐÅÏ¢
-        //b_error.info  rs»Ø°ü´íÎóÐÅÏ¢default
         $error['code'] = 0;
         $error['desc'] = '';
+        $data_cache = array();
+        LogApi::logProcess("on_linkcall_list_user_rq rq:".json_encode($params));
+        //linkcall_allow_rqåŒ…æ•°æ®ï¼Œæ‹†è§£rqåŒ…
+        $sid                         = $params['sid'];
+        $singer_id                   = $params['singer_id'];
+        //æŸ¥è¡¨å–å‡ºç”¨æˆ·å’Œä¸»æ’­ä¿¡æ¯
+        $userInfo = new UserInfoModel();
+        //$info_user = $userInfo->getInfoById($user_id);
+        $info_singer = $userInfo->getInfoById($singer_id);
+        $singer_nick = $info_singer['nick'];      
     
-        //³õÊ¼»¯ÓÃ»§Êý¾Ýdata
-        //linkcall_list_singer_rs ³õÊ¼»¯ÓÃ»§»º´æÊý¾Ý
-        $user_id     =$data_cache['user_id']     = $user_data['user_id']        = 0;
-        $user_level  =$data_cache['user_nick']   = $user_data['user_nick']      ="";
-        $user_icon   =$data_cache['user_icon']   = $user_data['user_icon']      ="";
-        $user_wealth =$data_cache['user_wealth'] = $user_data['user_wealth']    =0;
-        $user_nick   =$data_cache['user_level']  = $user_data['user_level']     =0;
-        $is_singer   =$data_cache['is_singer']   = $user_data['is_singer']      =0;
-        //³õÊ¼»¯ÓÃ»§¼ÇÂ¼Êý¾Ý
-        $linkcall_apply = $user_data['linkcall_apply']    =0;
-        $time_apply     = $user_data['time_apply']        =0;
-        $time_allow     = $user_data['time_allow']        =0;
-    
-        //linkcall_list_singer_rs°ü»Ø°ü£¬default
-        $rs = array();
+        //
+        //åˆå§‹åŒ–å›žåŒ…ä¿¡æ¯
+        //b_error.info  rså›žåŒ…é”™è¯¯ä¿¡æ¯default
+
         $datas =array();
+
+        //////////rqåŒ…éªŒè¯////////////////////////////////////////////////////////////////////////////////////////////////
+        do
+        {
+            $m = new linkcall_model();
+            //å‚æ•°æ˜¯å¦åˆæ³•
+            if (0 == $sid || 0== $singer_id  )
+            {
+                // 403300010(010)æ— æ•ˆçš„å‚æ•°
+                $error['code'] = 403300010;
+                $error['desc'] = 'æ— æ•ˆçš„è¯·æ±‚å‚æ•°';
+                break;
+            }
+            //ä¸»æ’­æ˜¯å¦å¼€å¯è¿žéº¦
+            $linkcall_state = $m->get_singer_linkcall_state(&$error,$sid);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            if ($linkcall_state == linkcall_model::$LINKCALL_STATE_CLOSED)
+            {
+                //ä¸»æ’­å…³é—­è¿žéº¦ï¼Œç›´æŽ¥è¿”å›žå½“å‰è¿žéº¦çŠ¶æ€ï¼Œè¿žéº¦æ•°æ®ä¸ºç©º     
+                $error['code'] = 403300021;
+                $error['desc'] = 'ä¸»æ’­æœªå¼€å¯è¿žéº¦çŠ¶æ€';
+                $rs['error'] = &$error;
+                $rs['linkcall_state'] = $linkcall_state;
+                $rs['datas'] = $datas;
+            }
+            $m = new linkcall_model();
+            //é€»è¾‘åŠŸèƒ½ï¼ˆä¸»æ’­æ˜¯å¼€å¯è¿žéº¦çŠ¶æ€ï¼‰////////////////////////////////////////////////////////////////////////////////
+
+            //1 å–å‡ºè¯¥ä¸»æ’­æ‰€æœ‰è¿žæŽ¥ç”¨æˆ·datas
+            $m->linkcall_link_all_user_datas(&$error,$sid,&$datas);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+
+            //é€»è¾‘åŠŸèƒ½ï¼ˆä¸»æ’­æ˜¯å¼€å¯è¿žéº¦çŠ¶æ€ï¼‰ç»“æŸ////////////////////////////////////////////////////////////////////////////
+        }while(FALSE);
+        //æ‹¼è£…å›žåŒ…
+        //linkcall_list_singer_rsåŒ…å›žåŒ…
+        $rs = array();
         $rs['cmd'] = 'linkcall_list_user_rs';
         $rs['error'] = &$error;
         $rs['sid'] = $sid;
         $rs['singer_id']  = $singer_id;
         $rs['singer_nick']  = $singer_nick;
-        $rs['linkcall_state'] = $linkcall_state = -1;
+        $rs['linkcall_state'] = $linkcall_state ;
         $rs['datas'] = $datas;
-        //////////rq°üÑéÖ¤////////////////////////////////////////////////////////////////////////////////////////////////
-        do
-        {
-            $m = new linkcall_model();
-            //²ÎÊýÊÇ·ñºÏ·¨
-            if (0 == $sid || 0== $singer_id  )
-            {
-                // 100000301(301)ÎÞÐ§µÄ²ÎÊý
-                $error['code'] = 100000301;
-                $error['desc'] = 'ÎÞÐ§µÄÇëÇó²ÎÊý';
-                break;
-            }
-            //Ö÷²¥ÊÇ·ñ¿ªÆôÁ¬Âó
-            $linkcall_state = $m->get_singer_linkcall_state(&$error,$sid);
-            if (0 != $error['code'])
-            {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                break;
-            }
-    
-            //Âß¼­¹¦ÄÜ£¨Ö÷²¥ÊÇ¿ªÆôÁ¬Âó×´Ì¬£©////////////////////////////////////////////////////////////////////////////////
-            //Á¬½ÓÓÃ»§ÁÐ±í
-            $link_list =array();
-    
-            //È¡³öÁ¬½ÓÓÃ»§ÁÐ±íÓÃ»§£¬Æ´×°datas
-            //²éÑ¯µ±Ç°Á¬ÂóÁ¬½ÓÁÐ±í£¬È¡³öÁ¬ÂóÉêÇëuser_id
-            $m->get_user_link_time_index(&$error,$sid,&$link_list);
-            if (0 != $error['code'])
-            {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                break;
-            }
-            //ÓÃ²éÑ¯µ½µÄuser_id£¬È¥Æ´×°datas
-            $linkcall_apply = linkcall_model::LINKCALL_APPLY_YES;
-            foreach ($link_list as $uid => $score)
-            {
-                $data_get = array ();
-                $data = array ();
-                $data_get['time_allow'] = $score;
-                $data_get['user_id'] = $uid ;
-                //¸ù¾Ý $uidÈ¥Æ´×°data
-                $m->linkcall_user_link_list_to_data(&$error,$sid,$uid,$linkcall_apply,&$data);
-                if (0 != $error['code'])
-                {
-                    //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                    break;
-                }
-                $datas[] = $data;
-            }
-
-            $rs['cmd'] = 'linkcall_allow_rs';
-            $rs['error'] = &$error;
-            $rs['sid'] = $sid;
-            $rs['singer_id']  = $singer_id;
-            $rs['singer_nick']  = $singer_nick;
-            $rs['linkcall_state'] = $linkcall_state ;
-            $rs['datas'] = $datas;
-    
-            //Âß¼­¹¦ÄÜ£¨Ö÷²¥ÊÇ¿ªÆôÁ¬Âó×´Ì¬£©½áÊø////////////////////////////////////////////////////////////////////////////
-        }while(FALSE);
+        
         $return[] = array
         (
-            'broadcast' => 0,// ·¢rs°ü
+            'broadcast' => 0,// å‘rsåŒ…
             'data' => $rs,
         );
-        LogApi::logProcess("on_linkcall_set_state_rq sid:".$sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcall_set_state_rq sid:".$sid." return:".json_encode($return));
+        LogApi::logProcess("on_linkcall_list_user_rs sid:".$sid." rs:".json_encode($rs));
+        LogApi::logProcess("on_linkcall_list_user_rs sid:".$sid." return:".json_encode($return));
         return $return;
     } 
     
     
+    // 1 ç”¨æˆ·è¿›å…¥ç›´æ’­é—´
+    public static function on_linkcall_user_in($params)
+    {
+        //å®¢æˆ·ç«¯ç”¨æˆ·è¿›å…¥æŸ¥è¯¢è¿žéº¦ä¿¡æ¯
+        $m = new linkcall_api();
+        $m->on_linkcall_list_user_rq($params);
+    }
     
     
+    // 2 ç”¨æˆ·é€€å‡ºç›´æ’­é—´
+    public static function on_linkcall_user_out($params,&$return)
+    {
+        $error = array();
+        $error['code'] = 0;
+        $error['desc'] = '';
+        $sid = $params['sid'];
+        $user_id = $params['uid'];
+        $singer_id   = $params['singer_id'];
+        //æŸ¥è¡¨å–å‡ºç”¨æˆ·å’Œä¸»æ’­ä¿¡æ¯
+        $userInfo = new UserInfoModel();
+        //$info_user = $userInfo->getInfoById($user_id);
+        $info_singer = $userInfo->getInfoById($singer_id);
+        $singer_nick = $info_singer['nick'];
+        //ç”¨æˆ·æ˜¯å¦åœ¨è¿žéº¦åŠŸèƒ½å½“ä¸­
+        do
+        {
+            $m = new linkcall_model();
+            //æŸ¥è¯¢è¿žéº¦çŠ¶æ€è¡¨
+            $linkcall_state = $m->get_singer_linkcall_state(&$error,$sid);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            //æŸ¥è¯¢è‡ªå·±æ˜¯å¦åœ¨è¿žéº¦ç”³è¯·åˆ—è¡¨ä¸­
+            $is_apply = $m->find_user_apply_index(&$error,$sid,$user_id);
+            if (false == $is_apply )
+            {
+                //ä¸åœ¨ç”³è¯·åˆ—è¡¨ï¼Œé€€å‡º
+                break;
+            }
+            else 
+            {
+                //ç”¨å–æ¶ˆèµ·ç”³è¯·
+                $linkcall_apply = linkcall_model::$LINKCALL_APPLY_DESAPPLY;
+                $m->user_apply_desapply_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_apply,&$linkcall_state);
+            }
+                
+            //æŸ¥è¯¢è‡ªå·±æ˜¯å¦åœ¨è¿žéº¦è¿žæŽ¥åˆ—è¡¨ä¸­
+            $is_allow = $m->find_user_apply_index(&$error,$sid,$user_id);
+            if (false == $is_allow )
+            {
+                //ä¸åœ¨ç”³è¯·åˆ—è¡¨ï¼Œé€€å‡º
+                break;
+            }
+            else
+            {
+                //ç”¨é€€å‡ºè¿žéº¦
+                $linkcall_apply = linkcall_model::$LINKCALL_APPLY_OUT;
+                $m->user_apply_out_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_apply,&$linkcall_state);
+            }   
+        }while(FALSE); 
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("on_linkcall_user_out error:".json_encode($error));;
+        }
+        
+    }
+    
+    // 3 ä¸»æ’­æˆ·è¿›å…¥ç›´æ’­é—´
+    public static function on_linkcall_singer_start($params)
+    {
+        //å®¢æˆ·ç«¯ä¸»æ’­è¿›å…¥æŸ¥è¯¢è¿žéº¦ä¿¡æ¯
+        //ä¸»æ’­æŸ¥è¯¢æœ€æ–°ç”³è¯·åˆ—è¡¨        
+        //$m = new linkcall_api();
+        //$m->on_linkcall_list_singer_rq($params);
+    }
     
     
+    // 4 ä¸»æ’­é€€å‡ºç›´æ’­é—´
+    public static function on_linkcall_singer_over($params,&$return)
+    {
+        $error = array();
+        $error['code'] = 0;
+        $error['desc'] = '';
+        
+        $sid         = $params['sid'];
+        $singer_id   = $params['singer_id'];
+        //æŸ¥è¡¨å–å‡ºç”¨æˆ·å’Œä¸»æ’­ä¿¡æ¯
+        $userInfo = new UserInfoModel();
+        //$info_user = $userInfo->getInfoById($user_id);
+        $info_singer = $userInfo->getInfoById($singer_id);
+        $singer_nick = $info_singer['nick'];
+ 
+        //æŸ¥è¯¢ä¸»æ’­æ˜¯å¦åœ¨è¿žéº¦å½“ä¸­        
+        do
+        {
+            //1æ‹’ç»æ‰€æœ‰è¿žéº¦///////////////////////////////////////////////////////////////////////////////////
+            $m = new linkcall_model();
+            //æŸ¥è¯¢è¿žéº¦çŠ¶æ€è¡¨
+            $linkcall_state = $m->get_singer_linkcall_state(&$error,$sid);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            
+            
+            //æŸ¥è¯¢å½“å‰è¿žéº¦ç”³è¯·åˆ—è¡¨ï¼Œå–å‡ºè¿žéº¦ç”³è¯·user_id
+            $apply_list=array();
+            $m->get_user_apply_index(&$error,$sid,&$apply_list);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            //ç”¨æŸ¥è¯¢åˆ°çš„user_idï¼ŒåŽ»æŽ¨é€åˆ°ç›¸åº”çš„ç”¨æˆ·ï¼Œä¸»æ’­æ‹’ç»ç”³è¯·
+            $linkcall_apply_for_a = linkcall_model::$LINKCALL_APPLY_NO;
+            foreach ($apply_list as $uid)
+            {
+                $data_get = array ();
+                //æ ¹æ® $uidä¿®æ”¹å½“å‰ç”¨æˆ·çš„ç”³è¯·çŠ¶æ€ä¸º   ä¸»æ’­æ‹’ç»
+                $m->set_user_apply_state(&$error,$sid,$uid,$linkcall_apply_for_a);
+                if (0 != $error['code'])
+                {
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                    break;
+                }
+                //æ ¹æ® $uidåŽ»æŽ¨é€ç»™ç”¨æˆ·   ä¸»æ’­æ‹’ç»     
+                $m->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$uid);                
+                if (0 != $error['code'])
+                {
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                    break;
+                }
+            }
+            // ç”±äºŽä¸»é€€å‡ºè¿žéº¦ï¼Œæ¸…ç©ºç”³è¯·åˆ—è¡¨
+            $m->del_user_apply_index(&$error,$sid);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            //2æ–­å¼€æ‰€æœ‰è¿žéº¦////////////////////////////////////////////////////////////////////////////////////////////
+            //æŸ¥è¯¢å½“å‰è¿žéº¦ç”³è¯·åˆ—è¡¨ï¼Œå–å‡ºè¿žéº¦ç”³è¯·user_id
+            $allow_list=array();
+            $m->get_user_link_index(&$error,$sid,&$link_list);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            //ç”¨æŸ¥è¯¢åˆ°çš„user_idï¼ŒåŽ»æŽ¨é€åˆ°ç›¸åº”çš„ç”¨æˆ·ï¼Œä¸»æ’­æ–­å¼€è¿žéº¦
+            $linkcall_apply_for_l = linkcall_model::$LINKCALL_APPLY_DEL;
+            foreach ($allow_list as $uid => $score)
+            {
+                //æ ¹æ® $uidä¿®æ”¹å½“å‰ç”¨æˆ·çš„ç”³è¯·çŠ¶æ€ä¸º   ä¸»æ’­æ‹’ç»
+                $m->set_user_apply_state(&$error,$sid,$uid,$linkcall_apply_for_l);
+                if (0 != $error['code'])
+                {
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                    break;
+                }
+                //æ ¹æ® $uidåŽ»æŽ¨é€ç»™ç”¨æˆ·   ä¸»æ’­æ‹’ç»
+                $m->linkcall_user_state_nt(&$error,&$return,$sid,$uid,$singer_nick,$linkcall_state,$user_id);
+                if (0 != $error['code'])
+                {
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                    break;
+                }
+            }
+            // ç”±äºŽä¸»é€€å‡ºè¿žéº¦ï¼Œæ¸…ç©ºè¿žéº¦åˆ—è¡¨
+            $m->del_user_link_index(&$error,$sid);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            //æ¸…ç©ºç¼“å­˜////////////////////////////////////////////////////////////////////////////////////////////
+            //1 æ¸…ç©ºæˆ¿é—´ç”¨æˆ·ç¼“å­˜
+            $m->del_user_data_json(&$error,$sid);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+ 
+            //2 æ¸…ç©ºæˆ¿é—´ç”¨æˆ·ç”³è¯·çŠ¶æ€
+            $m->del_user_apply_state(&$error,$sid);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }  
+            
+            //3 æ¸…ç©ºæˆ¿é—´è¿žéº¦ç”³è¯·æ—¶é—´
+            $m->del_user_apply_time(&$error,$sid);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            
+            //4 æ¸…ç©ºæˆ¿é—´è¿žéº¦è¿žæŽ¥æ—¶é—´
+            $m->del_user_link_time(&$error,$sid);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            
+        }while(FALSE);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("on_linkcall_user_out error:".json_encode($error));;
+        }
+    }
     
     
 }

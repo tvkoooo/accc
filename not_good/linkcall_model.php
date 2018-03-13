@@ -6,104 +6,115 @@
     {
         parent::__construct();
     }
-    //Linkcall ³£Á¿£º  
-    public static $LINKCALL_STATE_OPEN       = 0;//Á¬Âó¹¦ÄÜ¿ªÆô
-    public static $LINKCALL_STATE_CLOSED     = 1;//Á¬Âó¹¦ÄÜ¹Ø±Õ
+    //Linkcall å¸¸é‡ï¼š  
+    public static $LINKCALL_STATE_OPEN       = 0;//è¿žéº¦åŠŸèƒ½å¼€å¯
+    public static $LINKCALL_STATE_CLOSED     = 1;//è¿žéº¦åŠŸèƒ½å…³é—­
     
-    public static $LINKCALL_APPLY_COUNT_MAX  = 3;//Á¬Âó×î´óÉêÇë´ÎÊý
-    public static $LINKCALL_LINK_COUNT_MAX   = 2;//Á¬Âó×î´óÁ¬½ÓÌõÊý
-    public static $LINKCALL_EXP_TIME         = 3*24*60*60;//Ä¬ÈÏÁ¬ÂóredisÎÞ²Ù×÷×î´ó»º´æÊ±³¤£¨3Ìì£©
-    public static $LINKCALL_EXP_60_STIME     = 60;//Ä¬ÈÏÁ¬ÂóÉêÇëÔÚ60sÄÚ£¬ÓÐ3´ÎÉêÇëÅÐ¶ÏÎªÉ§ÈÅ
+    public static $LINKCALL_APPLY_COUNT_MAX  = 3;//è¿žéº¦æœ€å¤§ç”³è¯·æ¬¡æ•°
+    public static $LINKCALL_LINK_COUNT_MAX   = 2;//è¿žéº¦æœ€å¤§è¿žæŽ¥æ¡æ•°
+    public static $LINKCALL_EXP_TIME         = 259200;//é»˜è®¤è¿žéº¦redisæ— æ“ä½œæœ€å¤§ç¼“å­˜æ—¶é•¿ï¼ˆ3å¤©ï¼‰
+    public static $LINKCALL_EXP_60_STIME     = 60;//é»˜è®¤è¿žéº¦ç”³è¯·åœ¨60så†…ï¼Œæœ‰3æ¬¡ç”³è¯·åˆ¤æ–­ä¸ºéªšæ‰°
     
-    public static $LINKCALL_APPLY_DEFAULT    = 0;//ÓÃ»§Á¬Âó default
-    public static $LINKCALL_APPLY_APPLY      = 1;//ÓÃ»§Á¬ÂóÉêÇë
-    public static $LINKCALL_APPLY_DESAPPLY   = 2;//ÓÃ»§ÍË³öÉêÇë
-    public static $LINKCALL_APPLY_OUT        = 3;//ÓÃ»§¶Ï¿ªÁ¬Âó    
-    public static $LINKCALL_APPLY_YES        = 4;//Ö÷²¥Í¬ÒâÉêÇë
-    public static $LINKCALL_APPLY_NO         = 5;//Ö÷²¥¾Ü¾øÉêÇë
-    public static $LINKCALL_APPLY_DEL        = 6;//Ö÷²¥É¾³ýÁ¬Âó
+    public static $LINKCALL_APPLY_DEFAULT    = 0;//ç”¨æˆ·è¿žéº¦ default
+    public static $LINKCALL_APPLY_APPLY      = 1;//ç”¨æˆ·è¿žéº¦ç”³è¯·
+    public static $LINKCALL_APPLY_DESAPPLY   = 2;//ç”¨æˆ·é€€å‡ºç”³è¯·
+    public static $LINKCALL_APPLY_OUT        = 3;//ç”¨æˆ·æ–­å¼€è¿žéº¦    
+    public static $LINKCALL_APPLY_YES        = 4;//ä¸»æ’­åŒæ„ç”³è¯·
+    public static $LINKCALL_APPLY_NO         = 5;//ä¸»æ’­æ‹’ç»ç”³è¯·
+    public static $LINKCALL_APPLY_DEL        = 6;//ä¸»æ’­åˆ é™¤è¿žéº¦
 
     
-    public static $LINKCALL_APPLY_MAX_PLAYER = 10;//×î´óÁ¬ÂóÉêÇë¸öÊý    
+    public static $LINKCALL_APPLY_MAX_PLAYER = 10;//æœ€å¤§è¿žéº¦ç”³è¯·ä¸ªæ•°    
     
-    // redis Ö÷²¥Á¬Âó¹¦ÄÜÔËÐÐ×´Ì¬»º´æ£º 
+    // redis ä¸»æ’­è¿žéº¦åŠŸèƒ½è¿è¡ŒçŠ¶æ€ç¼“å­˜ï¼š 
     public static function linkcall_state_searc_center_hash_key()
     {
         return "linkcall:state:searc:center:hash";
     }
-    // redis Á¬ÂóÓÃ»§Êý¾Ý»º´æ:£¨²»»áÊµÊ±Í¬²½£¬±¾»ØºÏÓÐÐ§£¬±ÜÃâÆµ·±²éÑ¯mysql£©
+    // redis è¿žéº¦ç”¨æˆ·æ•°æ®ç¼“å­˜:ï¼ˆä¸ä¼šå®žæ—¶åŒæ­¥ï¼Œæœ¬å›žåˆæœ‰æ•ˆï¼Œé¿å…é¢‘ç¹æŸ¥è¯¢mysqlï¼‰
     public static function linkcall_user_data_json_hash_key($sid)
     {
         return "linkcall:user:data:json:hash:$sid";
     }  
-    // redis ·¿¼äÄÚÓÃ»§Á¬ÂóÉêÇëË÷Òý£¨¼ÇÂ¼Á¬ÂóÉêÇëÊ±¼ä´Á£©
+    // redis æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·ç´¢å¼•ï¼ˆè®°å½•è¿žéº¦ç”³è¯·æ—¶é—´æˆ³ï¼‰
     public static function linkcall_user_data_apply_indexes_zset_key($sid)
     {
         return "linkcall:user:data:apply:indexes:zset:$sid";
     }
-    // redis ·¿¼äÄÚÓÃ»§Á¬Âó60sÖØ¸´ÉêÇëÅÐ¶Ï
+    // redis æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·å½“å‰åˆ—è¡¨ï¼ˆå½“å‰ç”³è¯·çš„äººæ•°ï¼‰
+    public static function linkcall_user_data_apply_set_key($sid)
+    {
+        return "linkcall:user:data:apply:set:$sid";
+    }   
+    
+    // redis æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦60sé‡å¤ç”³è¯·åˆ¤æ–­
     public static function linkcall_user_data_apply_indexes_60s_zset_key($sid,$uid)
     {
         return "linkcall:user:data:apply:indexes:60s:zset:$sid:$uid";
     }  
-    // redis ·¿¼äÄÚÓÃ»§Á¬ÂóÁ¬Í¨Ë÷Òý£¨¼ÇÂ¼Á¬ÂóÁ¬Í¨Ê±¼ä´Á£©
+    // redis æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦è¿žé€šç´¢å¼•ï¼ˆè®°å½•è¿žéº¦è¿žé€šæ—¶é—´æˆ³ï¼‰
     public static function linkcall_user_data_link_indexes_zset_key($sid)
     {
         return "linkcall:user:data:link:indexes:zset:$sid";
-    }   
-    // redis ·¿¼äÄÚÓÃ»§Á¬ÂóÉêÇë×´Ì¬Ë÷Òý£¨¼ÇÂ¼Á¬ÂóÉêÇë×´Ì¬£©
+    } 
+    // redis æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦è¿žæŽ¥å½“å‰åˆ—è¡¨ï¼ˆå½“å‰è¿žæŽ¥çš„äººæ•°ï¼‰
+    public static function linkcall_user_data_link_set_key($sid)
+    {
+        return "linkcall:user:data:link:indexes:set:$sid";
+    }
+    // redis æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·çŠ¶æ€ç´¢å¼•ï¼ˆè®°å½•è¿žéº¦ç”³è¯·çŠ¶æ€ï¼‰
     public static function linkcall_user_data_state_indexes_hash_key($sid)
     {
         return "linkcall:user:data:state:indexes:hash:$sid";
     } 
 
-    //1.1    redis Ð´Èë     Ö÷²¥Á¬Âó¹¦ÄÜÔËÐÐ×´Ì¬»º´æ£º
+    //1.1    redis å†™å…¥     ä¸»æ’­è¿žéº¦åŠŸèƒ½è¿è¡ŒçŠ¶æ€ç¼“å­˜ï¼š
     public function set_singer_linkcall_state(&$error,$sid,$linkcall_state)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
     
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
                 LogApi::logProcess("linkcall_model.set_singer_linkcall_state.redis: sid:$sid linkcall_state:$linkcall_state");
                 break;
             }
-            $key_linkcall_state = linkcall_model::linkcall_state_searc_center_hash_key();
-            $redis->hSet($key_linkcall_state,$sid,$linkcall_state);
+            $key = linkcall_model::linkcall_state_searc_center_hash_key();
+            $redis->hSet($key,$sid,$linkcall_state);
             
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
     }
     
-    // 1.2    redis ¶Á³ö     Ö÷²¥Á¬Âó¹¦ÄÜÔËÐÐ×´Ì¬»º´æ£º
+    // 1.2    redis è¯»å‡º     ä¸»æ’­è¿žéº¦åŠŸèƒ½è¿è¡ŒçŠ¶æ€ç¼“å­˜ï¼š
     public function get_singer_linkcall_state(&$error,$sid)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
         $linkcall_state = 0;
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
                 LogApi::logProcess("linkcall_model.get_singer_linkcall_state.redis: sid:$sid");
                 break;
             }
-            $key_linkcall_state = linkcall_model::linkcall_state_searc_center_hash_key();
-            $v=$redis->hGet($key_linkcall_state,$sid);
+            $key = linkcall_model::linkcall_state_searc_center_hash_key();
+            $v=$redis->hGet($key,$sid);
             if(true == empty($v))
             {
-                // ¿ÕÖµ,$V ¸ø¸öÄ¬ÈÏ¿ªÆô×´Ì¬
+                // ç©ºå€¼,$V ç»™ä¸ªé»˜è®¤å¼€å¯çŠ¶æ€
                 $v = linkcall_model::$LINKCALL_STATE_OPEN;
             }
             $linkcall_state=$v;
@@ -113,68 +124,68 @@
         return $linkcall_state;
     }
     
-    //2.1  redis Ð´Èë     Á¬ÂóÓÃ»§Êý¾Ý»º´æ:£¨²»»áÊµÊ±Í¬²½£¬±¾»ØºÏÓÐÐ§£¬±ÜÃâÆµ·±²éÑ¯mysql£©
+    //2.1  redis å†™å…¥     è¿žéº¦ç”¨æˆ·æ•°æ®ç¼“å­˜:ï¼ˆä¸ä¼šå®žæ—¶åŒæ­¥ï¼Œæœ¬å›žåˆæœ‰æ•ˆï¼Œé¿å…é¢‘ç¹æŸ¥è¯¢mysqlï¼‰
     public function set_user_data_json(&$error,$sid,$user_id,&$data_cache)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
     
         do
-        {
+        {            
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
-                LogApi::logProcess("linkcall_model.set_user_data_json.redis£ºsid:$sid user_id:$user_id");
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.set_user_data_json.redisï¼šsid:$sid user_id:$user_id");
                 break;
             }
             $exp_time =linkcall_model::$LINKCALL_EXP_TIME;
-            $key_linkcall_user_data_json = linkcall_model::linkcall_user_data_json_hash_key($sid); 
-            $redis->hSet($key_linkcall_user_data_json,$user_id,json_encode($data_cache));
-            $redis->expire($key_linkcall_user_data_json,$exp_time);
-            LogApi::logProcess("linkcall_model.set_user_data_json.hset£ºsid:$sid user_id:$user_id data_cache:".json_encode($data_cache));
+            $key = linkcall_model::linkcall_user_data_json_hash_key($sid); 
+            $redis->hSet($key,$user_id,json_encode($data_cache));
+            $redis->expire($key,$exp_time);
+            LogApi::logProcess("linkcall_model.set_user_data_json.hsetï¼šsid:$sid user_id:$user_id data_cache:".json_encode($data_cache));
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
     } 
     
-    //2.2    redis ¶Á³ö     Á¬ÂóÓÃ»§Êý¾Ý»º´æ:£¨²»»áÊµÊ±Í¬²½£¬±¾»ØºÏÓÐÐ§£¬±ÜÃâÆµ·±²éÑ¯mysql£©
+    //2.2    redis è¯»å‡º     è¿žéº¦ç”¨æˆ·æ•°æ®ç¼“å­˜:ï¼ˆä¸ä¼šå®žæ—¶åŒæ­¥ï¼Œæœ¬å›žåˆæœ‰æ•ˆï¼Œé¿å…é¢‘ç¹æŸ¥è¯¢mysqlï¼‰
     public function get_user_data_json(&$error,$sid,$user_id,&$data_cache)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
     
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';                
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';                
                 LogApi::logProcess("linkcall_model.get_user_data_json.redis: sid:$sid user_id:$user_id");
                 break;
             }
-            $key_linkcall_user_data_json = linkcall_model::linkcall_user_data_json_hash_key($sid);            
-            $linkcall_user_data_json = $redis->hGet($key_linkcall_user_data_json,$user_id);
+            $key = linkcall_model::linkcall_user_data_json_hash_key($sid);            
+            $linkcall_user_data_json = $redis->hGet($key,$user_id);
             if(true == empty($linkcall_user_data_json))
             {
-                // 200000099(099)¶ÁÈ¡Êý¾ÝÎª¿Õ
-                $error['code'] = 200000099;
-                $error['desc'] = 'ÎÞÓÃ»§»º´æÊý¾Ý';
+                // 403300012(012)è¯»å–æ•°æ®ä¸ºç©º
+                $error['code'] = 403300012;
+                $error['desc'] = 'æ— ç”¨æˆ·ç¼“å­˜æ•°æ®';
                 LogApi::logProcess("linkcall_model.get_user_data_json.hget: sid:$sid user_id:$user_id");
                 break;
             }
-            LogApi::logProcess("linkcall_model.get_user_data_json£ºsid:$sid user_id:$user_id linkcall_user_data_json:$linkcall_user_data_json");
+            //LogApi::logProcess("linkcall_model.get_user_data_jsonï¼šsid:$sid user_id:$user_id linkcall_user_data_json:$linkcall_user_data_json");
             $v = json_decode($linkcall_user_data_json, true);
             if(true == empty($v))
             {
-                // 100000001(001)½â°üÊ§°Ü
-                $error['code'] = 100000001;
-                $error['desc'] = '½â°üÊ§°Ü';
-                LogApi::logProcess("linkcall_model.get_user_data_json.hget.json½â°üÊ§°Ü  user_id:$user_id");
+                // 403300013(013)è§£åŒ…å¤±è´¥
+                $error['code'] = 403300013;
+                $error['desc'] = 'jsonè§£åŒ…å¤±è´¥';
+                LogApi::logProcess("linkcall_model.get_user_data_json.hget.jsonè§£åŒ…å¤±è´¥  user_id:$user_id");
                 break;
             }
             $data_cache = $v;
@@ -184,91 +195,96 @@
         }while(0);
     } 
     
-    //2.3    redis É¾³ý     ¸ÃÖ÷²¥Á¬ÂóÓÃ»§Êý¾Ý»º´æ
+    //2.3    redis åˆ é™¤     è¯¥ä¸»æ’­è¿žéº¦ç”¨æˆ·æ•°æ®ç¼“å­˜
     public function del_user_data_json(&$error,$sid)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
     
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
-                LogApi::logProcess("linkcall_model.set_user_data_json.redis£ºsid:$sid ");
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.set_user_data_json.redisï¼šsid:$sid ");
                 break;
             }
-            $key_linkcall_user_data_json = linkcall_model::linkcall_user_data_json_hash_key($sid);
-            $redis->del($key_linkcall_user_data_json);
-            LogApi::logProcess("linkcall_model.del_user_data_json.del£ºsid:$sid ");
+            $key = linkcall_model::linkcall_user_data_json_hash_key($sid);
+            $redis->del($key);
+            LogApi::logProcess("linkcall_model.del_user_data_json.delï¼šsid:$sid ");
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
     }
     
-    //3.1   redis Ð´Èë     ·¿¼äÄÚÓÃ»§Á¬ÂóÉêÇëË÷Òý£¨¼ÇÂ¼Á¬ÂóÉêÇëÊ±¼ä´Á£©
+    //3.1   redis å†™å…¥     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·æ—¶é—´
     public function set_user_apply_time(&$error,$sid,$user_id,$time_apply)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
     
         do
         {
+         if ($time_apply == 0)
+            {
+                $error['code'] = 200000001;
+                $error['desc'] = 'redisè®°å½•ç”³è¯·æ—¶é—´ä¸º0';
+                break;
+            }
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
                 LogApi::logProcess("linkcall_model.set_user_apply_time.redis: sid:$sid user_id:$user_id time_apply:$time_apply");
                 break;
             }
             $exp_time =linkcall_model::$LINKCALL_EXP_TIME;
-            $key_linkcall_user_data_apply_indexes = linkcall_model::linkcall_user_data_apply_indexes_zset_key($sid);
-            $e=$redis->zAdd($key_linkcall_user_data_apply_indexes, $time_apply, $user_id);
-            $redis->expire($key_linkcall_user_data_apply_indexes,$exp_time);
+            $key = linkcall_model::linkcall_user_data_apply_indexes_zset_key($sid);
+            $e=$redis->zAdd($key, $time_apply, $user_id);
+            $redis->expire($key,$exp_time);
             if(0== $e)
             {
-                $error['code'] = 200000003;
-                $error['desc'] = 'Êý¾ÝÐ´Èë³öÏÖÒì³£';
-                LogApi::logProcess("inkcall_model.set_user_apply_time.zaddÐ´ÈëÊý¾Ý·µ»Ø0: sid:$sid uid:$user_id time_apply:$time_apply");
-                break;
+                //åˆ·æ–°ç”³è¯·æ—¶é—´
+                LogApi::logProcess("inkcall_model.set_user_apply_time.zaddå†™å…¥æ•°æ®è¿”å›ž0: sid:$sid uid:$user_id time_apply:$time_apply");
+                
             }
-            
+            LogApi::logProcess("linkcall_model.set_user_apply_time sid:$sid user_id:$user_id time_apply:$time_apply");
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
     }  
 
-    //3.2   redis ¶Á³ö     ·¿¼äÄÚÖ¸¶¨ÓÃ»§Á¬ÂóÉêÇëË÷Òý£¨È¡³ö²éÑ¯ÓÃ»§µÄÉêÇëÊ±¼ä´Á£©    
-    public function get_user_apply_time(&$error,$sid,$user_id)
+    //3.2   redis è¯»å‡º     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·æ—¶é—´    
+    public function get_user_apply_time(&$error,$sid,$user_id)	
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
         $time_apply = 0;
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
                 LogApi::logProcess("linkcall_model.get_user_apply_time.redis: sid:$sid user_id:$user_id ");
                 break;
             }
-            $key_linkcall_user_data_apply_indexes = linkcall_model::linkcall_user_data_apply_indexes_zset_key($sid);    
-            $v = $redis->zScore($key_linkcall_user_data_apply_indexes,$user_id);
+            $key = linkcall_model::linkcall_user_data_apply_indexes_zset_key($sid);    
+            $v = $redis->zScore($key,$user_id);
             if(true == empty($v))
             {
-                //Èç¹ûÈ¡³öÎÞÊý¾Ý£¬¸ø¸ödefault Öµ 0£¬´ú±íÁÐ±íÎÞÊý¾Ý
+                //å¦‚æžœå–å‡ºæ— æ•°æ®ï¼Œç»™ä¸ªdefault å€¼ 0ï¼Œä»£è¡¨åˆ—è¡¨æ— æ•°æ®
                 $v = 0;
             }
             $time_apply =$v;
-            LogApi::logProcess("linkcall_model.get_user_apply_time.zscore: sid:$sid user_id:$user_id time_apply:$time_apply");
+            //LogApi::logProcess("linkcall_model.get_user_apply_time.zscore: sid:$sid user_id:$user_id time_apply:$time_apply");
             //
             $error['code'] = 0;
             $error['desc'] = '';            
@@ -276,112 +292,241 @@
         return $time_apply;
     }
     
-
-    //3.3   redis ¶Á³ö     ·¿¼äÄÚÓÃ»§Á¬ÂóÉêÇëË÷Òý£¨¼ÇÂ¼Á¬ÂóÉêÇëÊ±¼ä´Á£©
-    public function get_user_apply_time_index(&$error,$sid,&$apply_list)
+    //3.3   redis åˆ é™¤     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·ç”¨æˆ·åˆ—è¡¨
+    public function del_user_apply_time(&$error,$sid)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
     
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
-                LogApi::logProcess("linkcall_model.get_user_apply_time_index.redis: sid:$sid ");
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.del_user_apply_time.redisï¼šsid:$sid ");
                 break;
             }
-            $key_linkcall_user_data_apply_indexes = linkcall_model::linkcall_user_data_apply_indexes_zset_key($sid);
-            $set_number = linkcall_model::$LINKCALL_APPLY_MAX_PLAYER-1;
-            $get_apply_list = $redis->zRange($key_linkcall_user_data_apply_indexes,0,$set_number,true);
+            $key = linkcall_model::linkcall_user_data_apply_indexes_zset_key($sid);
+            $redis->del($key);
+            LogApi::logProcess("linkcall_model.del_user_apply_time.delï¼šsid:$sid ");
+            $error['code'] = 0;
+            $error['desc'] = '';
+        }while(0);
+    }
+    
+    //3.4   redis å†™å…¥     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·ç”¨æˆ·
+    public function set_user_apply(&$error,$sid,$user_id)
+    {
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+    
+        do
+        {
 
-            //Êä³ö»ñÈ¡µÄÁÐ±í
-            foreach ($get_apply_list as $uid => $score)
+            $redis = $this->getRedisMaster();
+            if(null == $redis)
             {
-                $data = array ();
-                $data['time_apply'] = $score;
-                $data['user_id'] = $uid;
-                $apply_list[] = $data;
-            }            
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
+                $error['code'] = 100000701;
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.set_user_apply.redis: sid:$sid user_id:$user_id ");
+                break;
+            }
+            $exp_time =linkcall_model::$LINKCALL_EXP_TIME;
+            $key = linkcall_model::linkcall_user_data_apply_set_key($sid);
+            $e=$redis->sAdd($key, $user_id);
+            $redis->expire($key,$exp_time);
+            if(0== $e)
+            {
+                $error['code'] = 403300014;
+                $error['desc'] = 'æ•°æ®å†™å…¥å¼‚å¸¸';
+                LogApi::logProcess("inkcall_model.set_user_apply.zaddå†™å…¥æ•°æ®è¿”å›ž0: sid:$sid uid:$user_id ");
+                break;
+            }
+            //LogApi::logProcess("linkcall_model.set_user_apply sid:$sid user_id:$user_id ");
+            $error['code'] = 0;
+            $error['desc'] = '';
+        }while(0);
+    }
+    
+    //3.5   redis ç§»é™¤    æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·ç”¨æˆ·
+    public function rem_user_apply(&$error,$sid,$user_id)
+    {
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+
+        do
+        {
+            $redis = $this->getRedisMaster();
+            if(null == $redis)
+            {
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
+                $error['code'] = 100000701;
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.del_user_apply.redis: sid:$sid user_id:$user_id ");
+                break;
+            }
+            $key = linkcall_model::linkcall_user_data_apply_set_key($sid);
+            $v = $redis->sRem($key,$user_id);
+            if(true == empty($v))
+            {
+                $error['code'] = 403300015;
+                $error['desc'] = 'æ•°æ®åˆ é™¤å‡ºçŽ°å¼‚å¸¸';
+                LogApi::logProcess("inkcall_model.del_user_link_time.zRemåˆ é™¤æ•°æ®è¿”å›ž0: sid:$sid uid:$user_id");
+                break;
+            }
+
+            //LogApi::logProcess("linkcall_model.del_user_apply.empty: sid:$sid user_id:$user_id ");
+            //
+            $error['code'] = 0;
+            $error['desc'] = '';
+        }while(0);
+
+    }
+    
+    //3.6a   redis è¯»å‡º     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·ç”¨æˆ·åˆ—è¡¨
+    public function get_user_apply_index(&$error,$sid,&$apply_list)
+    {
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        
+        do
+        {
+            $redis = $this->getRedisMaster();
+            if(null == $redis)
+            {
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
+                $error['code'] = 100000701;
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.get_user_apply_index.redis: sid:$sid ");
+                break;
+            }
+            $get_apply_list =array();
+            $key = linkcall_model::linkcall_user_data_apply_set_key($sid);
+            $get_apply_list = $redis->sDiff($key);
+    
+            //è¾“å‡ºèŽ·å–çš„åˆ—è¡¨
+            foreach ($get_apply_list as $uid)
+            {
+                $apply_list[] = $uid;
+            }
             //
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
     }
-    
-    //3.4   redis É¾³ý     ·¿¼ä¸ÃÓÃ»§Á¬ÂóÉêÇë
-    public function del_user_apply_time(&$error,$sid,$user_id)
+
+    //3.6b   redis æŸ¥è¯¢     æˆ¿é—´å†…ç”¨æˆ·æ˜¯å¦åœ¨ç”³è¯·åˆ—è¡¨
+    public function find_user_apply_index(&$error,$sid,$user_id)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
-    
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        $is_apply =false;
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
-                LogApi::logProcess("linkcall_model.del_user_apply_time.redis: sid:$sid user_id:$user_id");
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.find_user_apply_index.redis: sid:$sid ");
                 break;
             }
-            $key_linkcall_user_data_link_indexes = linkcall_model::linkcall_user_data_link_indexes_zset_key($sid);
-            $e=$redis->zRem($key_linkcall_user_data_link_indexes, $user_id);
-            if(0== $e)
-            {
-                $error['code'] = 200000003;
-                $error['desc'] = 'Êý¾ÝÉ¾³ý³öÏÖÒì³£';
-                LogApi::logProcess("inkcall_model.del_user_apply_time.zRemÉ¾³ýÊý¾Ý·µ»Ø0: sid:$sid uid:$user_id");
-                break;
-            }
+            $key = linkcall_model::linkcall_user_data_apply_set_key($sid);
+            $f = $redis->sIsMember($key,$user_id);
+            $is_apply = $f;
+
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
+        return $is_apply;
     }
-    //3.5   redis É¾³ý     ·¿¼äÄÚËùÓÐÓÃ»§Á¬ÂóÉêÇëË÷Òý
-    public function del_user_apply_time_index(&$error,$sid)
+    
+    //3.7   redis è¯»å‡º     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·ç”¨æˆ·ä¸ªæ•°
+    public function get_user_apply_index_count(&$error,$sid)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
-    
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        $num_apply = 0;
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
-                LogApi::logProcess("linkcall_model.del_user_apply_time_index.redis£ºsid:$sid ");
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.get_user_apply_index_count.redis: sid:$sid ");
                 break;
             }
-            $key_linkcall_user_data_link_indexes = linkcall_model::linkcall_user_data_link_indexes_zset_key($sid);
-            $redis->del($key_linkcall_user_data_link_indexes);
-            LogApi::logProcess("linkcall_model.del_user_apply_time_index.del£ºsid:$sid ");
+
+            $key = linkcall_model::linkcall_user_data_apply_set_key($sid);
+            $v = $redis->sCard($key);
+            if(true == empty($v))
+            {
+                //å¦‚æžœå–å‡ºæ— æ•°æ®ï¼Œç»™ä¸ªdefault å€¼ 0ï¼Œä»£è¡¨åˆ—è¡¨æ— æ•°æ®
+                $v = 0;
+            }
+            $num_apply =$v;
+            LogApi::logProcess("linkcall_model.get_user_apply_index_count.sCard: sid:$sid ");
+            //
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
-    }
-    
-    //3.6   redis Ð´Èë     60sÄÚµÄÓÃ»§ÉêÇë¼ÇÂ¼
-    public function set_user_apply_time_60s(&$error,$sid,$user_id,$time_apply)
+        return $num_apply;
+    }    
+
+    //3.8   redis åˆ é™¤     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·ç”¨æˆ·åˆ—è¡¨
+    public function del_user_apply_index(&$error,$sid)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
     
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
-                LogApi::logProcess("linkcall_model.set_user_apply_time_60s.redis: sid:$sid user_id:$user_id time_apply:$time_apply");
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.del_user_apply_index.redisï¼šsid:$sid ");
+                break;
+            }
+            $key = linkcall_model::linkcall_user_data_apply_set_key($sid);
+            $redis->del($key);
+            LogApi::logProcess("linkcall_model.del_user_apply_index.delï¼šsid:$sid ");
+            $error['code'] = 0;
+            $error['desc'] = '';
+        }while(0);
+    }    
+
+    
+    //3.9   redis å†™å…¥     60så†…çš„ç”¨æˆ·ç”³è¯·è®°å½•
+    public function set_user_apply_time_index_60s(&$error,$sid,$user_id,$time_apply)
+    {
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+    
+        do
+        {
+            if ($time_apply == 0)
+            {
+                $error['code'] = 200000001;
+                $error['desc'] = 'redisè®°å½•ç”³è¯·æ—¶é—´ä¸º0';
+                break;
+            }
+            $redis = $this->getRedisMaster();
+            if(null == $redis)
+            {
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
+                $error['code'] = 100000701;
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.set_user_apply_time_index_60s.redis: sid:$sid user_id:$user_id time_apply:$time_apply");
                 break;
             }
             $exp_time =linkcall_model::$LINKCALL_EXP_60_STIME;
@@ -390,9 +535,9 @@
             $redis->expire($key_linkcall_user_data_apply_indexes_60s,$exp_time);
             if(0== $e)
             {
-                $error['code'] = 200000003;
-                $error['desc'] = 'Êý¾ÝÐ´Èë³öÏÖÒì³£';
-                LogApi::logProcess("inkcall_model.set_user_apply_time_60s.zaddÐ´ÈëÊý¾Ý·µ»Ø0: sid:$sid uid:$user_id time_apply:$time_apply");
+                $error['code'] = 403300014;
+                $error['desc'] = 'æ•°æ®å†™å…¥å‡ºçŽ°å¼‚å¸¸';
+                LogApi::logProcess("inkcall_model.set_user_apply_time_index_60s.zaddå†™å…¥æ•°æ®è¿”å›ž0: sid:$sid uid:$user_id time_apply:$time_apply");
                 break;
             }
             $error['code'] = 0;
@@ -400,11 +545,11 @@
         }while(0);
     }
     
-    //3.7   redis ¶Á³ö     60sÄÚµÄÓÃ»§ÉêÇë¼ÇÂ¼´ÎÊý    
+    //3.10   redis è¯»å‡º     60så†…çš„ç”¨æˆ·ç”³è¯·è®°å½•æ¬¡æ•°    
     public function get_user_apply_time_60s_count(&$error,$sid,$user_id)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
         $num_apply = 0;
         $time_now= time();
         $time_60s_ago =$time_now -60;
@@ -413,9 +558,9 @@
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
                 LogApi::logProcess("linkcall_model.get_user_apply_time_60s.redis: sid:$sid user_id:$user_id ");
                 break;
             }
@@ -423,7 +568,7 @@
             $v = $redis->zCount($key,$time_60s_ago,$time_now);
             if(true == empty($v))
             {
-                //Èç¹ûÈ¡³öÎÞÊý¾Ý£¬¸ø¸ödefault Öµ 0£¬´ú±íÁÐ±íÎÞÊý¾Ý
+                //å¦‚æžœå–å‡ºæ— æ•°æ®ï¼Œç»™ä¸ªdefault å€¼ 0ï¼Œä»£è¡¨åˆ—è¡¨æ— æ•°æ®
                 $v = 0;
             }
             $num_apply =$v;
@@ -434,161 +579,260 @@
         }while(0);
         return $num_apply;
     }
-    
-    //4.1   redis Ð´Èë     ·¿¼äÄÚÓÃ»§Á¬ÂóÁ¬Í¨Ë÷Òý£¨¼ÇÂ¼Á¬ÂóÁ¬Í¨Ê±¼ä´Á£©
-    public function set_user_link_time(&$error,$sid,$user_id,$time_allow)
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////   
+    //4.1   redis å†™å…¥     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦è¿žæŽ¥æ—¶é—´
+    public function set_user_link_time(&$error,$sid,$user_id,$time_link)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
     
         do
         {
+            if ($time_apply == 0)
+            {
+                $error['code'] = 200000001;
+                $error['desc'] = 'redisè®°å½•è¿žæŽ¥æ—¶é—´ä¸º0';
+                break;
+            }
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
-                LogApi::logProcess("linkcall_model.set_user_link_time.redis: sid:$sid user_id:$user_id time_allow:$time_allow");
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.set_user_link_time.redis: sid:$sid user_id:$user_id time_link:$time_link");
                 break;
             }
             $exp_time =linkcall_model::$LINKCALL_EXP_TIME;
-            $key_linkcall_user_data_link_indexes = linkcall_model::linkcall_user_data_link_indexes_zset_key($sid);
-            $e=$redis->zAdd($key_linkcall_user_data_link_indexes,$time_allow, $user_id);
-            $redis->expire($key_linkcall_user_data_link_indexes,$exp_time);
+            $key = linkcall_model::linkcall_user_data_link_indexes_zset_key($sid);
+            $e=$redis->zAdd($key, $time_apply, $user_id);
+            $redis->expire($key,$exp_time);
             if(0== $e)
             {
-                $error['code'] = 200000003;
-                $error['desc'] = 'Êý¾ÝÐ´Èë³öÏÖÒì³£';
-                LogApi::logProcess("inkcall_model.set_user_link_time.zaddÐ´ÈëÊý¾Ý·µ»Ø0: sid:$sid uid:$user_id time_allow:$time_allow");
-                break;
+                //åˆ·æ–°è¿žæŽ¥æ—¶é—´
+                LogApi::logProcess("inkcall_model.set_user_link_time.zaddå†™å…¥æ•°æ®è¿”å›ž0: sid:$sid uid:$user_id time_link:$time_link");
+                
             }
+            LogApi::logProcess("linkcall_model.set_user_link_time sid:$sid user_id:$user_id time_link:$time_link");
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
     }
     
-    //4.2  redis ¶Á³ö     ·¿¼äÄÚÖ¸¶¨ÓÃ»§Á¬ÂóÁ¬½ÓË÷Òý£¨È¡³ö²éÑ¯ÓÃ»§µÄÁ¬½ÓÊ±¼ä´Á£©
+    //4.2   redis è¯»å‡º     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦è¿žæŽ¥æ—¶é—´
     public function get_user_link_time(&$error,$sid,$user_id)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
-        $time_allow = 0;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        $time_link = 0;
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
-                LogApi::logProcess("linkcall_model.get_user_link_time.redis: sid:$sid user_id:$user_id");
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.get_user_link_time.redis: sid:$sid user_id:$user_id ");
                 break;
             }
-            $key_linkcall_user_data_link_indexes = linkcall_model::linkcall_user_data_link_indexes_zset_key($sid);    
-            $v = $redis->zScore($key_linkcall_user_data_link_indexes,$user_id);
+            $key = linkcall_model::linkcall_user_data_link_indexes_zset_key($sid);
+            $v = $redis->zScore($key,$user_id);
             if(true == empty($v))
             {
+                //å¦‚æžœå–å‡ºæ— æ•°æ®ï¼Œç»™ä¸ªdefault å€¼ 0ï¼Œä»£è¡¨åˆ—è¡¨æ— æ•°æ®
                 $v = 0;
             }
-            $time_allow = $v;
+            $time_link =$v;
+            //LogApi::logProcess("linkcall_model.get_user_link_time.zscore: sid:$sid user_id:$user_id time_link:$time_link");
             //
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
-        return $time_allow; 
+        return $time_link;
     }
     
-    //4.3   redis ¶Á³ö     ·¿¼äÄÚÓÃ»§Á¬ÂóÁ¬Í¨Ë÷Òý£¨¼ÇÂ¼Á¬ÂóÁ¬Í¨Ê±¼ä´Á£©
-    public function get_user_link_time_index(&$error,$sid,&$link_list)
+    //4.3   redis åˆ é™¤     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦è¿žæŽ¥ç”¨æˆ·åˆ—è¡¨
+    public function del_user_link_time(&$error,$sid)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
     
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
-                LogApi::logProcess("linkcall_model.get_user_link_time_index.redis: sid:$sid");
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.del_user_link_time.redisï¼šsid:$sid ");
                 break;
             }
-            $key_linkcall_user_data_link_indexes = linkcall_model::linkcall_user_data_link_indexes_zset_key($sid);    
-            $get_link_list = $redis->zRange($key_linkcall_user_data_link_indexes,0,1,true);
-            //Êä³ö»ñÈ¡µÄÁÐ±í
-            foreach ($get_link_list as $uid => $score)
-            {
-                $data = array ();
-                $data['time_allow'] = $score;
-                $data['user_id'] = $uid;
-                $link_list[] = $data;
-            }
-            //
+            $key = linkcall_model::linkcall_user_data_link_indexes_zset_key($sid);
+            $redis->del($key);
+            LogApi::logProcess("linkcall_model.del_user_link_time.delï¼šsid:$sid ");
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
-    } 
+    }
     
-    //4.4   redis É¾³ý     ·¿¼äÄÚÓÃ»§Á¬ÂóÁ¬Í¨Ë÷Òý
-    public function del_user_link_time(&$error,$sid,$user_id)
+    //4.4   redis å†™å…¥     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·ç”¨æˆ·
+    public function set_user_link(&$error,$sid,$user_id)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
     
         do
         {
+
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
-                LogApi::logProcess("linkcall_model.del_user_link_time.redis: sid:$sid user_id:$user_id");
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.set_user_link.redis: sid:$sid user_id:$user_id ");
                 break;
             }
-            $key_linkcall_user_data_link_indexes = linkcall_model::linkcall_user_data_link_indexes_zset_key($sid);
-            $e=$redis->zRem($key_linkcall_user_data_link_indexes, $user_id);
+            $exp_time =linkcall_model::$LINKCALL_EXP_TIME;
+            $key = linkcall_model::linkcall_user_data_link_set_key($sid);
+            $e=$redis->sAdd($key, $user_id);
+            $redis->expire($key,$exp_time);
             if(0== $e)
             {
-                $error['code'] = 200000003;
-                $error['desc'] = 'Êý¾ÝÉ¾³ý³öÏÖÒì³£';
-                LogApi::logProcess("inkcall_model.del_user_link_time.zRemÉ¾³ýÊý¾Ý·µ»Ø0: sid:$sid uid:$user_id");
+                $error['code'] = 403300014;
+                $error['desc'] = 'æ•°æ®å†™å…¥å‡ºçŽ°å¼‚å¸¸';
+                LogApi::logProcess("inkcall_model.set_user_link.zaddå†™å…¥æ•°æ®è¿”å›ž0: sid:$sid uid:$user_id ");
                 break;
             }
+            //LogApi::logProcess("linkcall_model.set_user_link sid:$sid user_id:$user_id ");
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
     }
     
-    //4.5   redis ¶Á³ö     µ±Ç°Ö÷²¥È«²¿ÓÃ»§Á¬ÂóÁ¬½Ó¼ÇÂ¼¸öÊý
-    public function get_user_link_time_count(&$error,$sid)
+    //4.5   redis ç§»é™¤    æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·ç”¨æˆ·
+    public function rem_user_link(&$error,$sid,$user_id)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        do
+        {
+            $redis = $this->getRedisMaster();
+            if(null == $redis)
+            {
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
+                $error['code'] = 100000701;
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.rem_user_link.redis: sid:$sid user_id:$user_id ");
+                break;
+            }
+            $key = linkcall_model::linkcall_user_data_link_set_key($sid);
+            $v = $redis->sRem($key,$user_id);
+            if(true == empty($v))
+            {
+                $error['code'] = 403300015;
+                $error['desc'] = 'æ•°æ®åˆ é™¤å‡ºçŽ°å¼‚å¸¸';
+                LogApi::logProcess("inkcall_model.del_user_link_time.zRemåˆ é™¤æ•°æ®è¿”å›ž0: sid:$sid uid:$user_id");
+                break;
+            }
+
+            //LogApi::logProcess("linkcall_model.rem_user_link.sRem: sid:$sid user_id:$user_id");
+            //
+            $error['code'] = 0;
+            $error['desc'] = '';
+        }while(0);
+
+    }
+    
+    
+    //4.6a   redis è¯»å‡º     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·ç”¨æˆ·åˆ—è¡¨
+    public function get_user_link_index(&$error,$sid,&$link_list)
+    {
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+    
+        do
+        {
+            $redis = $this->getRedisMaster();
+            if(null == $redis)
+            {
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
+                $error['code'] = 100000701;
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.get_user_link_index.redis: sid:$sid ");
+                break;
+            }
+            $get_link_list =array();
+            $key = linkcall_model::linkcall_user_data_link_set_key($sid);
+            $get_link_list = $redis->sDiff($key);
+    
+            //è¾“å‡ºèŽ·å–çš„åˆ—è¡¨
+            foreach ($get_link_list as $uid)
+            {
+                $link_list[] = $uid;
+            }
+            //
+            $error['code'] = 0;
+            $error['desc'] = '';
+        }while(0);
+    }
+    
+    //4.6b   redis æŸ¥è¯¢     æˆ¿é—´å†…ç”¨æˆ·æ˜¯å¦åœ¨ç”³è¯·åˆ—è¡¨
+    public function find_user_link_index(&$error,$sid,$user_id)
+    {
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        $is_link =false;
+        do
+        {
+            $redis = $this->getRedisMaster();
+            if(null == $redis)
+            {
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
+                $error['code'] = 100000701;
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.find_user_link_index.redis: sid:$sid ");
+                break;
+            }
+            $key = linkcall_model::linkcall_user_data_link_set_key($sid);
+            $f = $redis->sIsMember($key,$user_id);
+            $is_link = $f;
+    
+            $error['code'] = 0;
+            $error['desc'] = '';
+        }while(0);
+        return $is_link;
+    }
+    
+    //4.7   redis è¯»å‡º     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·ç”¨æˆ·ä¸ªæ•°
+    public function get_user_link_index_count(&$error,$sid)
+    {
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
         $num_link = 0;
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
-                LogApi::logProcess("linkcall_model.get_user_link_time_count.redis: sid:$sid ");
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.get_user_link_index_count.redis: sid:$sid ");
                 break;
             }
-            $key = linkcall_model::linkcall_user_data_link_indexes_zset_key($sid);
-            $v = $redis->zCount($key,0,-1);
+    
+            $key = linkcall_model::linkcall_user_data_link_set_key($sid);
+            $v = $redis->sCard($key);
             if(true == empty($v))
             {
-                //Èç¹ûÈ¡³öÎÞÊý¾Ý£¬¸ø¸ödefault Öµ 0£¬´ú±íÁÐ±íÎÞÊý¾Ý
+                //å¦‚æžœå–å‡ºæ— æ•°æ®ï¼Œç»™ä¸ªdefault å€¼ 0ï¼Œä»£è¡¨åˆ—è¡¨æ— æ•°æ®
                 $v = 0;
             }
             $num_link =$v;
-            LogApi::logProcess("linkcall_model.get_user_apply_time_60s.zCount: sid:$sid num_link:$num_link");
+            LogApi::logProcess("linkcall_model.get_user_apply_index_count.sCard: sid:$sid ");
             //
             $error['code'] = 0;
             $error['desc'] = '';
@@ -596,71 +840,72 @@
         return $num_link;
     }
     
-    //4.6   redis É¾³ý     ·¿¼äÄÚËùÓÐÓÃ»§Á¬ÂóÁ¬½ÓË÷Òý
-    public function del_user_link_time_index(&$error,$sid)
+    //4.8   redis åˆ é™¤     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·ç”¨æˆ·åˆ—è¡¨
+    public function del_user_link_index(&$error,$sid)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
     
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
-                LogApi::logProcess("linkcall_model.del_user_link_time_index.redis£ºsid:$sid ");
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.del_user_link_index.redisï¼šsid:$sid ");
                 break;
             }
-            $key = linkcall_model::linkcall_user_data_link_indexes_zset_key($sid);
+            $key = linkcall_model::linkcall_user_data_link_set_key($sid);
             $redis->del($key);
-            LogApi::logProcess("linkcall_model.del_user_link_time_index.del£ºsid:$sid ");
+            LogApi::logProcess("linkcall_model.del_user_link_index.delï¼šsid:$sid ");
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
     }
  
-    //5.1  redis Ð´Èë     ·¿¼äÄÚÓÃ»§Á¬ÂóÉêÇë×´Ì¬Ë÷Òý£¨¼ÇÂ¼Á¬ÂóÉêÇë×´Ì¬£©
+ 
+    //5.1  redis å†™å…¥     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·çŠ¶æ€ç´¢å¼•ï¼ˆè®°å½•è¿žéº¦ç”³è¯·çŠ¶æ€ï¼‰
     public function set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
     
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
                 LogApi::logProcess("linkcall_model.set_user_apply_state.redis: sid:$sid user_id:$user_id linkcall_apply:$linkcall_apply");
                 break;
             }
             $exp_time =linkcall_model::$LINKCALL_EXP_TIME;
             $key_linkcall_user_data_state_indexes = linkcall_model::linkcall_user_data_state_indexes_hash_key($sid);
             $redis->hSet($key_linkcall_user_data_state_indexes,$user_id,$linkcall_apply);
-            $redis->expire($key_linkcall_user_data_link_indexes,$exp_time);
+            $redis->expire($key_linkcall_user_data_state_indexes,$exp_time);
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
     }
     
-    //5.2   redis ¶Á³ö     ·¿¼äÄÚÓÃ»§Á¬ÂóÉêÇë×´Ì¬Ë÷Òý£¨¼ÇÂ¼Á¬ÂóÉêÇë×´Ì¬£©
+    //5.2   redis è¯»å‡º     æˆ¿é—´å†…ç”¨æˆ·è¿žéº¦ç”³è¯·çŠ¶æ€ç´¢å¼•ï¼ˆè®°å½•è¿žéº¦ç”³è¯·çŠ¶æ€ï¼‰
     public function get_user_apply_state(&$error,$sid,$user_id)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
         $linkcall_apply = 0;
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
                 LogApi::logProcess("linkcall_model.set_user_apply_state.redis: sid:$sid");
                 break;
             }
@@ -668,7 +913,7 @@
             $v=$redis->hGet($key_linkcall_user_data_state_indexes,$user_id);
             if(true == empty($v))
             {
-                // 200000099(099)¶ÁÈ¡Êý¾ÝÎª¿Õ
+                // 200000099(099)è¯»å–æ•°æ®ä¸ºç©º
                 $v = 0;
             }
             $linkcall_apply = $v;
@@ -679,555 +924,852 @@
         return $linkcall_apply;
     } 
     
-    //5.3   redis É¾³ý     ·¿¼äÄÚËùÓÐÓÃ»§Á¬ÂóÉêÇë×´Ì¬Ë÷Òý
+    //5.3   redis åˆ é™¤     æˆ¿é—´å†…æ‰€æœ‰ç”¨æˆ·è¿žéº¦ç”³è¯·çŠ¶æ€ç´¢å¼•
     public function del_user_apply_state(&$error,$sid)
     {
         $error['code'] = -1;
-        $error['desc'] = 'Î´Öª´íÎó';
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
     
         do
         {
             $redis = $this->getRedisMaster();
             if(null == $redis)
             {
-                // 100000701(701)ÍøÂçÊý¾Ý¿â¶Ï¿ªÁ¬½Ó
+                // 100000701(701)ç½‘ç»œæ•°æ®åº“æ–­å¼€è¿žæŽ¥
                 $error['code'] = 100000701;
-                $error['desc'] = 'redisÊý¾Ý¿â¶Ï¿ªÁ¬½Ó';
-                LogApi::logProcess("linkcall_model.del_user_apply_state.redis£ºsid:$sid ");
+                $error['desc'] = 'redisæ•°æ®åº“æ–­å¼€è¿žæŽ¥';
+                LogApi::logProcess("linkcall_model.del_user_apply_state.redisï¼šsid:$sid ");
                 break;
             }
             $key = linkcall_model::linkcall_user_data_state_indexes_hash_key($sid);
             $redis->del($key);
-            LogApi::logProcess("linkcall_model.del_user_apply_state.del£ºsid:$sid ");
+            LogApi::logProcess("linkcall_model.del_user_apply_state.delï¼šsid:$sid ");
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //¹¦ÄÜÄ£¿é
+    //åŠŸèƒ½æ¨¡å—
     
-    //6.1   ÓÃ»§·¢ÆðÉêÇëÁ¬Âó 
+    //6.1   ç”¨æˆ·å‘èµ·ç”³è¯·è¿žéº¦ 
     public function user_apply_apply_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$data_cache,&$linkcall_apply,&$linkcall_state)
     {
-        // 1 ²éÑ¯¸ÃÓÃ»§ÊÇ·ñÒÑ¾­ÔÚÉêÇëÁÐ±í
-        $time_apply = $this->get_user_apply_time(&$error,$sid,$user_id);
-        if (0 != $error['code'])
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        $op_code = 1;
+        $time_link_num =0;
+        $time_apply_num=0;
+        do
         {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        if (0 != $time_apply)
-        {
-            // 403300013(013)ÓÃ»§ÒÑ¾­´æÔÚÉêÇëÁÐ±í
-            $error['code'] = 403300013;
-            $error['desc'] = 'ÓÃ»§ÒÑ¾­´æÔÚÉêÇëÁÐ±í';
-            break;
-        }
-        // 2 ²é¿´60sÄÚÊÇ·ñÖØ¸´ÉêÇëÁË3´Î¡£
-        $num_apply = $this->get_user_apply_time_60s_count(&$error,$sid,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        if ($num_apply >= linkcall_model::$LINKCALL_APPLY_COUNT_MAX)
-        {
-            // 403300014(014)ÓÃ»§60sÄÚÒÑ¾­ÖØ¸´ÉêÇë3´Î
-            $error['code'] = 403300014;
-            $error['desc'] = 'ÓÃ»§60sÄÚÒÑ¾­ÖØ¸´ÉêÇë3´Î';
-            break;
-        }
+            $time_apply = time();
+            // 0 è®°å½•ç”¨æˆ·60sä¸‰æ¬¡ç”³è¯·æ—¶é—´è¿žéº¦è­¦å‘Šã€‚
+            $this->set_user_apply_time_index_60s(&$error, $sid, $user_id, $time_apply);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            // 1 æŸ¥çœ‹60så†…æ˜¯å¦é‡å¤ç”³è¯·äº†3æ¬¡ã€‚
+            $num_apply = $this->get_user_apply_time_60s_count(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            if ($num_apply >= linkcall_model::$LINKCALL_APPLY_COUNT_MAX)
+            {
+                // 403300017(017)ç”¨æˆ·60så†…å·²ç»é‡å¤ç”³è¯·3æ¬¡
+                $error['code'] = 403300017;
+                $error['desc'] = 'ç”¨æˆ·60så†…å·²ç»é‡å¤ç”³è¯·3æ¬¡';
+                break;
+            }
+            LogApi::logProcess("user_apply_apply_linkcall num_apply:$num_apply  time_apply;$time_apply");
+            // 2 æŸ¥è¯¢è¯¥ç”¨æˆ·æ˜¯å¦å·²ç»åœ¨ç”³è¯·ç´¢å¼•åˆ—è¡¨
+            $is_apply = $this->find_user_apply_index(&$error,$sid,$user_id);           
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            if (true == $is_apply)
+            {
+                // 403300016(016)ç”¨æˆ·å·²ç»å­˜åœ¨ç”³è¯·åˆ—è¡¨
+                $error['code'] = 403300016;
+                $error['desc'] = 'ç”¨æˆ·å·²ç»å­˜åœ¨ç”³è¯·åˆ—è¡¨';
+                break;
+            }            
+
+            // 2.1 æŸ¥è¯¢å½“å‰çš„ç”³è¯·åˆ—è¡¨ç”³è¯·ä¸ªæ•°
+            $time_apply_num = $this->get_user_apply_index_count(&$error,$sid);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }            
+            if ($time_apply_num >= linkcall_model::$LINKCALL_APPLY_MAX_PLAYER)
+            {
+                // 403300022(022)å½“å‰ç”³è¯·äººæ•°è¶…è¿‡æœ€å¤§å€¼ï¼Œè¯·æ ¸å¯¹
+                $error['code'] = 403300022;
+                $error['desc'] = 'å½“å‰ç”³è¯·äººæ•°è¶…è¿‡æœ€å¤§å€¼ï¼Œè¯·æ ¸å¯¹';
+                break;
+            }
+            $time_apply_num =$time_apply_num +1;
+
+            // 3 æŸ¥è¯¢å½“å‰ä¸»æ’­è¿žéº¦è¿žæŽ¥æ€»äººæ•°ã€‚        
+            $time_link_num =$this->get_user_link_index_count(&$error,$sid);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }        
+            if ($time_link_num >= linkcall_model::$LINKCALL_LINK_COUNT_MAX)
+            {
+                // 403300018(018)å½“å‰è¿žéº¦äººæ•°è¶…è¿‡æœ€å¤§å€¼ï¼Œè¯·æ ¸å¯¹
+                $error['code'] = 403300018;
+                $error['desc'] = 'å½“å‰è¿žéº¦äººæ•°è¶…è¿‡æœ€å¤§å€¼ï¼Œè¯·æ ¸å¯¹';
+                break;
+            }
+            
+            
+            // 4 è®°å½•ç”¨æˆ·
+            {
+                //è®°å½•ç”¨æˆ·è¿žéº¦ç”³è¯·çŠ¶æ€ã€‚
+                $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
+                if (0 != $error['code'])
+                {
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                    break;
+                }
+                //è®°å½•ç”¨æˆ·è¿žéº¦ç”³è¯·æ—¶é—´ã€‚                
+                //LogApi::logProcess("user_apply_apply_linkcall time_apply:$time_apply");
+                $this->set_user_apply_time(&$error,$sid,$user_id,$time_apply);                
+                if (0 != $error['code'])
+                {
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                    break;
+                } 
+                
+                //è®°å½•ç”¨æˆ·è¿›å…¥ç”³è¯·åˆ—è¡¨ã€‚
+                $this->set_user_apply(&$error,$sid,$user_id);
+                if (0 != $error['code'])
+                {
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                    break;
+                }
+                
+                //è®°å½•ç”¨æˆ·è¿žéº¦æ•°æ®ç¼“å­˜
+                $this->set_user_data_json(&$error, $sid, $user_id, &$data_cache);
+                if (0 != $error['code'])
+                {
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                    break;
+                }
+            }        
+            
+            // 5 å•æ’­è¿žéº¦ç”³è¯·ç»™ä¸»æ’­
+            
+            $this->linkcall_apply_singer_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }  
+        }while(0);
         
-        // 3 ²éÑ¯µ±Ç°Ö÷²¥Á¬ÂóÁ¬½Ó×ÜÈËÊý¡£        
-        $num_link =$this->get_user_link_time_count(&$error,$sid);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }        
-        if ($num_link >= linkcall_model::$LINKCALL_LINK_COUNT_MAX)
-        {
-            // 403300016(016)µ±Ç°Á¬ÂóÈËÊý³¬¹ý×î´óÖµ£¬ÇëºË¶Ô
-            $error['code'] = 403300016;
-            $error['desc'] = 'µ±Ç°Á¬ÂóÈËÊý³¬¹ý×î´óÖµ£¬ÇëºË¶Ô';
-            break;
-        }
+        //rs å›žåŒ…æ‹¼è£…
+        $time_allow =0;
+        $rs = array();
+        $rs['error'] = $error;
+        $rs['sid'] = $sid;
+        $rs['time_apply'] = $time_apply;
+        $rs['time_allow'] = $time_allow;
+        $rs['singer_id'] =  $singer_id;
+        $rs['singer_nick'] = $singer_nick;
+        $rs['linkcall_state'] = $linkcall_state;
+        $rs['op_code'] = $op_code;
+        $rs['num_link']=$time_link_num;
+        $rs['num_apply']=$time_apply_num;
+
+        $return[] = array
+        (
+            'broadcast' => 0,// å‘rsåŒ…
+            'data' => $rs,
+        );
+        LogApi::logProcess("on_linkcall_apply_rs sid:".$sid." rs:".json_encode($rs));
+        LogApi::logProcess("on_linkcall_apply_rs sid:".$sid." return:".json_encode($return));
         
-        // 4 ¼ÇÂ¼ÓÃ»§
+    }
+    //6.2   ç”¨æˆ·å–æ¶ˆç”³è¯·è¿žéº¦
+    public function user_apply_desapply_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_apply,&$linkcall_state)
+    { 
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        $op_code =2;
+        do
         {
-            //¼ÇÂ¼ÓÃ»§Á¬ÂóÉêÇë×´Ì¬¡£
+            // 1 æŸ¥è¯¢è¯¥ç”¨æˆ·æ˜¯å¦åœ¨ç”³è¯·åˆ—è¡¨
+            $is_apply = $this->find_user_apply_index(&$error,$sid,$user_id);           
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            if (false == $is_apply)
+            {
+                // 403300019(019)ç”¨æˆ·ä¸åœ¨ç”³è¯·åˆ—è¡¨ï¼Œè¯·æ ¸å¯¹
+                $error['code'] = 403300019;
+                $error['desc'] = 'ç”¨æˆ·ä¸åœ¨ç”³è¯·åˆ—è¡¨ï¼Œè¯·æ ¸å¯¹';
+                break;
+            }  
+
+            // 2 ç™»è®°ç”¨æˆ·å–æ¶ˆç”³è¯·çŠ¶æ€        
             $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
             if (0 != $error['code'])
             {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
                 break;
             }
-            //¼ÇÂ¼ÓÃ»§Á¬ÂóÉêÇëÊ±¼ä¡£
-            $time_apply = time();
-            $this->set_user_apply_time(&$error, $sid, $user_id, $time_apply);
+            
+            // 3 å‘é€ç”¨æˆ·å–æ¶ˆè¿žéº¦ï¼Œå•æ’­ç»™ä¸»æ’­nt
+            $err = $this->linkcall_apply_singer_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
             if (0 != $error['code'])
             {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
                 break;
             }
-            //¼ÇÂ¼ÓÃ»§60sÈý´ÎÉêÇëÊ±¼äÁ¬Âó¾¯¸æ¡£
-            $this->set_user_apply_time_60s(&$error, $sid, $user_id, $time_apply);
+            // 4 ä»Žè¿žéº¦ç”³è¯·åˆ—è¡¨ç§»é™¤ç”¨æˆ·
+            $this->rem_user_apply(&$error,$sid,$user_id);
             if (0 != $error['code'])
             {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            // 5 æŸ¥è¯¢ç”¨æˆ·è¿žéº¦æ—¶é—´
+            $time_apply = $this->get_user_apply_time(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            
+        }while(0);
+        //rs å›žåŒ…æ‹¼è£…
+        $time_allow =0;
+        $rs = array();
+        $rs['error'] = $error;
+        $rs['sid'] = $sid;
+        $rs['time_apply'] = $time_apply;
+        $rs['time_allow'] = $time_allow;
+        $rs['singer_id'] =  $singer_id;
+        $rs['singer_nick'] = $singer_nick;
+        $rs['linkcall_state'] = $linkcall_state;
+        $rs['op_code'] = $op_code;
+        $return[] = array
+        (
+            'broadcast' => 0,// å‘rsåŒ…
+            'data' => $rs,
+        );
+        LogApi::logProcess("on_linkcall_apply_rs sid:".$sid." rs:".json_encode($rs));
+        LogApi::logProcess("on_linkcall_apply_rs sid:".$sid." return:".json_encode($return));
+
+    }
+    //6.3   ç”¨æˆ·é€€å‡ºè¿žéº¦
+    public function user_apply_out_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_apply,&$linkcall_state)
+    {
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        $op_code =3 ;
+        do
+        {
+            // 1 æŸ¥è¯¢è¯¥ç”¨æˆ·æ˜¯å¦å·²ç»åœ¨è¿žæŽ¥åˆ—è¡¨
+            $is_link = $this->find_user_link_index(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            if (false == $is_link)
+            {
+                // 403300020(020)è¯¥ç”¨æˆ·ä¸åœ¨é“¾æŽ¥åˆ—è¡¨
+                $error['code'] = 403300020;
+                $error['desc'] = 'ç”¨æˆ·ä¸åœ¨è¿žæŽ¥åˆ—è¡¨ï¼Œè¯·æ ¸å¯¹';
+                break;
+            }      
+            
+            // 2 è®°å½•ç”¨æˆ·è¿žéº¦ç”³è¯·çŠ¶æ€ã€‚
+            $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            
+            // 3 å‘é€ç”¨æˆ·é€€å‡ºè¿žéº¦ï¼Œå•æ’­ç»™ä¸»æ’­nt
+            $err = $this->linkcall_apply_singer_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            
+            // 4 åˆ é™¤ç”¨æˆ·çš„è¿žéº¦é“¾æŽ¥è¡¨
+            $this->rem_user_link(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            
+            // 5 å¹¿æ’­ç›´æ’­é—´ï¼Œå½“å‰è¿žéº¦è¿žæŽ¥çŠ¶æ€   
+            $this->linkcall_room_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            } 
+            // 5 æŸ¥è¯¢ç”¨æˆ·ç”³è¯·æ—¶é—´
+            $time_apply = $this->get_user_apply_time(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            
+            // 6 æŸ¥è¯¢ç”¨æˆ·è¿žéº¦æ—¶é—´
+            $time_allow = $this->get_user_link_time(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            
+        }while(0);
+        //rs å›žåŒ…æ‹¼è£…
+        $rs = array();
+        $rs['error'] = $error;
+        $rs['sid'] = $sid;
+        $rs['time_apply'] = $time_apply;
+        $rs['time_allow'] = $time_allow;
+        $rs['singer_id'] =  $singer_id;
+        $rs['singer_nick'] = $singer_nick;
+        $rs['linkcall_state'] = $linkcall_state;
+        $rs['op_code'] = $op_code;
+        $return[] = array
+        (
+            'broadcast' => 0,// å‘rsåŒ…
+            'data' => $rs,
+        );
+        LogApi::logProcess("on_linkcall_apply_rs sid:".$sid." rs:".json_encode($rs));
+        LogApi::logProcess("on_linkcall_apply_rs sid:".$sid." return:".json_encode($return));
+
+    }
+    
+    //7.1  ä¸»æ’­å…è®¸ç”³è¯·
+    public function singer_apply_yes_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_state,&$linkcall_apply)
+    {
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        $op_code =1;
+        $num_link =0;
+        $time_allow =0;
+        do
+        {
+            LogApi::logProcess("singer_apply_yes_linkcall sid:$sid num_link:$num_link  time_allow:$time_allow");
+            // 1 æŸ¥è¯¢è¯¥ç”¨æˆ·æ˜¯å¦åœ¨ç”³è¯·åˆ—è¡¨
+            $is_apply = $this->find_user_apply_index(&$error,$sid,$user_id);           
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            if (false == $is_apply)
+            {
+                // 403300019(019)ç”¨æˆ·ä¸åœ¨ç”³è¯·åˆ—è¡¨ï¼Œè¯·æ ¸å¯¹
+                $error['code'] = 403300019;
+                $error['desc'] = 'ç”¨æˆ·ä¸åœ¨ç”³è¯·åˆ—è¡¨ï¼Œè¯·æ ¸å¯¹';
+                break;
+            }
+            
+            // 2 æŸ¥è¯¢å½“å‰è¿žéº¦æ€»æ•°ï¼ˆå½“å‰æœ‰å¤šå°‘äººè¿žéº¦ï¼‰
+            $num_link =$this->get_user_link_index_count(&$error,$sid);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            if ($num_link >= linkcall_model::$LINKCALL_LINK_COUNT_MAX)
+            {
+                // 403300018(018)å½“å‰è¿žéº¦äººæ•°è¶…è¿‡æœ€å¤§å€¼ï¼Œè¯·æ ¸å¯¹
+                $error['code'] = 403300018;
+                $error['desc'] = 'å½“å‰è¿žéº¦äººæ•°è¶…è¿‡æœ€å¤§å€¼ï¼Œè¯·æ ¸å¯¹';
+                break;
+            }            
+            $num_link = $num_link + 1;
+            $time_allow = time();
+            LogApi::logProcess("singer_apply_yes_linkcall sid:$sid num_link:$num_link  time_allow:$time_allow");
+            // 3.1 æŠŠè¯¥ç”¨æˆ·å­˜å…¥è¿žéº¦è¿žæŽ¥åˆ—è¡¨
+            $this->set_user_link(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            } 
+            
+            // 3.2 æŠŠè¯¥ç”¨æˆ·è¿žéº¦æ—¶é—´å­˜å…¥è¿žéº¦è¿žæŽ¥æŸ¥è¯¢è¡¨
+            $this->set_user_link_time(&$error,$sid,$user_id,$time_allow);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
                 break;
             }           
             
-            //¼ÇÂ¼ÓÃ»§Á¬ÂóÊý¾Ý»º´æ
-            $this->set_user_data_json(&$error, $sid, $user_id, &$data_cache);
+            
+            // 4 ä»Žè¿žéº¦ç”³è¯·åˆ—è¡¨æŠŠè¯¥ç”¨æˆ·ç§»é™¤
+            $this->rem_user_apply(&$error,$sid,$user_id);
+            if (0 != $error['code'])
             {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
                 break;
             }
-        }        
-        
-        // 5 µ¥²¥Á¬ÂóÉêÇë¸øÖ÷²¥
-        $this->linkcall_apply_singer_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }        
-    }
-    //6.2   ÓÃ»§È¡ÏûÉêÇëÁ¬Âó
-    public function user_apply_desapply_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_apply,&$linkcall_state)
-    { 
-        // 1 ²éÑ¯¸ÃÓÃ»§ÊÇ·ñÒÑ¾­ÔÚÉêÇëÁÐ±í
-        $time_apply = $this->get_user_apply_time(&$error,$sid,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        if (0 == $time_apply)
-        {
-            // 403300014(014)ÓÃ»§ÒÑ¾­²»ÔÚÉêÇëÁÐ±í£¬ÇëºË¶Ô
-            $error['code'] = 403300014;
-            $error['desc'] = 'ÓÃ»§ÒÑ¾­²»ÔÚÉêÇëÁÐ±í£¬ÇëºË¶Ô';
-            break;
-        }
-        // 2 ·¢ËÍÓÃ»§È¡ÏûÁ¬Âó£¬µ¥²¥¸øÖ÷²¥nt
-        $err = $this->linkcall_apply_singer_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        // 3 É¾³ýÓÃ»§µÄÁ¬ÂóÉêÇë±í
-        $this->del_user_apply_time(&$error,$sid,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        // 4 ¼ÇÂ¼ÓÃ»§Á¬ÂóÉêÇë×´Ì¬¡£
-        $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-    }
-    //6.3   ÓÃ»§ÍË³öÁ¬Âó
-    public function user_apply_out_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_apply,&$linkcall_state)
-    {
-        // 1 ²éÑ¯¸ÃÓÃ»§ÊÇ·ñÒÑ¾­ÔÚÁ¬½ÓÁÐ±í
-        $time_allow = $this->get_user_link_time(&$error,$sid,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        if ( 0 == $time_allow) 
-        {
-            // 403300017(017)¸ÃÓÃ»§²»ÔÚÁ´½ÓÁÐ±í
-            $error['code'] = 403300017;
-            $error['desc'] = 'ÓÃ»§ÒÑ¾­²»ÔÚÁ¬½ÓÁÐ±í£¬ÇëºË¶Ô';
-            break;
-        }
-        // 2 ·¢ËÍÓÃ»§ÍË³öÁ¬Âó£¬µ¥²¥¸øÖ÷²¥nt
-        $err = $this->linkcall_apply_singer_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        
-        // 3 É¾³ýÓÃ»§µÄÁ¬ÂóÁ´½Ó±í
-        $this->del_user_link_time(&$error,$sid,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        
-        // 4 ¹ã²¥Ö±²¥¼ä£¬µ±Ç°Á¬ÂóÁ¬½Ó×´Ì¬   
-        $this->linkcall_room_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        } 
-        // 5 ¼ÇÂ¼ÓÃ»§Á¬ÂóÉêÇë×´Ì¬¡£
-        $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-    }
+            
+            // 5 è®°å½•ç”¨æˆ·è¿žéº¦ç”³è¯·çŠ¶æ€
+            $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            
+            // 6 ä¸»æ’­å•æ’­è¿žéº¦å…è®¸ç»™ç”¨æˆ·        
+            $this->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
     
-    //7.1  Ö÷²¥ÔÊÐíÉêÇë
-    public function singer_apply_yes_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_state,&$linkcall_apply)
-    {
-        // 1 ²éÑ¯¸ÃÓÃ»§ÊÇ·ñÒÑ¾­ÔÚÉêÇëÁÐ±í
-        $time_apply = $this->get_user_apply_time(&$error,$sid,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        if (0 == $time_apply)
-        {
-            // 403300014(014)ÓÃ»§ÒÑ¾­²»ÔÚÉêÇëÁÐ±í£¬ÇëºË¶Ô
-            $error['code'] = 403300014;
-            $error['desc'] = 'ÓÃ»§ÒÑ¾­²»ÔÚÉêÇëÁÐ±í£¬ÇëºË¶Ô';
-            break;
-        }       
-        
-        // 2 ²éÑ¯µ±Ç°Á¬Âó×ÜÊý£¨µ±Ç°ÓÐ¶àÉÙÈËÁ¬Âó£©
-        $num_link =$this->get_user_link_time_count(&$error,$sid);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        if ($num_link >= linkcall_model::$LINKCALL_LINK_COUNT_MAX)
-        {
-            // 403300016(016)µ±Ç°Á¬ÂóÈËÊý³¬¹ý×î´óÖµ£¬ÇëºË¶Ô
-            $error['code'] = 403300016;
-            $error['desc'] = 'µ±Ç°Á¬ÂóÈËÊý³¬¹ý×î´óÖµ£¬ÇëºË¶Ô';
-            break;
-        }
-        
-        // 3.1 °Ñ¸ÃÓÃ»§´æÈëÁ¬ÂóÁ¬½ÓÁÐ±í
-        $time_allow = time();
-        $this->set_user_link_time(&$error,$sid,$user_id,$time_allow);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        } 
-        
-        // 3.2 °Ñ¸ÃÓÃ»§É¾³ýÁ¬ÂóÉêÇëÁÐ±í
-        $this->del_user_apply_time(&$error,$sid,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        
-        // 3.3 ¼ÇÂ¼ÓÃ»§Á¬ÂóÉêÇë×´Ì¬
-        $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        
-        // 4 Ö÷²¥µ¥²¥Á¬ÂóÔÊÐí¸øÓÃ»§        
-        $this->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
+            // 7 å¹¿æ’­ç›´æ’­é—´ï¼Œå½“å‰è¿žéº¦è¿žæŽ¥çŠ¶æ€
+            $this->linkcall_room_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            // 8 $link_num æ˜¯å¦æ˜¯æœ€å¤§çš„è¿žéº¦äººæ•°
+            if ( $num_link == linkcall_model::$LINKCALL_LINK_COUNT_MAX)
+            {            
+                //æŸ¥è¯¢å½“å‰è¿žéº¦ç”³è¯·åˆ—è¡¨ï¼Œå–å‡ºè¿žéº¦ç”³è¯·user_id
+                $apply_list=array();
+                $this->get_user_apply_index(&$error,$sid,&$apply_list);
+                if (0 != $error['code'])
+                {
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                    break;
+                }
+                //ç”¨æŸ¥è¯¢åˆ°çš„user_idï¼ŒåŽ»æŽ¨é€åˆ°ç›¸åº”çš„ç”¨æˆ·ï¼Œä¸»æ’­æ‹’ç»ç”³è¯·
+                $linkcall_apply_for = linkcall_model::LINKCALL_APPLY_NO;
+                foreach ($apply_list as $uid)
+                {
 
-        // 5 ¹ã²¥Ö±²¥¼ä£¬µ±Ç°Á¬ÂóÁ¬½Ó×´Ì¬
-        $this->linkcall_room_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        // 6 $link_num ÊÇÔÚ±¾´ÎÁ¬ÂóÇ°²éÑ¯Í³¼ÆÊý×Ö,£¬±¾´ÎÁ¬Âóºó£¬³¬¹ý ×î´óÖµ£¨2ÈË£©-1ÈËºó£¬ÌÞ³ýËùÓÐµ±Ç°Á¬ÂóÉêÇë
-        if ( $num_link == linkcall_model::$LINKCALL_LINK_COUNT_MAX - 1)
-        {            
-            //²éÑ¯µ±Ç°Á¬ÂóÉêÇëÁÐ±í£¬È¡³öÁ¬ÂóÉêÇëuser_id
-            $apply_list=array();
-            $this->get_user_apply_time_index(&$error,$sid,&$apply_list);
-            if (0 != $error['code'])
-            {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                break;
-            }
-            //ÓÃ²éÑ¯µ½µÄuser_id£¬È¥ÍÆËÍµ½ÏàÓ¦µÄÓÃ»§£¬Ö÷²¥¾Ü¾øÉêÇë
-            $linkcall_apply_for = linkcall_model::LINKCALL_APPLY_NO;
-            foreach ($apply_list as $uid => $score)
-            {
-                $data_get = array ();
-                $data_get['time_apply'] = $score;
-                $data_get['user_id'] = $uid ;
-                //¸ù¾Ý $uidÐÞ¸Äµ±Ç°ÓÃ»§µÄÉêÇë×´Ì¬Îª   Ö÷²¥¾Ü¾ø
-                $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply_for);
-                if (0 != $error['code'])
-                {
-                    //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                    break;
+                    //æ ¹æ® $uidä¿®æ”¹å½“å‰ç”¨æˆ·çš„ç”³è¯·çŠ¶æ€ä¸º   ä¸»æ’­æ‹’ç»
+                    $this->set_user_apply_state(&$error,$sid,$uid,$linkcall_apply_for);
+                    if (0 != $error['code'])
+                    {
+                        //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                        break;
+                    }
+                    //æ ¹æ® $uidåŽ»æŽ¨é€ç»™ç”¨æˆ·   ä¸»æ’­æ‹’ç»     
+                    $this->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$uid);                
+                    if (0 != $error['code'])
+                    {
+                        //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                        break;
+                    }
                 }
-                //¸ù¾Ý $uidÈ¥ÍÆËÍ¸øÓÃ»§   Ö÷²¥¾Ü¾ø     
-                $this->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);                
+                // ç”±äºŽä¸»æ’­è¿žéº¦æœ€å¤§å€¼ï¼Œå…¶ä»–ç”³è¯·è¢«åŠ¨æ‹’ç»ç”³è¯·ï¼Œæ¸…ç©ºç”³è¯·åˆ—è¡¨
+                $this->del_user_apply_index(&$error,$sid);
                 if (0 != $error['code'])
                 {
-                    //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
                     break;
                 }
             }
-            // ÓÉÓÚÖ÷²¥Á¬Âó×î´óÖµ£¬ÆäËûÉêÇë±»¶¯¾Ü¾øÉêÇë£¬Çå¿ÕÉêÇëÁÐ±í
-            $this->del_user_apply_time_index(&$error,$sid);
-            if (0 != $error['code'])
-            {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                break;
-            }
-        }
+        }while(0);
+        // å–å‡ºè¯¥ç”¨æˆ· uid data
+        $data_uid =array();
+        $this->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data_uid);
+
+        //linkcall_allow_rsåŒ…å›žåŒ…
+        $rs = array();
+        $rs['cmd'] = 'linkcall_allow_rs';
+        $rs['error'] = $error;
+        $rs['sid'] = $sid;
+        $rs['singer_id']  = $singer_id;
+        $rs['singer_nick']  = $singer_nick;
+        $rs['op_code'] = $op_code;
+        $rs['num_link'] =$num_link;
+        $rs['data'] = $data_uid;
+        $return[] = array
+        (
+            'broadcast' => 0,// å‘rsåŒ…
+            'data' => $rs,
+        );
+        LogApi::logProcess("on_linkcall_allow_rs sid:".$sid." rs:".json_encode($rs));
+        LogApi::logProcess("on_linkcall_allow_rs sid:".$sid." return:".json_encode($return));
+        return $return;
     }
     
-    //7.2   Ö÷²¥¾Ü¾øÉêÇë
+    //7.2   ä¸»æ’­æ‹’ç»ç”³è¯·
     public function singer_apply_no_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_state,&$linkcall_apply)
     {
-        // 1 ¼ÇÂ¼ÓÃ»§Á¬ÂóÉêÇë×´Ì¬¡£
-        $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        $op_code =2;
+        do
+        {
+            // 1 æŸ¥è¯¢è¯¥ç”¨æˆ·æ˜¯å¦åœ¨ç”³è¯·åˆ—è¡¨
+            $is_apply = $this->find_user_apply_index(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            if (false == $is_apply)
+            {
+                // 403300019(019)ç”¨æˆ·ä¸åœ¨ç”³è¯·åˆ—è¡¨ï¼Œè¯·æ ¸å¯¹
+                $error['code'] = 403300019;
+                $error['desc'] = 'ç”¨æˆ·ä¸åœ¨ç”³è¯·åˆ—è¡¨ï¼Œè¯·æ ¸å¯¹';
+                break;
+            }
+            
+            // 2 è®°å½•ç”¨æˆ·è¿žéº¦ç”³è¯·çŠ¶æ€ã€‚
+            $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            
+            // 3 ä¸»æ’­å•æ’­è¿žéº¦ç”³è¯·ç”¨æˆ·
+            $this->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            // 3 ç§»é™¤è¯¥ç”¨æˆ·çš„ç”³è¯·è®°å½•ã€‚
+            $this->rem_user_apply(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+        }while(0);
+        //linkcall_allow_rsåŒ…å›žåŒ…
+        //å–å‡ºè¯¥ç”¨æˆ·data
+        $data = array();
+        $this->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data);
         if (0 != $error['code'])
         {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+            //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
             break;
         }
-        // 2 Ö÷²¥µ¥²¥Á¬ÂóÉêÇëÓÃ»§
-        $this->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        // 3 É¾³ý¸ÃÓÃ»§µÄÉêÇë¼ÇÂ¼¡£
-        $this->del_user_apply_time(&$error,$sid,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
+        $rs = array();
+        $rs['cmd'] = 'linkcall_allow_rs';
+        $rs['error'] = $error;
+        $rs['sid'] = $sid;
+        $rs['singer_id']  = $singer_id;
+        $rs['singer_nick']  = $singer_nick;
+        $rs['op_code'] = $op_code;
+        $rs['data'] = $data;
+        $return[] = array
+        (
+            'broadcast' => 0,// å‘rsåŒ…
+            'data' => $rs,
+        );
+        LogApi::logProcess("on_linkcall_allow_rs sid:".$sid." rs:".json_encode($rs));
+        LogApi::logProcess("on_linkcall_allow_rs sid:".$sid." return:".json_encode($return));
+        return $return;
     }
     
-    //7.3   Ö÷²¥¶Ï¿ªÁ¬Âó
+    //7.3   ä¸»æ’­æ–­å¼€è¿žéº¦
     public function singer_apply_del_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_state,&$linkcall_apply)
     {
-        // 1 ¼ÇÂ¼ÓÃ»§Á¬ÂóÉêÇë×´Ì¬¡£
-        $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        $op_code =3;
+        do
+        {
+            // 1 æŸ¥è¯¢è¯¥ç”¨æˆ·æ˜¯å¦åœ¨è¿žéº¦åˆ—è¡¨
+            $is_link = $this->find_user_link_index(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            if (false == $is_link)
+            {
+                // 403300019(019)ç”¨æˆ·ä¸åœ¨ç”³è¯·åˆ—è¡¨ï¼Œè¯·æ ¸å¯¹
+                $error['code'] = 403300020;
+                $error['desc'] = 'è¿žéº¦ï¼šç”¨æˆ·ä¸åœ¨è¿žæŽ¥åˆ—è¡¨';
+                break;
+            }
+            
+            // 2 è®°å½•ç”¨æˆ·è¿žéº¦ç”³è¯·çŠ¶æ€ã€‚
+            $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            // 3 ä¸»æ’­å•æ’­æ–­å¼€è¿žéº¦æ¶ˆæ¯ç»™ç”¨æˆ·        
+            $this->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            
+            // 4 ä»Žè¿žéº¦è¿žæŽ¥åˆ—è¡¨ç§»é™¤è¯¥ç”¨æˆ·ã€‚
+            $this->rem_user_link(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            
+            // 5 å¹¿æ’­ç›´æ’­é—´ï¼Œå½“å‰è¿žéº¦è¿žæŽ¥çŠ¶æ€      
+            $this->linkcall_room_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+
+        }while(0);
+        //linkcall_allow_rsåŒ…å›žåŒ…
+        //å–å‡ºè¯¥ç”¨æˆ·data
+        $data = array();
+        $this->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data);
         if (0 != $error['code'])
         {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
+            //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
             break;
         }
-        // 2 Ö÷²¥µ¥²¥¶Ï¿ªÁ¬ÂóÏûÏ¢¸øÓÃ»§        
-        $this->linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        // 2 ¹ã²¥Ö±²¥¼ä£¬µ±Ç°Á¬ÂóÁ¬½Ó×´Ì¬      
-        $this->linkcall_room_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        // 3 É¾³ý¸ÃÓÃ»§µÄÁ¬½Ó¼ÇÂ¼¡£
-        $this->del_user_link_time(&$error,$sid,$user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        // 4 ¼ÇÂ¼ÓÃ»§Á¬ÂóÉêÇë×´Ì¬¡£
-        $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
+        $rs = array();
+        $rs['cmd'] = 'linkcall_allow_rs';
+        $rs['error'] = $error;
+        $rs['sid'] = $sid;
+        $rs['singer_id']  = $singer_id;
+        $rs['singer_nick']  = $singer_nick;
+        $rs['op_code'] = $op_code;
+        $rs['data'] = $data;
+        $return[] = array
+        (
+            'broadcast' => 0,// å‘rsåŒ…
+            'data' => $rs,
+        );
+        LogApi::logProcess("on_linkcall_allow_rs sid:".$sid." rs:".json_encode($rs));
+        LogApi::logProcess("on_linkcall_allow_rs sid:".$sid." return:".json_encode($return));
     }
     
-    //8.1   ¸ù¾ÝÓÃ»§user_id Æ´×°ÓÃ»§ data
+    //8.1   æ ¹æ®ç”¨æˆ·user_id æ‹¼è£…ç”¨æˆ· data
     public function linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data)
     {
-        $data_cache = array ();
-        //1 ÓÃ$user_id È¥»ñÈ¡ÓÃ»§ÉêÇëÁ¬Âó×´Ì¬
-        $linkcall_apply = $this->get_user_apply_state(&$error, $sid, $user_id);
-        if (0 != $error['code'])
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        do
         {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }  
-        
-        //2 ÓÃ$user_id È¥»ñÈ¡ÓÃ»§ÉêÇëÁ¬ÂóµÄÊ±¼ä  £¨Èç¹ûÓÃ»§±»Ö÷²¥¶Ï¿ª»òÕß×Ô¼ºÍË³öÁ¬Âó£¬Á¬Âó ÉêÇë$time_apply = 0£©
-        $time_apply = $this->get_user_apply_time(&$error, $sid, $user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        //3 ¸ù¾Ý$linkcall_apply È·¶¨ ÓÃ»§Á¬ÂóÊ±¼ä´Á£¨Ã»ÓÐÁ¬Âó£¬Á¬ÂóÊ±¼ä´Átime_allow = 0£©
-        $time_allow = $this->get_user_link_time(&$error, $sid, $user_id);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-
-        //4 ÓÃ$user_id È¥»ñÈ¡ÓÃ»§»º´æÐÅÏ¢
-        $this->get_user_data_json(&$error,$sid,$user_id,&$data_cache);
-        if (0 != $error['code'])
-        {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        //Æ´×°ÓÃ»§ data
-        $data[] = $data_cache;
-        $data['linkcall_apply'] = $linkcall_apply;
-        $data['time_apply'] = $time_apply;
-        $data['time_allow'] = $time_allow;                
+            $data_cache = array ();
+            //1 ç”¨$user_id åŽ»èŽ·å–ç”¨æˆ·ç”³è¯·è¿žéº¦çŠ¶æ€
+            $linkcall_apply = $this->get_user_apply_state(&$error, $sid, $user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }  
+            
+            //2 ç”¨$user_id åŽ»èŽ·å–ç”¨æˆ·ç”³è¯·è¿žéº¦çš„æ—¶é—´  ï¼ˆå¦‚æžœç”¨æˆ·è¢«ä¸»æ’­æ–­å¼€æˆ–è€…è‡ªå·±é€€å‡ºè¿žéº¦ï¼Œè¿žéº¦ ç”³è¯·$time_apply = 0ï¼‰
+            $time_apply = $this->get_user_apply_time(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            //3 æ ¹æ®$linkcall_apply ç¡®å®š ç”¨æˆ·è¿žéº¦æ—¶é—´æˆ³ï¼ˆæ²¡æœ‰è¿žéº¦ï¼Œè¿žéº¦æ—¶é—´æˆ³time_allow = 0ï¼‰
+            $time_allow = $this->get_user_link_time(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+    
+            //4 ç”¨$user_id åŽ»èŽ·å–ç”¨æˆ·ç¼“å­˜ä¿¡æ¯
+            $this->get_user_data_json(&$error,$sid,$user_id,&$data_cache);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            //æ‹¼è£…ç”¨æˆ· data
+            $data= $data_cache;
+            $data['linkcall_apply'] = $linkcall_apply;
+            $data['time_apply'] = $time_apply;
+            $data['time_allow'] = $time_allow;  
+            
+        }while(0);
     }    
     
-    //8.2  Æ´×°Á¬½ÓÓÃ»§Êý¾Ýdaras
+    //8.2  æ‹¼è£…è¿žæŽ¥ç”¨æˆ·æ•°æ®datas
     public function linkcall_link_all_user_datas(&$error,$sid,&$datas)
     {
-        // 1 ²éÑ¯µ±Ç°Á¬½ÓÁ¬ÂóµÄÓÃ»§id
-        $link_list=array();
-        $this->get_user_link_time_index(&$error,$sid,&$link_list);
-        // 2.Æ´×°data£¬ ·µ»Ødatas
-        foreach ($link_list as $uid => $score)
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        do
         {
-            $data=array();
-            $this->linkcall_userdata_by_uid(&$error,$sid,$uid,&$data);
-            $datas[] = $data;
-            if (0 != $error['code'])
+            // 1 æŸ¥è¯¢å½“å‰è¿žæŽ¥è¿žéº¦çš„ç”¨æˆ·id
+            $link_list=array();
+            $this->get_user_link_index(&$error,$sid,&$link_list);
+            // 2.æ‹¼è£…dataï¼Œ è¿”å›ždatas
+            foreach ($link_list as $uid)
             {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                break;
-            }
-        }    
+                $data=array();
+                $this->linkcall_userdata_by_uid(&$error,$sid,$uid,&$data);
+                $datas[] = $data;
+                if (0 != $error['code'])
+                {
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                    break;
+                }
+            } 
+        }while(0);
     }
     
-    //8.3  Æ´×°Á¬ÂóÉêÇëÓÃ»§Êý¾Ýdatas
+    //8.3  æ‹¼è£…è¿žéº¦ç”³è¯·ç”¨æˆ·æ•°æ®datas
     public function linkcall_apply_all_user_datas(&$error,$sid,&$datas)
     {
-        // 1 ²éÑ¯µ±Ç°Á¬ÂóÉêÇëµÄÓÃ»§id
-        $apply_list=array();
-        $this->get_user_apply_time_index(&$error,$sid,&$apply_list);
-        // 2.Æ´×°data£¬ ·µ»Ødatas
-        foreach ($apply_list as $uid => $score)
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        do
         {
-            $data=array();
-            $this->linkcall_userdata_by_uid(&$error,$sid,$uid,&$data);
-            $datas[] = $data;
-            if (0 != $error['code'])
+            // 1 æŸ¥è¯¢å½“å‰è¿žéº¦ç”³è¯·çš„ç”¨æˆ·id
+            $apply_list=array();
+            $this->get_user_apply_index(&$error,$sid,&$apply_list);
+            // 2.æ‹¼è£…dataï¼Œ è¿”å›ždatas
+            foreach ($apply_list as $uid)
             {
-                //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-                break;
+                $data=array();
+                $this->linkcall_userdata_by_uid(&$error,$sid,$uid,&$data);
+                $datas[] = $data;
+                if (0 != $error['code'])
+                {
+                    //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                    break;
+                }
             }
-        }
+        }while(0);
     }
     
-    //9.1   ÍÆËÍ·¿¼äÍ¨Öª
+    //9.1   æŽ¨é€æˆ¿é—´é€šçŸ¥
     public function linkcall_room_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state)
     {
-        // Æ´×°nt·¿¼ä»Ø°ü
-        $nt=array();
-        $datas=array();
-        $nt['sid'] = $sid;
-        $nt['singer_id'] = $singer_id;
-        $nt['singer_nick'] = $singer_nick;
-        $nt['linkcall_state'] = $linkcall_state;
-        $this->linkcall_link_all_user_datas(&$error,$sid,&$datas);
-        if (0 != $error['code'])
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        do
         {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        $nt['datas'] = $datas;
-        
-        //nt°ü
-        $return[] = array
-        (
-            'broadcast' => 6,// ·¢nt°ü
-            'data' => $nt,
-        );
-        LogApi::logProcess("linkcall_room_state_nt sid:".$sid." nt:".json_encode($nt));
+            // æ‹¼è£…ntæˆ¿é—´å›žåŒ…
+            $nt=array();
+            $datas=array();
+            $nt['sid'] = $sid;
+            $nt['singer_id'] = $singer_id;
+            $nt['singer_nick'] = $singer_nick;
+            $nt['linkcall_state'] = $linkcall_state;
+            $this->linkcall_link_all_user_datas(&$error,$sid,&$datas);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+            $nt['datas'] = $datas;
+            
+            //ntåŒ…
+            $return[] = array
+            (
+                'broadcast' => 2,// å‘å¹¿æ’­ntåŒ…
+                'data' => $nt,
+            );
+            LogApi::logProcess("linkcall_room_state_nt sid:".$sid." nt:".json_encode($nt));
+        }while(0);
     }
     
-    //9.2   ÍÆËÍÓÃ»§Í¨Öª
+    //9.2   æŽ¨é€ç”¨æˆ·é€šçŸ¥
     public function linkcall_user_state_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id)
     {
-        // Æ´×°ntÓÃ»§»Ø°ü
-        $nt=array();
-        $data=array();
-        $nt['sid'] = $sid;
-        $nt['singer_id'] = $singer_id;
-        $nt['singer_nick'] = $singer_nick;
-        $nt['linkcall_state'] = $linkcall_state;
-        $this->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data);
-        if (0 != $error['code'])
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        do
         {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        $nt['data'] = $data;
-        
-        //nt°ü
-        $return[] = array
-        (
-            'broadcast' => 0,// ·¢nt°ü
-            'user_id' => $user_id,
-            'data' => $nt,
-        );
-        LogApi::logProcess("linkcall_room_state_nt sid:".$sid."user_id:".$user_id." nt:".json_encode($nt));
+            // æ‹¼è£…ntç”¨æˆ·å›žåŒ…
+            $nt=array();
+            $data=array();
     
+            $nt['sid'] = $sid;
+            $nt['singer_id'] = $singer_id;
+            $nt['singer_nick'] = $singer_nick;
+            $nt['linkcall_state'] = $linkcall_state;
+            $this->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+    
+            $nt['data'] = $data;
+            
+            //ntåŒ…
+            $return[] = array
+            (
+                'broadcast' => 6,// å‘ç”¨æˆ·ntåŒ…
+                'user_id' => $user_id,
+                'data' => $nt,
+            );
+            LogApi::logProcess("linkcall_user_state_nt sid:".$sid."user_id:".$user_id." nt:".json_encode($nt));
+        }while(0);
     }
     
-    //9.3   ÍÆËÍÖ÷²¥Í¨Öª
+    //9.3   æŽ¨é€ä¸»æ’­é€šçŸ¥
     public function linkcall_apply_singer_nt(&$error,&$return,$sid,$singer_id,$singer_nick,$linkcall_state,$user_id)
     {
-       // Æ´×°ntÖ÷²¥»Ø°ü
-        $nt=array();
-        $data=array();
-        $nt['sid'] = $sid;
-        $nt['singer_id'] = $singer_id;
-        $nt['singer_nick'] = $singer_nick;
-        $nt['linkcall_state'] = $linkcall_state;
-        $this->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data);
-        if (0 != $error['code'])
+        $error['code'] = -1;
+        $error['desc'] = 'æœªçŸ¥é”™è¯¯';
+        do
         {
-            //³öÏÖÁËÒ»Ð©Âß¼­´íÎó
-            break;
-        }
-        $nt['data'] = $data;
-        
-        //nt°ü
-        $return[] = array
-        (
-            'broadcast' => 0,// ·¢nt°ü
-            'user_id' => $singer_id,
-            'data' => $nt,
-        );
-        LogApi::logProcess("linkcall_room_state_nt sid:".$sid."user_id:".$user_id." nt:".json_encode($nt));       
+           // æ‹¼è£…ntä¸»æ’­å›žåŒ…
+            $nt=array();
+            $data=array();
     
+            $nt['sid'] = $sid;
+            $nt['singer_id'] = $singer_id;
+            $nt['singer_nick'] = $singer_nick;
+            $nt['linkcall_state'] = $linkcall_state;
+            $this->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data);
+            if (0 != $error['code'])
+            {
+                //å‡ºçŽ°äº†ä¸€äº›é€»è¾‘é”™è¯¯
+                break;
+            }
+    
+            $nt['data'] = $data;
+            
+            //ntåŒ…
+            $return[] = array
+            (
+                'broadcast' => 6,// å‘ä¸»æ’­ntåŒ…
+                'user_id' => $singer_id,
+                'data' => $nt,
+            );
+            LogApi::logProcess("linkcall_room_state_nt sid:".$sid."user_id:".$user_id." nt:".json_encode($nt));       
+        }while(0);
     }
     
     
