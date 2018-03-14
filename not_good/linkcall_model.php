@@ -472,7 +472,7 @@
                 $v = 0;
             }
             $num_apply =$v;
-            LogApi::logProcess("linkcall_model.get_user_apply_index_count.sCard: sid:$sid ");
+            LogApi::logProcess("linkcall_model.get_user_apply_index_count.sCard: sid:$sid num_apply:$num_apply");
             //
             $error['code'] = 0;
             $error['desc'] = '';
@@ -588,7 +588,7 @@
     
         do
         {
-            if ($time_apply == 0)
+            if ($time_link == 0)
             {
                 $error['code'] = 200000001;
                 $error['desc'] = 'redis记录连接时间为0';
@@ -605,7 +605,7 @@
             }
             $exp_time =linkcall_model::$LINKCALL_EXP_TIME;
             $key = linkcall_model::linkcall_user_data_link_indexes_zset_key($sid);
-            $e=$redis->zAdd($key, $time_apply, $user_id);
+            $e=$redis->zAdd($key, $time_link, $user_id);
             $redis->expire($key,$exp_time);
             if(0== $e)
             {
@@ -706,7 +706,7 @@
                 LogApi::logProcess("inkcall_model.set_user_link.zadd写入数据返回0: sid:$sid uid:$user_id ");
                 break;
             }
-            //LogApi::logProcess("linkcall_model.set_user_link sid:$sid user_id:$user_id ");
+            LogApi::logProcess("linkcall_model.set_user_link sid:$sid user_id:$user_id ");
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
@@ -832,7 +832,7 @@
                 $v = 0;
             }
             $num_link =$v;
-            LogApi::logProcess("linkcall_model.get_user_apply_index_count.sCard: sid:$sid ");
+            LogApi::logProcess("linkcall_model.get_user_link_index_count.sCard: sid:$sid num_link:$num_link");
             //
             $error['code'] = 0;
             $error['desc'] = '';
@@ -976,13 +976,13 @@
                 //出现了一些逻辑错误
                 break;
             }
-            if ($num_apply >= linkcall_model::$LINKCALL_APPLY_COUNT_MAX)
-            {
-                // 403300017(017)用户60s内已经重复申请3次
-                $error['code'] = 403300017;
-                $error['desc'] = '用户60s内已经重复申请3次';
-                break;
-            }
+            //if ($num_apply >= linkcall_model::$LINKCALL_APPLY_COUNT_MAX)
+            //{
+            //    // 403300017(017)用户60s内已经重复申请3次
+            //    $error['code'] = 403300017;
+            //    $error['desc'] = '用户60s内已经重复申请3次';
+            //    break;
+            //}
             LogApi::logProcess("user_apply_apply_linkcall num_apply:$num_apply  time_apply;$time_apply");
             // 2 查询该用户是否已经在申请索引列表
             $is_apply = $this->find_user_apply_index(&$error,$sid,$user_id);           
@@ -1005,7 +1005,8 @@
             {
                 //出现了一些逻辑错误
                 break;
-            }            
+            }         
+            LogApi::logProcess("user_apply_apply_linkcall num_apply:$num_apply  time_apply;$time_apply time_apply_num:$time_apply_num");
             if ($time_apply_num >= linkcall_model::$LINKCALL_APPLY_MAX_PLAYER)
             {
                 // 403300022(022)当前申请人数超过最大值，请核对
@@ -1013,7 +1014,7 @@
                 $error['desc'] = '当前申请人数超过最大值，请核对';
                 break;
             }
-            $time_apply_num =$time_apply_num +1;
+            
 
             // 3 查询当前主播连麦连接总人数。        
             $time_link_num =$this->get_user_link_index_count(&$error,$sid);
@@ -1033,6 +1034,7 @@
             
             // 4 记录用户
             {
+                $time_apply_num =$time_apply_num +1;
                 //记录用户连麦申请状态。
                 $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
                 if (0 != $error['code'])
@@ -1074,30 +1076,7 @@
                 //出现了一些逻辑错误
                 break;
             }  
-        }while(0);
-        
-        //rs 回包拼装
-        $time_allow =0;
-        $rs = array();
-        $rs['error'] = $error;
-        $rs['sid'] = $sid;
-        $rs['time_apply'] = $time_apply;
-        $rs['time_allow'] = $time_allow;
-        $rs['singer_id'] =  $singer_id;
-        $rs['singer_nick'] = $singer_nick;
-        $rs['linkcall_state'] = $linkcall_state;
-        $rs['op_code'] = $op_code;
-        $rs['num_link']=$time_link_num;
-        $rs['num_apply']=$time_apply_num;
-
-        $return[] = array
-        (
-            'broadcast' => 0,// 发rs包
-            'data' => $rs,
-        );
-        LogApi::logProcess("on_linkcall_apply_rs sid:".$sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcall_apply_rs sid:".$sid." return:".json_encode($return));
-        
+        }while(0); 
     }
     //6.2   用户取消申请连麦
     public function user_apply_desapply_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_apply,&$linkcall_state)
@@ -1105,6 +1084,7 @@
         $error['code'] = -1;
         $error['desc'] = '未知错误';
         $op_code =2;
+        $time_apply = 0;
         do
         {
             // 1 查询该用户是否在申请列表
@@ -1153,25 +1133,6 @@
             }
             
         }while(0);
-        //rs 回包拼装
-        $time_allow =0;
-        $rs = array();
-        $rs['error'] = $error;
-        $rs['sid'] = $sid;
-        $rs['time_apply'] = $time_apply;
-        $rs['time_allow'] = $time_allow;
-        $rs['singer_id'] =  $singer_id;
-        $rs['singer_nick'] = $singer_nick;
-        $rs['linkcall_state'] = $linkcall_state;
-        $rs['op_code'] = $op_code;
-        $return[] = array
-        (
-            'broadcast' => 0,// 发rs包
-            'data' => $rs,
-        );
-        LogApi::logProcess("on_linkcall_apply_rs sid:".$sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcall_apply_rs sid:".$sid." return:".json_encode($return));
-
     }
     //6.3   用户退出连麦
     public function user_apply_out_linkcall(&$error,&$return,$sid,$singer_id,$singer_nick,$user_id,&$linkcall_apply,&$linkcall_state)
@@ -1244,24 +1205,6 @@
             }
             
         }while(0);
-        //rs 回包拼装
-        $rs = array();
-        $rs['error'] = $error;
-        $rs['sid'] = $sid;
-        $rs['time_apply'] = $time_apply;
-        $rs['time_allow'] = $time_allow;
-        $rs['singer_id'] =  $singer_id;
-        $rs['singer_nick'] = $singer_nick;
-        $rs['linkcall_state'] = $linkcall_state;
-        $rs['op_code'] = $op_code;
-        $return[] = array
-        (
-            'broadcast' => 0,// 发rs包
-            'data' => $rs,
-        );
-        LogApi::logProcess("on_linkcall_apply_rs sid:".$sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcall_apply_rs sid:".$sid." return:".json_encode($return));
-
     }
     
     //7.1  主播允许申请
@@ -1270,11 +1213,11 @@
         $error['code'] = -1;
         $error['desc'] = '未知错误';
         $op_code =1;
-        $num_link =0;
-        $time_allow =0;
+        $num_link = 0;
+        $time_allow= 0;
         do
         {
-            LogApi::logProcess("singer_apply_yes_linkcall sid:$sid num_link:$num_link  time_allow:$time_allow");
+
             // 1 查询该用户是否在申请列表
             $is_apply = $this->find_user_apply_index(&$error,$sid,$user_id);           
             if (0 != $error['code'])
@@ -1282,6 +1225,7 @@
                 //出现了一些逻辑错误
                 break;
             }
+
             if (false == $is_apply)
             {
                 // 403300019(019)用户不在申请列表，请核对
@@ -1289,7 +1233,7 @@
                 $error['desc'] = '用户不在申请列表，请核对';
                 break;
             }
-            
+
             // 2 查询当前连麦总数（当前有多少人连麦）
             $num_link =$this->get_user_link_index_count(&$error,$sid);
             if (0 != $error['code'])
@@ -1297,33 +1241,36 @@
                 //出现了一些逻辑错误
                 break;
             }
+
             if ($num_link >= linkcall_model::$LINKCALL_LINK_COUNT_MAX)
             {
                 // 403300018(018)当前连麦人数超过最大值，请核对
                 $error['code'] = 403300018;
                 $error['desc'] = '当前连麦人数超过最大值，请核对';
                 break;
-            }            
+            } 
+
             $num_link = $num_link + 1;
             $time_allow = time();
-            LogApi::logProcess("singer_apply_yes_linkcall sid:$sid num_link:$num_link  time_allow:$time_allow");
+
             // 3.1 把该用户存入连麦连接列表
             $this->set_user_link(&$error,$sid,$user_id);
+            
+
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             } 
-            
+
             // 3.2 把该用户连麦时间存入连麦连接查询表
             $this->set_user_link_time(&$error,$sid,$user_id,$time_allow);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
-            }           
-            
-            
+            }         
+
             // 4 从连麦申请列表把该用户移除
             $this->rem_user_apply(&$error,$sid,$user_id);
             if (0 != $error['code'])
@@ -1367,7 +1314,7 @@
                     break;
                 }
                 //用查询到的user_id，去推送到相应的用户，主播拒绝申请
-                $linkcall_apply_for = linkcall_model::LINKCALL_APPLY_NO;
+                $linkcall_apply_for = linkcall_model::$LINKCALL_APPLY_NO;
                 foreach ($apply_list as $uid)
                 {
 
@@ -1395,28 +1342,6 @@
                 }
             }
         }while(0);
-        // 取出该用户 uid data
-        $data_uid =array();
-        $this->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data_uid);
-
-        //linkcall_allow_rs包回包
-        $rs = array();
-        $rs['cmd'] = 'linkcall_allow_rs';
-        $rs['error'] = $error;
-        $rs['sid'] = $sid;
-        $rs['singer_id']  = $singer_id;
-        $rs['singer_nick']  = $singer_nick;
-        $rs['op_code'] = $op_code;
-        $rs['num_link'] =$num_link;
-        $rs['data'] = $data_uid;
-        $return[] = array
-        (
-            'broadcast' => 0,// 发rs包
-            'data' => $rs,
-        );
-        LogApi::logProcess("on_linkcall_allow_rs sid:".$sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcall_allow_rs sid:".$sid." return:".json_encode($return));
-        return $return;
     }
     
     //7.2   主播拒绝申请
@@ -1465,31 +1390,7 @@
                 break;
             }
         }while(0);
-        //linkcall_allow_rs包回包
-        //取出该用户data
-        $data = array();
-        $this->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data);
-        if (0 != $error['code'])
-        {
-            //出现了一些逻辑错误
-            break;
-        }
-        $rs = array();
-        $rs['cmd'] = 'linkcall_allow_rs';
-        $rs['error'] = $error;
-        $rs['sid'] = $sid;
-        $rs['singer_id']  = $singer_id;
-        $rs['singer_nick']  = $singer_nick;
-        $rs['op_code'] = $op_code;
-        $rs['data'] = $data;
-        $return[] = array
-        (
-            'broadcast' => 0,// 发rs包
-            'data' => $rs,
-        );
-        LogApi::logProcess("on_linkcall_allow_rs sid:".$sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcall_allow_rs sid:".$sid." return:".json_encode($return));
-        return $return;
+
     }
     
     //7.3   主播断开连麦
@@ -1547,30 +1448,6 @@
             }
 
         }while(0);
-        //linkcall_allow_rs包回包
-        //取出该用户data
-        $data = array();
-        $this->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data);
-        if (0 != $error['code'])
-        {
-            //出现了一些逻辑错误
-            break;
-        }
-        $rs = array();
-        $rs['cmd'] = 'linkcall_allow_rs';
-        $rs['error'] = $error;
-        $rs['sid'] = $sid;
-        $rs['singer_id']  = $singer_id;
-        $rs['singer_nick']  = $singer_nick;
-        $rs['op_code'] = $op_code;
-        $rs['data'] = $data;
-        $return[] = array
-        (
-            'broadcast' => 0,// 发rs包
-            'data' => $rs,
-        );
-        LogApi::logProcess("on_linkcall_allow_rs sid:".$sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcall_allow_rs sid:".$sid." return:".json_encode($return));
     }
     
     //8.1   根据用户user_id 拼装用户 data
@@ -1660,6 +1537,7 @@
             {
                 $data=array();
                 $this->linkcall_userdata_by_uid(&$error,$sid,$uid,&$data);
+                $data['time_allow'] = 0 ;
                 $datas[] = $data;
                 if (0 != $error['code'])
                 {
@@ -1680,6 +1558,7 @@
             // 拼装nt房间回包
             $nt=array();
             $datas=array();
+            $nt['cmd'] = 'linkcall_room_state_nt';
             $nt['sid'] = $sid;
             $nt['singer_id'] = $singer_id;
             $nt['singer_nick'] = $singer_nick;
@@ -1712,7 +1591,7 @@
             // 拼装nt用户回包
             $nt=array();
             $data=array();
-    
+            $nt['cmd'] = 'linkcall_user_state_nt';
             $nt['sid'] = $sid;
             $nt['singer_id'] = $singer_id;
             $nt['singer_nick'] = $singer_nick;
@@ -1730,7 +1609,7 @@
             $return[] = array
             (
                 'broadcast' => 6,// 发用户nt包
-                'user_id' => $user_id,
+                'target_uid' => $user_id,
                 'data' => $nt,
             );
             LogApi::logProcess("linkcall_user_state_nt sid:".$sid."user_id:".$user_id." nt:".json_encode($nt));
@@ -1747,7 +1626,7 @@
            // 拼装nt主播回包
             $nt=array();
             $data=array();
-    
+            $nt['cmd'] = 'linkcall_apply_singer_nt';
             $nt['sid'] = $sid;
             $nt['singer_id'] = $singer_id;
             $nt['singer_nick'] = $singer_nick;
@@ -1765,10 +1644,10 @@
             $return[] = array
             (
                 'broadcast' => 6,// 发主播nt包
-                'user_id' => $singer_id,
+                'target_uid' => $singer_id,
                 'data' => $nt,
             );
-            LogApi::logProcess("linkcall_room_state_nt sid:".$sid."user_id:".$user_id." nt:".json_encode($nt));       
+            LogApi::logProcess("linkcall_apply_singer_nt sid:".$sid."user_id:".$user_id." nt:".json_encode($nt));       
         }while(0);
     }
     

@@ -47,9 +47,9 @@ class channel_api
                 //判断是否是主播
                 if ($singer_id == $uid) 
                 {
-                    //是主播，触发主播入场
-                   // LogApi::logProcess("linkcall sid:$sid singer_id:$singer_id");
-                    //$linkcall->on_linkcall_singer_start($params);
+                   //是主播，触发主播入场
+                   //LogApi::logProcess("on_linkcall_user_in event:".json_encode($params));
+                   //$linkcall->on_linkcall_singer_start($params);
                     
                 }
                 else 

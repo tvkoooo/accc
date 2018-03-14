@@ -463,10 +463,10 @@ $startMTime = microtime(true)*1000;
             case 'saw_game_loot_prize_rq':
             	$result = game_saw_api::saw_game_loot_prize_rq($params);
             	break;
-            case 'p_user_real_enter_channel_event':
+            case 'p_user_real_enter_channel_event'://用户进入直播间事件
             	$result = channel_api::on_p_user_real_enter_channel_event($params);
             	break;            	
-            case 'p_user_real_leave_channel_event':
+            case 'p_user_real_leave_channel_event'://用户离开直播间事件
             	$result = channel_api::on_p_user_real_leave_channel_event($params);
             	break; 
             case 'p_channel_heartbeat_event':
