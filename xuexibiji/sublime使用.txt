@@ -1,0 +1,43 @@
+ 点击sublime的菜单栏 view->show console ；现在打开了控制台， 这个控制台有上下两栏， 上面一栏会实时显示sublime执行了什么插件，输出执行结果，
+ 如果你安装的某个插件不能正常运行，应该先在这里看看有没有报错。下面栏是一个输入框，可以运行python代码。
+ 我们输入下面的代码点击回车运行， 就能安装好package control了。
+
+import urllib2,os;pf='Package Control.sublime-package';ipp=sublime.installed_packages_path();os.makedirs(ipp) if not os.path.exists(ipp) else None;open(os.path.join(ipp,pf),'wb').write(urllib2.urlopen('http://sublime.wbond.net/'+pf.replace(' ','%20')).read())
+
+
+运行结束以后，记得重启编辑器，就能在Preferences中看到 package control了。
+
+然后我们按住 ctrl+shift+p。此时会输出一个输入框， 输入install。  选择package contrl： install package 回车 ，需要稍定一会儿，右下角状态栏会显示正在连接的提示文字。
+ 使用sublime时注意看右下角状态栏，很多插件的提示信息都显示在这里，这个状态栏很小，初次使用的人都有可能没有注意到它。   
+
+稍等一会儿后，它会出现一个插件列表， 你也可以在输入框中输入文字进行搜索插件。 搜索到自己想安装的插件，再选择它，回车。 就自动给你安装好了。
+
+1.下载并解压ctags包中的ctags.exe到系统环境路径（默认压缩在c:\windows\system32就好了）
+2.若没安装package control在这个插件的话，先安装它。这个在我的blog里有说明
+3.现在安装开始ctags的插件了，在package control中选择install package，搜索ctags就能找到ctags的插件，安装之。
+
+到这里ctags就安装好
+安装了，肯定无法使用，必须系统中有ctags才能用
+
+
+Windows
+
+Download the binary ctags.exe from Exuberant Ctags site.
+
+Extract ctags.exe from the download zip to "C:\Program Files\Sublime Text 2" or any folder that within your PATH so CTags support for Sublime Text 2 can run it.
+
+接着说一下使用：
+
+要想ctags可以使用，先要在相应的项目目录生成.tags文件，比如我要在G:\AppData\web\seven\Cola下生成。
+
+首先cmd进入对应的目录，然后使用命令，会生成一个.tags 文件
+
+ctags -R -f .tags
+接着你就可以发现目录下多了个文件 
+
+
+生成.tags文件后，这用sublime打开项目以后，就可以用下面方法跳转到函数声明
+
+ctrl+t   ctrl+t   //鼠标在函数出执行，跳到函数处  
+  
+ctrl+t   ctrl+b  //调回函数

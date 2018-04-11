@@ -42,9 +42,9 @@
         return "linkcall:user:data:apply:indexes:zset:$sid";
     }
     // redis 房间内用户连麦申请当前列表（当前申请的人数）
-    public static function linkcall_user_data_apply_set_key($sid)
+    public static function linkcall_user_data_apply_zset_key($sid)
     {
-        return "linkcall:user:data:apply:set:$sid";
+        return "linkcall:user:data:apply:zset:$sid";
     }   
     
     // redis 房间内用户连麦60s重复申请判断
@@ -58,9 +58,9 @@
         return "linkcall:user:data:link:indexes:zset:$sid";
     } 
     // redis 房间内用户连麦连接当前列表（当前连接的人数）
-    public static function linkcall_user_data_link_set_key($sid)
+    public static function linkcall_user_data_link_zset_key($sid)
     {
-        return "linkcall:user:data:link:indexes:set:$sid";
+        return "linkcall:user:data:link:indexes:zset:$sid";
     }
     // redis 房间内用户连麦申请状态索引（记录连麦申请状态）
     public static function linkcall_user_data_state_indexes_hash_key($sid)
@@ -318,7 +318,7 @@
     }
     
     //3.4   redis 写入     房间内用户连麦申请用户
-    public function set_user_apply(&$error,$sid,$user_id)
+    public function set_user_apply(&$error,$sid,$user_id,$time_apply)
     {
         $error['code'] = -1;
         $error['desc'] = '未知错误';
@@ -332,21 +332,21 @@
                 // 100000701(701)网络数据库断开连接
                 $error['code'] = 100000701;
                 $error['desc'] = 'redis数据库断开连接';
-                LogApi::logProcess("linkcall_model.set_user_apply.redis: sid:$sid user_id:$user_id ");
+                LogApi::logProcess("linkcall_model.set_user_apply.redis: sid:$sid user_id:$user_id time_apply:$time_apply");
                 break;
             }
             $exp_time =linkcall_model::$LINKCALL_EXP_TIME;
-            $key = linkcall_model::linkcall_user_data_apply_set_key($sid);
-            $e=$redis->sAdd($key, $user_id);
+            $key = linkcall_model::linkcall_user_data_apply_zset_key($sid);
+            $e=$redis->zAdd($key,$time_apply,$user_id);
             $redis->expire($key,$exp_time);
             if(0== $e)
             {
                 $error['code'] = 403300014;
                 $error['desc'] = '数据写入异常';
-                LogApi::logProcess("inkcall_model.set_user_apply.zadd写入数据返回0: sid:$sid uid:$user_id ");
+                LogApi::logProcess("inkcall_model.set_user_apply.zadd写入数据返回0: sid:$sid uid:$user_id time_apply:$time_apply");
                 break;
             }
-            //LogApi::logProcess("linkcall_model.set_user_apply sid:$sid user_id:$user_id ");
+            LogApi::logProcess("linkcall_model. 3.4 set_user_apply sid:$sid user_id:$user_id ");
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
@@ -369,8 +369,8 @@
                 LogApi::logProcess("linkcall_model.del_user_apply.redis: sid:$sid user_id:$user_id ");
                 break;
             }
-            $key = linkcall_model::linkcall_user_data_apply_set_key($sid);
-            $v = $redis->sRem($key,$user_id);
+            $key = linkcall_model::linkcall_user_data_apply_zset_key($sid);
+            $v = $redis->zRem($key,$user_id);
             if(true == empty($v))
             {
                 $error['code'] = 403300015;
@@ -379,7 +379,7 @@
                 break;
             }
 
-            //LogApi::logProcess("linkcall_model.del_user_apply.empty: sid:$sid user_id:$user_id ");
+            //LogApi::logProcess("linkcall_model.rem_user_apply: sid:$sid user_id:$user_id ");
             //
             $error['code'] = 0;
             $error['desc'] = '';
@@ -405,11 +405,11 @@
                 break;
             }
             $get_apply_list =array();
-            $key = linkcall_model::linkcall_user_data_apply_set_key($sid);
-            $get_apply_list = $redis->sDiff($key);
+            $key = linkcall_model::linkcall_user_data_apply_zset_key($sid);
+            $get_apply_list = $redis->zRange($key,0,-1);
     
             //输出获取的列表
-            foreach ($get_apply_list as $uid)
+            foreach ($get_apply_list as $score => $uid)
             {
                 $apply_list[] = $uid;
             }
@@ -424,7 +424,7 @@
     {
         $error['code'] = -1;
         $error['desc'] = '未知错误';
-        $is_apply =false;
+        $is_apply = false;
         do
         {
             $redis = $this->getRedisMaster();
@@ -436,9 +436,20 @@
                 LogApi::logProcess("linkcall_model.find_user_apply_index.redis: sid:$sid ");
                 break;
             }
-            $key = linkcall_model::linkcall_user_data_apply_set_key($sid);
-            $f = $redis->sIsMember($key,$user_id);
-            $is_apply = $f;
+            LogApi::logProcess("user_apply_desapply_linkcall find_user_apply_index1 is_apply:$is_apply");
+            $key = linkcall_model::linkcall_user_data_apply_zset_key($sid);
+            $v = $redis->zScore($key,$user_id);
+            if (true == empty($v))
+            {
+                $is_apply =false;
+                LogApi::logProcess("user_apply_desapply_linkcall find_user_apply_index2 is_apply:$is_apply");
+            }
+            else
+            {
+                $is_apply = true;
+                LogApi::logProcess("user_apply_desapply_linkcall find_user_apply_index3 is_apply:$is_apply");
+            }
+            LogApi::logProcess("user_apply_desapply_linkcall find_user_apply_index4 is_apply:$is_apply");
 
             $error['code'] = 0;
             $error['desc'] = '';
@@ -464,15 +475,15 @@
                 break;
             }
 
-            $key = linkcall_model::linkcall_user_data_apply_set_key($sid);
-            $v = $redis->sCard($key);
+            $key = linkcall_model::linkcall_user_data_apply_zset_key($sid);
+            $v = $redis->zCard($key);
             if(true == empty($v))
             {
                 //如果取出无数据，给个default 值 0，代表列表无数据
                 $v = 0;
             }
             $num_apply =$v;
-            LogApi::logProcess("linkcall_model.get_user_apply_index_count.sCard: sid:$sid num_apply:$num_apply");
+            LogApi::logProcess("linkcall_model.get_user_apply_index_count.zCard: sid:$sid num_apply:$num_apply");
             //
             $error['code'] = 0;
             $error['desc'] = '';
@@ -497,7 +508,7 @@
                 LogApi::logProcess("linkcall_model.del_user_apply_index.redis：sid:$sid ");
                 break;
             }
-            $key = linkcall_model::linkcall_user_data_apply_set_key($sid);
+            $key = linkcall_model::linkcall_user_data_apply_zset_key($sid);
             $redis->del($key);
             LogApi::logProcess("linkcall_model.del_user_apply_index.del：sid:$sid ");
             $error['code'] = 0;
@@ -678,7 +689,7 @@
     }
     
     //4.4   redis 写入     房间内用户连麦申请用户
-    public function set_user_link(&$error,$sid,$user_id)
+    public function set_user_link(&$error,$sid,$user_id,$time_link)
     {
         $error['code'] = -1;
         $error['desc'] = '未知错误';
@@ -692,21 +703,21 @@
                 // 100000701(701)网络数据库断开连接
                 $error['code'] = 100000701;
                 $error['desc'] = 'redis数据库断开连接';
-                LogApi::logProcess("linkcall_model.set_user_link.redis: sid:$sid user_id:$user_id ");
+                LogApi::logProcess("linkcall_model.set_user_link.redis: sid:$sid user_id:$user_id time_link:$time_link");
                 break;
             }
             $exp_time =linkcall_model::$LINKCALL_EXP_TIME;
-            $key = linkcall_model::linkcall_user_data_link_set_key($sid);
-            $e=$redis->sAdd($key, $user_id);
+            $key = linkcall_model::linkcall_user_data_link_zset_key($sid);
+            $e=$redis->zAdd($key,$time_link,$user_id);
             $redis->expire($key,$exp_time);
             if(0== $e)
             {
                 $error['code'] = 403300014;
                 $error['desc'] = '数据写入出现异常';
-                LogApi::logProcess("inkcall_model.set_user_link.zadd写入数据返回0: sid:$sid uid:$user_id ");
+                LogApi::logProcess("inkcall_model.set_user_link.zadd写入数据返回0: sid:$sid uid:$user_id time_link:$time_link");
                 break;
             }
-            LogApi::logProcess("linkcall_model.set_user_link sid:$sid user_id:$user_id ");
+            LogApi::logProcess("linkcall_model.set_user_link sid:$sid user_id:$user_id time_link:$time_link");
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
@@ -728,8 +739,8 @@
                 LogApi::logProcess("linkcall_model.rem_user_link.redis: sid:$sid user_id:$user_id ");
                 break;
             }
-            $key = linkcall_model::linkcall_user_data_link_set_key($sid);
-            $v = $redis->sRem($key,$user_id);
+            $key = linkcall_model::linkcall_user_data_link_zset_key($sid);
+            $v = $redis->zRem($key,$user_id);
             if(true == empty($v))
             {
                 $error['code'] = 403300015;
@@ -738,7 +749,7 @@
                 break;
             }
 
-            //LogApi::logProcess("linkcall_model.rem_user_link.sRem: sid:$sid user_id:$user_id");
+            //LogApi::logProcess("linkcall_model.rem_user_link.zRem: sid:$sid user_id:$user_id");
             //
             $error['code'] = 0;
             $error['desc'] = '';
@@ -765,14 +776,15 @@
                 break;
             }
             $get_link_list =array();
-            $key = linkcall_model::linkcall_user_data_link_set_key($sid);
-            $get_link_list = $redis->sDiff($key);
-    
+            $key = linkcall_model::linkcall_user_data_link_zset_key($sid);
+            $get_link_list = $redis->zRange($key,0,-1);
+            
             //输出获取的列表
-            foreach ($get_link_list as $uid)
+            foreach ($get_link_list as $score =>$uid )
             {
                 $link_list[] = $uid;
             }
+
             //
             $error['code'] = 0;
             $error['desc'] = '';
@@ -796,9 +808,16 @@
                 LogApi::logProcess("linkcall_model.find_user_link_index.redis: sid:$sid ");
                 break;
             }
-            $key = linkcall_model::linkcall_user_data_link_set_key($sid);
-            $f = $redis->sIsMember($key,$user_id);
-            $is_link = $f;
+            $key = linkcall_model::linkcall_user_data_link_zset_key($sid);
+            $v = $redis->zScore($key,$user_id);
+            if (true == empty($v))
+            {
+                $is_link =false;
+            }
+            else 
+            {
+                $is_link = true;
+            }           
     
             $error['code'] = 0;
             $error['desc'] = '';
@@ -824,15 +843,15 @@
                 break;
             }
     
-            $key = linkcall_model::linkcall_user_data_link_set_key($sid);
-            $v = $redis->sCard($key);
+            $key = linkcall_model::linkcall_user_data_link_zset_key($sid);
+            $v = $redis->zCard($key);
             if(true == empty($v))
             {
                 //如果取出无数据，给个default 值 0，代表列表无数据
                 $v = 0;
             }
             $num_link =$v;
-            LogApi::logProcess("linkcall_model.get_user_link_index_count.sCard: sid:$sid num_link:$num_link");
+            LogApi::logProcess("linkcall_model.get_user_link_index_count.zCard: sid:$sid num_link:$num_link");
             //
             $error['code'] = 0;
             $error['desc'] = '';
@@ -857,7 +876,7 @@
                 LogApi::logProcess("linkcall_model.del_user_link_index.redis：sid:$sid ");
                 break;
             }
-            $key = linkcall_model::linkcall_user_data_link_set_key($sid);
+            $key = linkcall_model::linkcall_user_data_link_zset_key($sid);
             $redis->del($key);
             LogApi::logProcess("linkcall_model.del_user_link_index.del：sid:$sid ");
             $error['code'] = 0;
@@ -984,7 +1003,22 @@
             //    break;
             //}
             LogApi::logProcess("user_apply_apply_linkcall num_apply:$num_apply  time_apply;$time_apply");
-            // 2 查询该用户是否已经在申请索引列表
+            // 2.1 查询该用户是否已经在连接索引列表
+            $is_link = $this->find_user_link_index(&$error,$sid,$user_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            if (true == $is_link)
+            {
+                // 403300022(022)用户在连接列表
+                $error['code'] = 403300022;
+                $error['desc'] = '用户在连接列表';
+                break;
+            }
+
+            // 2.2  查询该用户是否已经在申请索引列表
             $is_apply = $this->find_user_apply_index(&$error,$sid,$user_id);           
             if (0 != $error['code'])
             {
@@ -1034,6 +1068,39 @@
             
             // 4 记录用户
             {
+                //////////////////////////////////////////////////////////////////////////////////////////////
+                /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                //原始用户数据获取
+                //1 获取用户头像信息
+                $userInfo = new UserInfoModel();
+                $user = $userInfo->getInfoById($user_id);
+                //$j_user = json_encode($user);
+                //LogApi::logProcess("on_linkcall_apply_rq j_user:$j_user");
+                $user_icon = $data_cache['user_icon']   = '';//默认值
+                $data_cache['user_nick'] = $user['nick'];
+                $data_cache['user_icon'] = $user['photo'];
+                $user_icon = $data_cache['user_icon'];
+                
+                //2 获取用户活跃等级/财富等级/   如果是主播，获取魅力等级
+                $userlevel = new UserAttributeModel();
+                $user_level_info = $userlevel->getAttrByUid($user_id);
+                //$j_user_level = json_encode($user_level_info);
+                //LogApi::logProcess("on_linkcall_apply_rq j_user_level:$j_user_level");
+                $data_cache['user_wealth'] = 0;//默认值
+                $data_cache['user_level']  = 0;//默认值
+                
+                $is_singer   =(int)$data_cache['is_singer'];
+                if (0 == $is_singer)
+                {
+                    $data_cache['user_wealth'] = (int)$user_level_info['consume_level'];
+                    $data_cache['user_level']  = (int)$user_level_info['active_level'];
+                }
+                else
+                {
+                    $data_cache['user_wealth'] = (int)$user_level_info['experience_level'];
+                }
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////
                 $time_apply_num =$time_apply_num +1;
                 //记录用户连麦申请状态。
                 $this->set_user_apply_state(&$error,$sid,$user_id,$linkcall_apply);
@@ -1052,7 +1119,7 @@
                 } 
                 
                 //记录用户进入申请列表。
-                $this->set_user_apply(&$error,$sid,$user_id);
+                $this->set_user_apply(&$error,$sid,$user_id,$time_apply);
                 if (0 != $error['code'])
                 {
                     //出现了一些逻辑错误
@@ -1066,6 +1133,8 @@
                     //出现了一些逻辑错误
                     break;
                 }
+                
+                
             }        
             
             // 5 单播连麦申请给主播
@@ -1094,6 +1163,7 @@
                 //出现了一些逻辑错误
                 break;
             }
+            LogApi::logProcess("user_apply_desapply_linkcall is_apply:$is_apply");
             if (false == $is_apply)
             {
                 // 403300019(019)用户不在申请列表，请核对
@@ -1254,9 +1324,7 @@
             $time_allow = time();
 
             // 3.1 把该用户存入连麦连接列表
-            $this->set_user_link(&$error,$sid,$user_id);
-            
-
+            $this->set_user_link(&$error,$sid,$user_id,$time_allow); 
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
@@ -1490,9 +1558,9 @@
             }
             //拼装用户 data
             $data= $data_cache;
-            $data['linkcall_apply'] = $linkcall_apply;
-            $data['time_apply'] = $time_apply;
-            $data['time_allow'] = $time_allow;  
+            $data['linkcall_apply'] = (int)$linkcall_apply;
+            $data['time_apply'] = (int)$time_apply;
+            $data['time_allow'] = (int)$time_allow;  
             
         }while(0);
     }    
@@ -1512,6 +1580,7 @@
             {
                 $data=array();
                 $this->linkcall_userdata_by_uid(&$error,$sid,$uid,&$data);
+                $data['time_now'] =time();
                 $datas[] = $data;
                 if (0 != $error['code'])
                 {
@@ -1538,6 +1607,7 @@
                 $data=array();
                 $this->linkcall_userdata_by_uid(&$error,$sid,$uid,&$data);
                 $data['time_allow'] = 0 ;
+                $data['time_now'] =time();
                 $datas[] = $data;
                 if (0 != $error['code'])
                 {
@@ -1559,8 +1629,8 @@
             $nt=array();
             $datas=array();
             $nt['cmd'] = 'linkcall_room_state_nt';
-            $nt['sid'] = $sid;
-            $nt['singer_id'] = $singer_id;
+            $nt['sid'] = (int)$sid;
+            $nt['singer_id'] = (int)$singer_id;
             $nt['singer_nick'] = $singer_nick;
             $nt['linkcall_state'] = $linkcall_state;
             $this->linkcall_link_all_user_datas(&$error,$sid,&$datas);
@@ -1592,8 +1662,8 @@
             $nt=array();
             $data=array();
             $nt['cmd'] = 'linkcall_user_state_nt';
-            $nt['sid'] = $sid;
-            $nt['singer_id'] = $singer_id;
+            $nt['sid'] = (int)$sid;
+            $nt['singer_id'] = (int)$singer_id;
             $nt['singer_nick'] = $singer_nick;
             $nt['linkcall_state'] = $linkcall_state;
             $this->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data);
@@ -1602,14 +1672,14 @@
                 //出现了一些逻辑错误
                 break;
             }
-    
+            $data['time_now'] =time();
             $nt['data'] = $data;
             
             //nt包
             $return[] = array
             (
                 'broadcast' => 6,// 发用户nt包
-                'target_uid' => $user_id,
+                'target_uid' => (int)$user_id,
                 'data' => $nt,
             );
             LogApi::logProcess("linkcall_user_state_nt sid:".$sid."user_id:".$user_id." nt:".json_encode($nt));
@@ -1627,8 +1697,8 @@
             $nt=array();
             $data=array();
             $nt['cmd'] = 'linkcall_apply_singer_nt';
-            $nt['sid'] = $sid;
-            $nt['singer_id'] = $singer_id;
+            $nt['sid'] = (int)$sid;
+            $nt['singer_id'] = (int)$singer_id;
             $nt['singer_nick'] = $singer_nick;
             $nt['linkcall_state'] = $linkcall_state;
             $this->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data);
@@ -1637,14 +1707,14 @@
                 //出现了一些逻辑错误
                 break;
             }
-    
+            $data['time_now'] =time();
             $nt['data'] = $data;
             
             //nt包
             $return[] = array
             (
                 'broadcast' => 6,// 发主播nt包
-                'target_uid' => $singer_id,
+                'target_uid' => (int)$singer_id,
                 'data' => $nt,
             );
             LogApi::logProcess("linkcall_apply_singer_nt sid:".$sid."user_id:".$user_id." nt:".json_encode($nt));       

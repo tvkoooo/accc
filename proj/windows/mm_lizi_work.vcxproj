@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\lizi_work\application.cpp" />
+    <ClCompile Include="..\..\src\lizi_work\taskrequest_from_linkd.cpp" />
+    <ClCompile Include="..\..\src\lizi_work\kehuduan.cpp" />
+    <ClCompile Include="windows\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\lizi_work\application.h" />
+    <ClInclude Include="..\..\src\lizi_work\taskrequest_from_linkd.h" />
+    <ClInclude Include="..\..\src\lizi_work\kehuduan.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D93E0D0F-D88B-4CED-A2B5-139B9D5ACE0D}</ProjectGuid>
+    <RootNamespace>mm_lizi_work</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)_d</TargetName>
+    <LinkIncremental>true</LinkIncremental>
+    <TargetExt>.exe</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>..\bin\debug\</OutDir>
+    <IntDir>obj\x64\Debug\mm\</IntDir>
+    <TargetName>mm_d</TargetName>
+    <TargetExt>.exe</TargetExt>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
+    <TargetName>$(ProjectName)</TargetName>
+    <TargetExt>.exe</TargetExt>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>..\bin\release\</OutDir>
+    <IntDir>obj\x64\Release\mm\</IntDir>
+    <TargetName>mm</TargetName>
+    <TargetExt>.exe</TargetExt>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <CompileAs>Default</CompileAs>
+      <AdditionalIncludeDirectories>$(VLD_HOME)/include;$(MYSQL_HOME)/include;../../src;../../src/lizi_work;./windows;$(LIB_HOME)/src/pthread;$(LIB_HOME)/src/hiredis;$(CORE_HOME)/mm/src;$(CORE_HOME)/mm/src/os/windows;$(LIB_HOME)/src/protobuf/src;$(CORE_HOME)/data/src/protobuf;$(DEPEND_HOME)/depend/src/zookeeper-3.4.10/src/c/include;$(DEPEND_HOME)/common/data/src;$(DEPEND_HOME)/depend/src/zookeeper-3.4.10/src/c/generated;$(CORE_HOME)/dish/src/;$(DEPEND_HOME)/common/querydef/src;$(DEPEND_HOME)/common/cobweb/src;$(DEPEND_HOME)/module/account/src/module_account;$(DEPEND_HOME)/depend/src/rapidjson/include/rapidjson;$(DEPEND_HOME)/common/archive/src;$(DEPEND_HOME)/client/objc/native/src;$(DEPEND_HOME)/depend/src/rapidjson/include;$(XCBB_HOME)/server.kr.2/server/shuttle/src</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>ws2_32.lib;vld.lib;pthread_d.lib;mm_net_d.lib;mm_core_d.lib;libprotobuf_d.lib;libprotoc_d.lib;mm_data_protobuf_d.lib;zookeeper_d.lib;mm_data_zookeeper_d.lib;mm_dish_d.lib;mm_shuttle_common_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(MYSQL_HOME)/lib;$(LIB_HOME)/build/pthread/proj_windows/bin/Debug;$(LIB_HOME)/build/hiredis/proj_windows/bin/Debug;$(CORE_HOME)\mm\proj\windows\bin\Debug;$(CORE_HOME)\data\proj\windows\bin\Debug;$(LIB_HOME)/build/protobuf/proj_windows/bin/Debug;$(LIB_HOME)/build/zookeeper/proj_windows/bin/Debug;$(CORE_HOME)/dish/proj/windows/bin/Debug;$(SHUTTLE_HOME)/shuttle/proj/windows/bin/Debug</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy $(LIB_HOME)\\build\\pthread\\proj_windows\\bin\\Debug\pthread_d.dll                          bin\\Debug\* /s /e /h /d /y
+xcopy $(CORE_HOME)\\mm\\proj\\windows\\bin\\Debug\mm_net_d.dll                                     bin\\Debug\* /s /e /h /d /y
+xcopy $(CORE_HOME)\\mm\\proj\\windows\\bin\\Debug\mm_core_d.dll                                    bin\\Debug\* /s /e /h /d /y
+xcopy $(CORE_HOME)\\data\\proj\\windows\\bin\\Debug\mm_data_protobuf_d.dll                     bin\\Debug\* /s /e /h /d /y
+xcopy $(LIB_HOME)\\build\\zookeeper\\proj_windows\\bin\\Debug\zookeeper_d.dll                     bin\\Debug\* /s /e /h /d /y
+xcopy $(CORE_HOME)\\data\\proj\\windows\\bin\\Debug\mm_data_zookeeper_d.dll                     bin\\Debug\* /s /e /h /d /y
+xcopy $(CORE_HOME)\\dish\proj\windows\bin\Debug\mm_dish_d.dll                                            bin\\Debug\* /s /e /h /d /y
+xcopy $(SHUTTLE_HOME)\\shuttle\proj\windows\bin\Debug\mm_shuttle_common_d.dll                        bin\\Debug\* /s /e /h /d /y
+xcopy $(SHUTTLE_HOME)\\shuttle\proj\windows\bin\Debug\zziplib_d.dll                                             bin\\Debug\* /s /e /h /d /y
+xcopy $(SHUTTLE_HOME)\\shuttle\proj\windows\bin\Debug\mm_data_mysql_d.dll                               bin\\Debug\* /s /e /h /d /y
+xcopy $(SHUTTLE_HOME)\\shuttle\proj\windows\bin\Debug\zlib_d.dll                                              bin\\Debug\* /s /e /h /d /y
+xcopy $(SHUTTLE_HOME)\\shuttle\proj\windows\bin\Debug\mm_data_redis_d.dll                             bin\\Debug\* /s /e /h /d /y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(OutDir)mm_d.pdb</ProgramDataBaseFileName>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>$(OutDir)mm_d.exe</OutputFile>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;myfun_build;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+      <AdditionalIncludeDirectories>$(VLD_HOME)/include;$(MYSQL_HOME)/include;../../src;../../src/lizi_work;./windows;$(LIB_HOME)/src/pthread;$(LIB_HOME)/src/hiredis;$(CORE_HOME)/mm/src;$(CORE_HOME)/mm/src/os/windows;$(LIB_HOME)/src/protobuf/src;$(CORE_HOME)/data/src/protobuf;$(DEPEND_HOME)/depend/src/zookeeper-3.4.10/src/c/include;$(DEPEND_HOME)/common/data/src;$(DEPEND_HOME)/depend/src/zookeeper-3.4.10/src/c/generated;$(CORE_HOME)/dish/src/;$(DEPEND_HOME)/common/querydef/src;$(DEPEND_HOME)/common/cobweb/src;$(DEPEND_HOME)/module/account/src/module_account;$(DEPEND_HOME)/depend/src/rapidjson/include/rapidjson;$(DEPEND_HOME)/common/archive/src;$(DEPEND_HOME)/client/objc/native/src;$(DEPEND_HOME)/depend/src/rapidjson/include;$(XCBB_HOME)/server.kr.2/server/shuttle/src</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <TargetMachine>MachineX86</TargetMachine>
+      <AdditionalDependencies>ws2_32.lib;vld.lib;pthread.lib;mm_net.lib;mm_core.lib;libprotobuf.lib;libprotoc.lib;mm_data_protobuf.lib;zookeeper.lib;mm_data_zookeeper.lib;mm_dish.lib;mm_shuttle_common.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(MYSQL_HOME)/lib;$(LIB_HOME)/build/pthread/proj_windows/bin/Release;$(LIB_HOME)/build/hiredis/proj_windows/bin/Release;$(CORE_HOME)\mm\proj\windows\bin\Release;$(LIB_HOME)/build/protobuf/proj_windows/bin/Release;$(CORE_HOME)/data/proj/windows/bin/Release;$(LIB_HOME)/build/zookeeper/proj_windows/bin/Release;$(CORE_HOME)/dish/proj/windows/bin/Release;$(SHUTTLE_HOME)/shuttle/proj/windows/bin/Release</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent />
+    <PostBuildEvent>
+      <Command>xcopy $(LIB_HOME)\\build\\pthread\\proj_windows\\bin\\Release\pthread.dll                          bin\\Release\* /s /e /h /d /y
+xcopy $(CORE_HOME)\\mm\\proj\\windows\\bin\\Release\mm_net.dll                                     bin\\Release\* /s /e /h /d /y
+xcopy $(CORE_HOME)\\mm\\proj\\windows\\bin\\Release\mm_core.dll                                    bin\\Release\* /s /e /h /d /y
+xcopy $(CORE_HOME)\\data\\proj\\windows\\bin\\Release\mm_data_protobuf.dll                     bin\\Release\* /s /e /h /d /y
+xcopy $(LIB_HOME)\\build\\zookeeper\\proj_windows\\bin\\Release\zookeeper.dll                     bin\\Release\* /s /e /h /d /y
+xcopy $(CORE_HOME)\\data\\proj\\windows\\bin\\Release\mm_data_zookeeper.dll                     bin\\Release\* /s /e /h /d /y
+xcopy $(CORE_HOME)\\dish\proj\windows\bin\Release\mm_dish.dll                                            bin\\Release\* /s /e /h /d /y
+xcopy $(SHUTTLE_HOME)\\shuttle\proj\windows\bin\Release\mm_shuttle_common_d.dll                        bin\\Release\* /s /e /h /d /y
+xcopy $(SHUTTLE_HOME)\\shuttle\proj\windows\bin\Release\zziplib.dll                                             bin\\Release\* /s /e /h /d /y
+xcopy $(SHUTTLE_HOME)\\shuttle\proj\windows\bin\Release\mm_data_mysql.dll                               bin\\Release\* /s /e /h /d /y
+xcopy $(SHUTTLE_HOME)\\shuttle\proj\windows\bin\Release\zlib.dll                                              bin\\Release\* /s /e /h /d /y
+xcopy $(SHUTTLE_HOME)\\shuttle\proj\windows\bin\Release\mm_data_redis.dll                             bin\\Release\* /s /e /h /d /y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <Optimization>MinSpace</Optimization>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <OutputFile>$(OutDir)mm.exe</OutputFile>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

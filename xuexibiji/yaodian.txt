@@ -1,3 +1,5 @@
+http://idea.youbbs.org
+
 生产者：提供事件的挂载点
 生成生产者的实例。有义务实现该生产者实例的消费者实现过程。
 
@@ -18,45 +20,42 @@ abuabu2017
 https://exmail.qq.com/cgi-bin/loginpage?t=dm_loginpage&s=logout&param=longjia@xcbobo.com
 longjia@xcbobo.com   密码VNCxckj20160818   Abuabu2017
 
+ 运行目录
+ 查询方法： ps -fe | grep datacen
+ 
+  查看日志：
+cd /data/phplog
+grep -E '900107' php.log | grep -E 'linkcall_apply_singer_nt'
+tail -f 2017-12-15.log | grep 10005127 |grep 10001   (监控日志)
+
+守护进程
+sudo supervisorctl
+start kaifa:rc_robot_d 开启
+status  查看当前进程
+
+find linux/ -type f -print0 | xargs -0 sed -i 's/\r//g'
+
+
+mysql -h localhost -u root -pabuabu2017
+mysql -h 47.93.118.164 -P 8066 -u dble -ptest123
+mysql -h 47.95.246.231 -P 3306 -u XcbbNeiCe -pXcNei,.0526
+show processlist;
+kill xxxx;
+quit;
 
 
 
 
-SHUTTLE
-shuttle
-server
-
-$(CORE_HOME)/mm/proj/windows/bin/Debug
-$(MYSQL_HOME)/lib
-$(LIB_HOME)/build/pthread/proj_windows/bin/Debug
-$(LIB_HOME)/build/protobuf/proj_windows/bin/Debug
-$(LIB_HOME)/build/hiredis/proj_windows/bin/Debug
-$(LIB_HOME)/build/zookeeper/proj_windows/bin/Debug
-
-$(CORE_HOME)/mm/proj/windows/bin/Release
-$(MYSQL_HOME)/lib
-$(LIB_HOME)/build/pthread/proj_windows/bin/Release
-$(LIB_HOME)/build/protobuf/proj_windows/bin/Release
-$(LIB_HOME)/build/hiredis/proj_windows/bin/Release
-$(LIB_HOME)/build/zookeeper/proj_windows/bin/Release
-../../../../mm_lib
-../../../../mm_core
-../../../../mm_shuttle
-\data\src\mysql               mm_data_mysql_d.lib
-../../../../mm_core/data/src/mysql
 
 
-../../../../mm_lib/src/protobuf/src
-../../../../mm_lib/build/protobuf/include/windows
-../../../../mm_core/data/src
-../../../../mm_shuttle/shuttle/src/shuttle_proxy
 
 
-../../../../mm_core/data/proj/windows/bin/$(Configuration)
-D:\mm\mm_shuttle\shuttle\proj\windows
-../../../../mm_shuttle/shuttle/src/cobweb
-../../../../mm_shuttle/shuttle/proj/windows/bin/$(Configuration)
-../../../../mm_core/mm/proj/windows/bin/$(Configuration)
 
 
-../../../../mm_shuttle/shuttle/src/cobweb
+
+
+
+
+
+
+

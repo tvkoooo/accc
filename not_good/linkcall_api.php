@@ -12,10 +12,10 @@ class linkcall_api
         $error = array();
         $data_cache = array();
         //linkcall_set_state_rq包数据，拆解rq包
-        $sid         = $params['sid'];
-        $singer_id   = $params['singer_id'];
+        $sid         = (int)$params['sid'];
+        $singer_id   = (int)$params['singer_id'];
         $singer_nick = $params['singer_nick'];        
-        $op_code     = $params['op_code']; 
+        $op_code     = (int)$params['op_code']; 
 
         //b_error.info  rs回包错误信息default
         $error['code'] = 0;
@@ -111,7 +111,8 @@ class linkcall_api
                         {
                             //出现了一些逻辑错误
                             break;
-                        }                        
+                        } 
+                        LogApi::logProcess("on_linkcall_set_state_rq.apply_del  sid:$sid singer_id：$singer_id uid:$uid");
                     }
                 }
 
@@ -151,6 +152,7 @@ class linkcall_api
                             //出现了一些逻辑错误
                             break;
                         }   
+                        LogApi::logProcess("on_linkcall_set_state_rq.link_del  sid:$sid singer_id：$singer_id uid:$uid");
                     }
                     
                 }
@@ -182,11 +184,11 @@ class linkcall_api
         $rs = array();
         $rs['cmd'] = 'linkcall_set_state_rs';
         $rs['error'] = $error;
-        $rs['sid'] = $sid;
-        $rs['linkcall_state'] = $linkcall_state;
-        $rs['op_code'] = $op_code;
-        $rs['num_apply'] = $num_apply;
-        $rs['num_link'] = $num_link;     
+        $rs['sid'] = (int)$sid;
+        $rs['linkcall_state'] = (int)$linkcall_state;
+        $rs['op_code'] = (int)$op_code;
+        $rs['num_apply'] = (int)$num_apply;
+        $rs['num_link'] = (int)$num_link;     
         $return[] = array
         (
             'broadcast' => 0,// 发rs包
@@ -248,27 +250,15 @@ class linkcall_api
         //初始化用户记录数据
         $linkcall_apply = $user_data['linkcall_apply']    =0;
         $time_apply     = $user_data['time_apply']        =0;
-        $time_allow     = $user_data['time_allow']        =0;
-        //获取用户信息
-        $userInfo = new UserInfoModel();
-        $user = $userInfo->getInfoById($user_id);
+        $time_allow     = $user_data['time_allow']        =0;      
         
-        //$ererere = json_encode($user);
-
-        $data_cache['user_icon']   = '';
-        $data_cache['user_wealth'] = 2;
-        $data_cache['user_level']  = 4;
-        $user_icon = '';
-        $data_cache['user_icon'] = $user['photo'];
-        $user_icon = $data_cache['user_icon'];
-        LogApi::logProcess("on_linkcall_apply_rq pppppp:$ererere user_icon:$user_icon");
         
         $num_apply = 0;
         $num_link  = 0;
         //////////rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
         do
         {
-            if (0 == $sid || 0== $singer_id || (!(1 == $op_code || 2 == $op_code || 3 == $op_code)))
+            if (0 == $sid || 0== $singer_id || (!(1 == $op_code || 2 == $op_code || 3 == $op_code)) || (!(0 ==$is_singer || 1 ==$is_singer)))
             {
                 // 403300010(010)无效的参数
                 $error['code'] = 403300010;
@@ -292,6 +282,7 @@ class linkcall_api
                 $error['desc'] = '主播未开启连麦状态';
                 break;
             }
+            
             //逻辑功能（主播是开启连麦状态）////////////////////////////////////////////////////////////////////////////////
             $linkcall_state = linkcall_model::$LINKCALL_STATE_OPEN;
             //情景1：用户发起连麦申请    1 == $op_code
@@ -370,15 +361,15 @@ class linkcall_api
         $rs = array();
         $rs['cmd'] = 'linkcall_apply_rs';
         $rs['error'] = $error;
-        $rs['sid'] = $sid;
-        $rs['time_apply'] = $time_apply;
-        $rs['time_allow'] = $time_allow;
-        $rs['singer_id'] =  $singer_id;
+        $rs['sid'] = (int)$sid;
+        $rs['time_apply'] = (int)$time_apply;
+        $rs['time_allow'] = (int)$time_allow;
+        $rs['singer_id'] =  (int)$singer_id;
         $rs['singer_nick'] = $singer_nick;
-        $rs['linkcall_state'] = $linkcall_state;
-        $rs['op_code'] = $op_code;
-        $rs['num_apply'] = $num_apply;
-        $rs['num_link'] = $num_link;        
+        $rs['linkcall_state'] = (int)$linkcall_state;
+        $rs['op_code'] = (int)$op_code;
+        $rs['num_apply'] = (int)$num_apply;
+        $rs['num_link'] = (int)$num_link;        
         
         $return[] = array
         (
@@ -414,6 +405,12 @@ class linkcall_api
         $error['desc'] = '';
         $data_uid =array();
         $num_link =0 ;
+        $num_apply = 0;
+        
+        //redis 错误码，新容错功能
+        $error_redis = array();
+        $error_redis['code'] = 0;
+        $error_redis['desc'] = '';
         //////////rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
         do
         {
@@ -472,35 +469,57 @@ class linkcall_api
             }
 
 
-        //逻辑功能（主播是开启连麦状态）结束////////////////////////////////////////////////////////////////////////////
-        //拼装回包rs
-            //取出该用户 uid data            
-            $m->linkcall_userdata_by_uid(&$error,$sid,$user_id,&$data_uid);
-            if (0 != $error['code'])
+        //逻辑功能（主播是开启连麦状态）结束////////////////////////////////////////////////////////////////////////////            
+        }while(FALSE);
+        //容错拼装/////////////////////////////////////////////////////////////////////////////////////////////////////
+        do 
+        {
+            
+            //拼装回包rs
+            //取出该用户 uid data
+            $m->linkcall_userdata_by_uid(&$error_redis,$sid,$user_id,&$data_uid);
+            if (0 != $error_redis['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
             //取出当前房间的连接总数
-            $num_link = $m->get_user_link_index_count(&$error,$sid);
-            if (0 != $error['code'])
+            $num_link = $m->get_user_link_index_count(&$error_redis,$sid);
+            if (0 != $error_redis['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            
+            //取出当前房间的申请总数
+            $num_apply = $m->get_user_apply_index_count(&$error_redis,$sid);
+            if (0 != $error_redis['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
         }while(FALSE);
+        ///////////////////////////////////////////////////////////////////////////////////////////////
+        if (0 != $error_redis['code'])
+        {
+            //出现了一些基础错误
+            $error['code'] = $error_redis['code'];
+            $error['desc'] = $error_redis['desc'];
+
+        }
+        
         //容错处理，当出客户端现重复操作，时，data带回操作的用户user_id
-        $data_uid['user_id'] = $user_id;
+        $data_uid['user_id'] = (int)$user_id;
+        $data_uid['time_now'] = time();
         //linkcall_allow_rs包回包
         $rs = array();
         $rs['cmd'] = 'linkcall_allow_rs';
         $rs['error'] = $error;
-        $rs['sid'] = $sid;
-        $rs['singer_id']  = $singer_id;
+        $rs['sid'] = (int)$sid;
+        $rs['singer_id']  = (int)$singer_id;
         $rs['singer_nick']  = $singer_nick;
-        $rs['op_code'] = $op_code;
-        $rs['num_link'] =$num_link;
+        $rs['op_code'] = (int)$op_code;
+        $rs['num_link'] =(int)$num_link;
+        $rs['num_apply'] =(int)$num_apply;        
         $rs['data'] = $data_uid;
         $return[] = array
         (
