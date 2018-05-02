@@ -1,0 +1,68 @@
+进入supervisor管理界面（进程守护工具）
+sudo supervisorctl
+
+机器人文件目录
+D:\svn\PRSOFT\server\trunk\RCSvr\robot\trunk
+
+房间目录
+D:\svn\PRSOFT\server\trunk\server.kr.2\server\session_fe
+
+给文件夹加权限
+sudo chmod 777 -R .
+
+暂时屏蔽的错误信息
+RobotConn::onDataRecv expectedLen
+
+
+寻找到D:\svn\PRSOFT\server\trunk\server.kr.2\server\session_fe
+cd /data/trunk/server.kr.2/server/session_fe
+的     Channel.cpp
+在     5448行  函数
+
+当前   D:\svn\PRSOFT\server\trunk\RCSvr\robot\trunk
+的     SessionConn.cpp
+在     58函数入口进入      在136函数入口进入
+
+在日志目录 cd /data/raidcall/log/sessiond_d/
+ 
+tail -f session1.log | grep "Got StreamStarted.sid:"
+
+机器人日志
+//cd /var/log
+//sudo tail -f syslog | grep "SessionConn"
+cd /data/raidcall/log/robot_d/
+tail -f robot_d.log | grep "SessionConn"
+
+  
+
+查看机器人进程
+ps -ef | grep robot
+sudo kill -9
+查看机器人目录
+ps -ef |grep datacen
+
+机器人开启脚本
+cd /data/trunk/RCSvr/robot/trunk
+sudo bash ./start.sh 
+
+sudo tail -f syslog | grep "ljtest"
+
+编译
+make clean
+make
+
+崩溃记录
+cd /data/trunk/RCSvr/robot/trunk
+sudo gdb rc_robot_d  core
+bt 回车
+
+
+内测服
+cd /data/tags/neice_tag_1.1/RCSvr/robot/trunk
+Wwxc^_$85(yEs)
+
+
+nohup ./rc_robot_d &
+
+D:\svn\PRSOFT\server\trunk\video\trunk\applications\datacenter_35\build\target\Linux_Debug64\script\rcec\models
+D:\svn\PRSOFT\server\trunk\video\trunk\applications\datacenter_35\build\target\Linux_Debug64\script\rcec\models

@@ -1,0 +1,62 @@
+﻿D:\svn\PRSOFT\server\trunk\video\trunk\applications\datacenter_35\build\target\Linux_Debug64\script\rcec\models
+夺旗后帮会头像的帮会等级显示错误
+
+redis_get_faction_base_info
+
+http://192.168.111.223/zentao/bug-view-992.html
+
+
+/data/trunk/video/trunk/applications/datacenter_35/build/target/Linux_Debug64/script/rcec/models
+ /data/tags/neice_tag_1.1/video/trunk/applications/datacenter/build/target/Linux_Debug64/bin/datacenter
+ 
+ new 
+cd /data/xcbb_project/xcbb_project/server.kr.2/server/fpm_script/rcec/models
+ 
+ 
+ 
+ 运行目录
+ 查询方法： ps -fe | grep datacen
+
+D:\svn\PRSOFT\server\trunk\video\trunk\applications\datacenter_35\build\target\Linux_Debug64\script\rcec\models
+ 
+ 
+ 查看日志：
+cd /data/phplog
+ls -trl
+
+47.93.122.164      内测服linux
+tail -f 2017-12-15.log | grep 80072009 |grep 80094   内测服
+112.126.70.236.3306    内测服mysql
+内测服进入redis（当时用的是龙城linux系统登入）
+redis-cli -h 112.126.70.236 -p 6379 -a xcTeRed#@0526
+hget sys_parameters 156
+hset sys_parameters 156 "{\"id\":156,\"parm2\":0,\"parm3\":\"\",\"parm1\":5}"
+
+
+
+60.205.151.85      开发服linux
+tail -f 2017-12-15.log | grep 10005127 |grep 10001   开发服  
+redis-cli -h 60.205.151.85 -p 18001 -a xcRed.,0505   代理服务器 --开发服对应redis
+113.57.154.117.3306    开发服mysql
+
+监控并筛选 某个关键字
+redis-cli -h 10.172.186.58 -p 6379 -a xcRed.,0505 monitor | grep "faction:flag:*"
+
+
+无敌是多么寂寞 10001  开发服，全部等级是0
+999            80094  内测服，0         4
+select id,parm1,parm2,parm3 from card.parameters_info where id =156;
+10 0    （开发服）   需要进入查看redis缓存（查看hget sys_parameters 156）
+hset sys_parameters 156 "{\"id\":156,\"parm2\":0,\"parm3\":null,\"parm1\":1}"
+5  0    （内测服）   内测服需要进入查看redis缓存（查看hget sys_parameters 156）
+
+掉落阳光次数限制
+type user_sun_times:2018-01-16:80072009
+del user_sun_times:2018-01-16:80072009【user_sun_times:2018-01-16:userid】
+内测服是3分钟掉落一次
+
+
+
+
+https://123.57.93.77/svn/wwxc/PRSOFT/Doc
+D:\svn\wwxc\PRSOFT\Doc
