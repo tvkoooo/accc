@@ -1,0 +1,9 @@
+video\trunk\applications\datacenter_35\build\target\Linux_Debug64\script\rcec\models
+ToolApi.php
+
+1、新增模块功能：    阳光礼物上跑马灯    public static function sendSunGift($params, $userAttr, $tool, &$result, $broadcastResult)
+阳光礼物消费（包括连送）超过8000（数据库配置），会上跑马灯，以前协议不变，多处一个字段  serialNum，连送次数
+
+
+2、新增模块功能： 金币礼物连上跑马灯     public static function  sendGiftNormal($params, $tool_inf, &$result, $broadcastResult)
+金币礼物消费（包括连送）超过5000（数据库配置），会上跑马灯，以前协议不变，多处一个字段  serialNum，连送次数 

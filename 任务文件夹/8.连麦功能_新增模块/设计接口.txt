@@ -1,0 +1,56 @@
+1、查询当前连麦功能是否开启的socket 接口（请求和响应）
+2、开启或关闭 连麦功能的 socket 接口 （请求和响应）
+3、用户发起`连麦`、`退出连麦`的请求信令（请求和响应）
+   3.1 主播端会收到用户的请求信息（单播）
+4、主播点击允许（已经是连麦时发送）、拒绝、删除正在连麦的信令（请求和响应）
+6、C++服务器收到4、5的请求信令时，要转发一个 当前正在连麦的用户列表信令（多播）
+7、服务器收到用户退出当前直播间信令时，要转发一个6信令
+
+
+
+9:50:54
+龙成 2018/3/6 9:50:54
+            $return[] = array
+            (
+                'broadcast' => 6,
+                'target_uid' => $singerid,
+                'data' => $nt// 发给播主
+            );
+这个是房间内单播
+
+狄の龙 2018/3/6 9:51:16
+我记一下
+
+龙成 2018/3/6 9:51:29
+broadcast 是6
+target_uid 是单播对象
+data是具体的数据
+
+狄の龙 2018/3/6 9:52:04
+这个是在哪里的
+
+龙成 2018/3/6 9:52:18
+E:\svn\wwxc\PRSOFT\server\trunk\server.kr 
+
+.2\server\session_fe\mm_app_json_type.h 里有broadcast的定义
+
+龙成 2018/3/6 9:52:51
+GameApi.php(1934)
+
+龙成 2018/3/6 9:54:03
+            $nt = array();
+            $nt['cmd'] = 'flag_join_nt';
+            $nt['sid'] = $sid;
+            $nt['uid'] = $uid;
+            $nt['current'] = &$current;
+            $nt['trigger'] = &$trigger;
+    
+            $return[] = array
+            (
+                'broadcast' => 2,// 直播间通知
+                'data' => $nt,
+            );
+这个是直播间内广播
+
+龙成 2018/3/6 9:54:13
+broadcast 2

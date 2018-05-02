@@ -1,0 +1,12 @@
+1、消费宝箱加等级
+ToolConsumeRecordModel.php
+原来的sql表：select * from card.parameters_info t where t.id in(101,102,103)
+变更到现在sql表： select * from card.consume_reward_box
+增加缓存功能，缓存时间1天，当缓存失效，重新入库加载缓存
+
+2、增加小天使特效
+UserApi.php
+原来规则：用户是某主播的守护（guardType ==1 ||guardType ==2 ||guardType ==3），该用户进入这个主播房间显示对应特效。
+新增功能：原来基础不变情况下，如果用户具有天使特效，那么进入其他主播（该用户在这个主播没有任何守护），会显示小天使特效。
+变更 public static function enterChannel($params)   
+变更字段含义：guardType =33，当该字段=33，代表是小天使状态（注意，这时候 isguard =0，不会改变以前逻辑）

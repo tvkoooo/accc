@@ -1,0 +1,7 @@
+1、增加消息队列
+新增文件1、mm_buffer_queue.cpp；2、mm_buffer_queue.h；3、mm_locker_queue.cpp；4、mm_locker_queue.h；5、robot_queue_data.h
+目的：把多线程添加机器人消息推送到消息队列（锁安全），由主线程取出执行。由多线程变为单线程执行，防止主线程（以前的单线程设计）串入添加机器人子线程。
+
+2、修改文件
+1、Makefile；2、SessionConn.cpp；3、SessionConn.h
+编译新增文件，添加新增功能

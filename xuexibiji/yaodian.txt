@@ -43,7 +43,7 @@ show processlist;
 kill xxxx;
 quit;
 
-
+cd /data/raidcall/log/sessiond_d/
 
 
 

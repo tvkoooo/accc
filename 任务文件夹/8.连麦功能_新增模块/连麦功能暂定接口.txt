@@ -1,0 +1,194 @@
+syntax = "proto2";
+package c_linkcall;
+
+option java_package = "protodef";
+option java_outer_classname = "c_linkcall";
+option objc_class_prefix = "C_linkcall_";
+option go_package = "protodef/c_linkcall";
+option csharp_namespace = "c_linkcall";
+
+//主播连麦功能运行状态
+enum linkcall_state_t
+{ 
+    LINKCALL_STATE_OPEN    = 0; //连麦功能开启
+    LINKCALL_STATE_CLOSED  = 1; //连麦功能关闭
+}
+//用户连麦申请状态
+enum linkcall_apply_t
+{ 
+    LINKCALL_APPLY_DEFAULT   = 0; //default
+    LINKCALL_APPLY_APPLY     = 1; //用户连麦申请
+    LINKCALL_APPLY_DESAPPLY  = 2; //用户取消申请
+    LINKCALL_APPLY_OUT       = 3; //用户退出连麦   
+    LINKCALL_APPLY_YES       = 4; //主播同意申请
+    LINKCALL_APPLY_NO        = 5; //主播拒绝申请
+    LINKCALL_APPLY_DEL       = 6; //主播删除连麦   
+}
+
+//用户连麦状态缓存
+linkcall_user_data
+{
+	required uint64 user_id				      = 1 [default =  0 ]; // 用户id
+	required string user_nick				  = 2 [default = "" ]; // 用户昵称
+	required string user_icon				  = 3 [default = "" ]; // 用户图标	
+	required uint32 linkcall_apply			  = 4 [default =  0 ]; // 用户连麦申请状态	
+	required uint64 user_wealth		          = 5 [default =  0 ]; // 用户财富等级	
+	required uint64 user_level		          = 6 [default =  0 ]; // 用户等级
+	required uint64 is_singer		   	      = 7 [default =  0 ]; // 是否是主播	
+	optional uint64 time_apply				  = 8 [default =  0 ]; // 申请时间戳，客户端可选填充，记录是服务端时间	
+	optional uint64 time_allow				  = 9 [default =  0 ]; // 连通时间戳，客户端可选填充，记录是服务端时间	
+}
+
+// linkcall_set_state_rq 主播连麦功能状态（房间内广播）
+// linkcall_apply_rq     由于用户退出连麦引起的广播房间连麦信息（断开连麦触发，发给所有用户）
+// linkcall_allow_rq     由于主播删除连麦触发的被动关麦，广播房间连麦信息（断开连麦触发，发给所有用户）
+message linkcall_room_state_nt
+{
+	enum msg{ id=0x99990013;}  
+	required uint64 sid					      = 1 [default =  0 ]; // 房间号
+	required uint64 singer_id				  = 2 [default =  0 ]; // 主播id
+	required string singer_nick				  = 3 [default = "" ]; // 主播昵称
+	required uint32 linkcall_state		      = 4 [default =  0 ]; // 主播连麦功能运行状态	
+	repeated linkcall_user_data datas         = 5                ; // 当前房间内用户连麦数据
+}
+
+// linkcall_set_state_rq 主播由于关闭连麦功能引起的用户被动关麦（发给单个用户）
+// linkcall_allow_rq     推送给用户操作的用户状态信息（发给单个用户）
+message linkcall_user_state_nt
+{
+	enum msg{ id=0x99990014;} 
+	required uint64 sid					      = 1 [default =  0 ]; // 房间号
+	required uint64 singer_id				  = 2 [default =  0 ]; // 主播id
+	required string singer_nick				  = 3 [default = "" ]; // 主播昵称
+	required uint32 linkcall_state			  = 4 [default =  0 ]; // 主播连麦功能运行状态
+	required linkcall_user_data data          = 5                ; // 推送目标用户连麦状态
+}
+
+//linkcall_apply_rq 推送到主播的用户申请事件（用户申请，用户取消，用户退出）
+message linkcall_apply_singer_nt
+{
+	enum msg{ id=0x99990015;} 
+	required uint64 sid					      = 1 [default =  0 ]; // 房间号
+	required uint64 singer_id				  = 2 [default =  0 ]; // 主播id
+	required string singer_nick				  = 3 [default = "" ]; // 主播昵称
+	required linkcall_user_data data          = 4                ; // 用户连麦申请信息
+}
+
+//1、主播打开/关闭连麦功能
+message linkcall_set_state_rq
+{
+	enum msg{ id=0x99990011;}  
+    enum op_code_t
+    { 
+        oct_open  = 1; //主播开启连麦功能
+        oct_close = 0; //主播关闭连麦功能
+    }
+	required uint64 sid					      = 1 [default =  0 ]; // 房间号
+	required uint64 singer_id				  = 2 [default =  0 ]; // 主播id
+	required string singer_nick				  = 3 [default = "" ]; // 主播昵称
+    required uint32 op_code		              = 4 [default =  0 ]; // 操作码
+}
+message linkcall_set_state_rs
+{
+	enum msg{ id=0x99990012;}   
+	required b_error.info error               = 1                ; // error info
+	required uint64 sid					      = 2 [default =  0 ]; // 房间号
+	required uint32 linkcall_state		      = 3 [default =  0 ]; // 主播连麦功能运行状态	
+}
+
+//2、用户（听众）发起/取消/退出连麦
+//备注：30秒如果无连通，补发取消操作
+message linkcall_apply_rq
+{
+	enum msg{ id=0x99990021;}   
+    enum op_code_t
+    { 
+        oct_start   = 1; //用户发起连麦申请
+        oct_cancel  = 2; //用户取消连麦申请（申请取消）		
+        oct_quit    = 3; //用户退出连麦申请（直接断开连麦连接）
+    }	
+	required uint64 sid					      = 1 [default =  0 ]; // 房间号
+	required uint64 singer_id				  = 2 [default =  0 ]; // 主播id
+	required linkcall_user_data data          = 3                ; // 用户连麦申请信息
+    required uint32 op_code		              = 4 [default =  0 ]; // 操作码
+}
+message linkcall_apply_rs
+{
+	enum msg{ id=0x99990022;} 
+	required b_error.info error               = 1                ; // error info
+	required uint64 sid					      = 2 [default =  0 ]; // 房间号
+	required uint64 time_apply				  = 3 [default =  0 ]; // 申请时间戳
+	required uint64 singer_id				  = 4 [default =  0 ]; // 主播id
+	required uint32 linkcall_state		      = 5 [default =  0 ]; // 主播连麦功能运行状态	
+}
+
+//3、主播允许/拒绝/删除连麦
+//（先连通，确认连通后发出）
+//（主播直接拒绝连麦，并去掉该用户列表）
+//（主播直接删除连麦，断开连麦，并去掉该用户列表）
+message linkcall_allow_rq
+{
+	enum msg{ id=0x99990031;} 
+	enum op_code_t
+    { 
+        oct_allow   = 1; //主播允许连麦
+        oct_refuse  = 2; //主播拒绝连麦	
+        oct_del     = 3; //主播删除连麦
+    }	
+	required uint64 sid					      = 1 [default =  0 ]; // 房间号
+	required uint64 singer_id				  = 2 [default =  0 ]; // 主播id
+	required string singer_nick				  = 3 [default = "" ]; // 主播昵称
+    required uint32 op_code		              = 4 [default =  0 ]; // 操作码	
+	required uint64 user_id				      = 5 [default =  0 ]; // 用户id
+}
+message linkcall_allow_rs
+{
+	enum msg{ id=0x99990032;} 
+	required b_error.info error               = 1                ; // error info
+	required uint64 sid					      = 2 [default =  0 ]; // 房间号	
+	required uint64 singer_id				  = 3 [default =  0 ]; // 主播id
+	required string singer_nick				  = 4 [default = "" ]; // 主播昵称
+    required uint32 op_code		              = 5 [default =  0 ]; // 操作码		
+	required linkcall_user_data data          = 6                ; // 用户连麦申请信息
+}
+
+//4、主播查询最新申请列表
+message linkcall_list_singer_rq
+{
+	enum msg{ id=0x99990041;}                                      
+	required uint64 sid					      = 1 [default =  0 ]; // 房间号
+	required uint64 singer_id				  = 2 [default =  0 ]; // 主播id
+	required string singer_nick				  = 3 [default = "" ]; // 主播昵称
+}
+message linkcall_list_singer_rs
+{
+	enum msg{ id=0x99990042;}  
+	required b_error.info error               = 1                ; // error info	
+	required uint64 sid					      = 2 [default =  0 ]; // 房间号
+	required uint64 singer_id				  = 3 [default =  0 ]; // 主播id
+	required string singer_nick				  = 4 [default = "" ]; // 主播昵称
+	required uint32 linkcall_state			  = 5 [default =  0 ]; // 主播连麦功能运行状态
+	repeated linkcall_user_data datas         = 6                ; // 当前房间内（用户连麦/用户申请）数据
+}
+
+//5、用户（主播/用户）查询当前最新连麦信息
+message linkcall_list_user_rq
+{
+	enum msg{ id=0x99990051;}                                      
+	required uint64 sid					      = 1 [default =  0 ]; // 房间号
+	required uint64 singer_id				  = 2 [default =  0 ]; // 主播id
+	required string singer_nick				  = 3 [default = "" ]; // 主播昵称
+}
+message linkcall_list_user_rs
+{
+	enum msg{ id=0x9999052;}  
+	required b_error.info error               = 1                ; // error info
+	required uint64 sid					      = 2 [default =  0 ]; // 房间号
+	required uint64 singer_id				  = 3 [default =  0 ]; // 主播id
+	required string singer_nick				  = 4 [default = "" ]; // 主播昵称
+	required uint32 linkcall_state			  = 5 [default =  0 ]; // 主播连麦功能运行状态
+	repeated linkcall_user_data datas         = 6                ; // 当前房间内用户连麦用户数据
+}
+
+
+

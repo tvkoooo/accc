@@ -1,0 +1,17 @@
+1、原来日志位置
+/var/log     文件 syslog
+
+2、更改到现在日志位置
+/data/raidcall/log/robot_d/   文件  robot_d.log
+
+3、要求：需要先有文件夹位置才会打出日志
+   目的：防止输出日志位置未知，占用系统资源，且不可控。
+   
+4、新增文件（日志输出文件功能）
+/server/trunk/RCSvr/robot/trunk/common/logger_file.cpp
+/server/trunk/RCSvr/robot/trunk/common/logger_file.h
+
+5、修改日志输出文件
+/server/trunk/RCSvr/robot/trunk/common/logger.cpp   （内部函数调用输出日志，更换为新的日志输出文件模块）
+/server/trunk/RCSvr/robot/trunk/main.cpp   （启用新模块日志输出，并且设置日志输出等级）
+/server/trunk/RCSvr/robot/trunk/common/Makefile      （重新编译新文件）

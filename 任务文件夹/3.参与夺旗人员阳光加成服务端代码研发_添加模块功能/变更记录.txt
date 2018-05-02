@@ -1,0 +1,10 @@
+1、flag_faction_api.php
+public static function on_flag_details_rq($params) 回包添加新字段 flag_success_plus
+该字段由数据库配置（加成比例数值  例如50）
+
+2、flag_faction_model.php
+public function on_get_flag_success_sunvalue_plus($sid,$uid,$faction_id) 新增函数阳光加成
+该函数会return 加成比例（例如50%）      
+
+3、ChannelLiveModel.php
+public function CreateSunShine($uid,$sid) 产生阳光多加了一个加成  $flag_success_Plus
