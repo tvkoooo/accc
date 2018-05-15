@@ -3,9 +3,9 @@
 class linkcall_pk_api
 {   
     // 1.1 主播打开连麦pk功能
-    public static function on_linkcallpk_siger_open_function_rq($params)
+    public static function on_linkcallpk_singer_open_function_rq($params)
     {
-        LogApi::logProcess("on_linkcallpk_siger_open_function_rq rq:".json_encode($params));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_open_function_rq rq:".json_encode($params));
         $return       = array();
         $error        = array();
         $singers      = array();
@@ -31,7 +31,7 @@ class linkcall_pk_api
             $m = new linkcall_pk_model();
             //1   查询该主播是否满足连麦pk 条件
             //1.1 取出连麦pk功能最低星级要求
-            $info_id = linkcall_pk_model::$LINKCALL_PK_SINGER_START;
+            $info_id = linkcall_pk_model::$LINKCALL_PK_SINGER_STAR;
             $info_value = $m->redis_get_mysql_info(&$error,$info_id);
             if (0 != $error['code'])
             {
@@ -43,12 +43,14 @@ class linkcall_pk_api
             $singer_redis = new UserAttributeModel();
             $get_singer_info  = $singer_redis->getAttrByUid($singer_id);
             $singer_cache["singer_star"]  = (int)$get_singer_info["experience_level"];
+            $singer_star_get = $singer_cache["singer_star"];
             //1.3 如果该主播不满足，直接报错返回
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_open_function_rq info_value:$info_value singer_star_get:$singer_star_get ");
             if ($singer_cache["singer_star"] < $info_value)
             {
-                // 4033400022(022)主播未满足连麦PK要求
+                // 4033400022(022)主播未满足连麦pk要求
                 $error['code'] = 4033400022;
-                $error['desc'] = '主播未满足连麦PK要求';
+                $error['desc'] = '主播未满足连麦pk要求';
                 break;
             }
             
@@ -57,8 +59,9 @@ class linkcall_pk_api
             $singer_cache["singer_level"]  = (int)$get_singer_info["active_level"];
             $user_redis = new UserInfoModel();
             $get_user_info = $user_redis->getInfoById($singer_id);
-            $singer_cache["singer_icon"]  = (int)$get_user_info["photo"];
+            $singer_cache["singer_icon"]  = $get_user_info["photo"];
             $singer_cache["singer_id"] = $singer_id ;
+            $singer_cache["singer_sid"] = $singer_sid ;
             //2.2 登记主播信息
             $m->redis_set_singer_info(&$error,$singer_id,&$singer_cache);
             if (0 != $error['code'])
@@ -80,12 +83,18 @@ class linkcall_pk_api
         }while(FALSE);
         if (0 !=$error['code'])
         {
-            LogApi::logProcess("on_linkcallpk_siger_open_function_rq error:".json_encode($error));
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_open_function_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
         }
         
-        //on_linkcallpk_siger_open_function_rq 包回包，default
+        //on_linkcallpk_singer_open_function_rq 包回包，default
         $rs = array();
-        $rs['cmd'] = 'linkcallpk_siger_open_function_rs';
+        $rs['cmd'] = 'linkcallpk_singer_open_function_rs';
         $rs['error'] = $error;
         $rs['guest_id'] = (int)$singer_id;
         $rs['time_now'] = $time_now;
@@ -95,23 +104,23 @@ class linkcall_pk_api
             'broadcast' => 0,// 发rs包
             'data' => $rs,
         );
-        LogApi::logProcess("on_linkcallpk_siger_open_function_rs guest_id：$singer_id sid:".$singer_sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcallpk_siger_open_function_rs guest_id：$singer_id sid:".$singer_sid." return:".json_encode($return));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_open_function_rs guest_id：$singer_id sid:".$singer_sid." rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_open_function_rs guest_id：$singer_id sid:".$singer_sid." return:".json_encode($return));
         return $return;
 
     }
     
     // 1.2 主播查询当前在线满足条件主播申请列表
-    public static function on_linkcallpk_siger_seek_online_list_rq($params)
+    public static function on_linkcallpk_singer_seek_online_list_rq($params)
     {
-        LogApi::logProcess("on_linkcallpk_siger_seek_online_list_rq rq:".json_encode($params));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_seek_online_list_rq rq:".json_encode($params));
         $return       = array();
         $error        = array();
         $singers      = array();
         //on_linkcallpk_siger_seek_online_list_rq 包数据，拆解rq包
         $singer_id   = (int)$params['singer_id'];
         $singer_sid  = (int)$params['singer_sid'];
-        $pag_num    = (int)$params['pag_num'];
+        $page_num    = (int)$params['page_num'];
     
         //b_error.info  rs回包错误信息default
         $error['code'] = 0;
@@ -120,7 +129,7 @@ class linkcall_pk_api
         do
         {
             //rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
-            if (0 == $singer_id || 0 == $singer_sid || $pag_num < 0)
+            if (0 == $singer_id || 0 == $singer_sid || $page_num < 0)
             {
                 // 4033400021(021)无效的参数
                 $error['code'] = 403400021;
@@ -130,7 +139,7 @@ class linkcall_pk_api
             //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
             $m = new linkcall_pk_model();
             //1 取出分页为pag_num 的主播信息发给客户端
-            $m->linkcallpk_singer_datas_by_pag_num(&$error,$singer_id,$pag_num,&$singers);
+            $m->linkcallpk_apply_singer_datas_by_pag_num(&$error,$singer_id,$page_num,&$singers);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
@@ -142,12 +151,18 @@ class linkcall_pk_api
         }while(FALSE);
         if (0 !=$error['code'])
         {
-            LogApi::logProcess("on_linkcallpk_siger_seek_online_list_rq error:".json_encode($error));
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_seek_online_list_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
         }
     
-        //on_linkcallpk_siger_seek_online_list_rq 包回包，default
+        //on_linkcallpk_singer_seek_online_list_rq 包回包，default
         $rs = array();
-        $rs['cmd'] = 'linkcallpk_siger_seek_online_list_rs';
+        $rs['cmd'] = 'linkcallpk_singer_seek_online_list_rs';
         $rs['error'] = $error;
         $rs['guest_id'] = (int)$singer_id;
         $rs['time_now'] = $time_now;
@@ -158,16 +173,16 @@ class linkcall_pk_api
             'broadcast' => 0,// 发rs包
             'data' => $rs,
         );
-        LogApi::logProcess("on_linkcallpk_siger_seek_online_list_rs guest_id：$singer_id sid:".$singer_sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcallpk_siger_seek_online_list_rs guest_id：$singer_id sid:".$singer_sid." return:".json_encode($return));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_seek_online_list_rs guest_id：$singer_id sid:".$singer_sid." rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_seek_online_list_rs guest_id：$singer_id sid:".$singer_sid." return:".json_encode($return));
         return $return;
     
     }
     
-    // 2 主播客场申请PK
+    // 2 主播客场申请pk
     public static function on_linkcallpk_apply_rq($params)
     {
-        LogApi::logProcess("on_linkcallpk_apply_rq rq:".json_encode($params));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_apply_rq rq:".json_encode($params));
         $return       = array();
         $error        = array();
 
@@ -193,56 +208,39 @@ class linkcall_pk_api
             }
         //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
             $m = new linkcall_pk_model();
-            //1   设置   发起主播$guest_id   对   目标主播$host_id  的状态
-            //1.1 增加$guest_id  主播变更状态       正在申请
-            $add_self_singer_state = linkcall_pk_model::$LINKCALL_PK_SINGER_RQ_APPLYING;
-            //1.2 取出$guest_id  主播旧状态
-            $get_self_singer_state = $m->redis_get_singer_state(&$error,$guest_id,$host_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-            //1.3 合成$guest_id  主播新状态         修改千位
-            $self_singer_state = $add_self_singer_state + $get_self_singer_state%1000;
-            //1.4 设置$guest_id  主播新状态
-            $m->redis_set_singer_state(&$error,$self_singer_state,$guest_id,$host_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
+            //1 设置  pk状态   为正在申请pk
+            $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_APPLY;
             
-            //2   设置   目标主播$host_id   对   发起主播$guest_id  的状态
-            //2.1 增加$host_id  主播变更状态       允许连线，等待连线
-            $add_obj_singer_state = linkcall_pk_model::$LINKCALL_PK_SINGER_RQ_LINK;
-            //2.2 取出$host_id  主播旧状态
-            $get_obj_singer_state = $m->redis_get_singer_state(&$error,$host_id,$guest_id);
+            //2 查询该申请的主播是否在线
+            $get_apply_time = $m->redis_get_online_singer_list_opentime(&$error,$host_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //2.3 合成$host_id  主播新状态         修改百位
-            $obj_singer_state = $get_obj_singer_state/1000 *1000 +$add_obj_singer_state + $get_obj_singer_state%100;
-            //2.4 设置$host_id  主播新状态
-            $m->redis_set_singer_state(&$error,$obj_singer_state,$host_id,$guest_id);
-            if (0 != $error['code'])
+            if ($get_apply_time == 0) 
             {
-                //出现了一些逻辑错误
-                break;
-            } 
+                //主播下线了
+                $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_OFFLINE;
+            }
             
             //3 把发起主播的申请推送给目标主播 nt
-            $m->linkcallpk_singer_nt_singer_PKinfo(&$error,$host_id,$host_sid,$guest_id);
+            $m->linkcallpk_singer_nt_singer_pk_info(&$error,$host_id,$host_sid,$guest_id,$pk_state);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
             
-            //4 给操作的主播主场列表增加一个请求
+            //4 给被操作的主场主播，主场列表增加一个请求（被操作的人请求列表增加一个连线请求）
             $m->redis_set_singer_host_link_list(&$error,$host_id,$guest_id,$time_now);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            //5 给主动操作的客场主播，客场列表增加一个申请（主动操作的人申请列表增加一个申请状态）
+            $m->redis_set_singer_guest_apply_list(&$error,$guest_id,$host_id,$time_now);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
@@ -254,14 +252,20 @@ class linkcall_pk_api
         }while(FALSE);
         if (0 !=$error['code'])
         {
-            LogApi::logProcess("on_linkcallpk_apply_rq error:".json_encode($error));
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_apply_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
         }
     
         //on_linkcallpk_apply_rq 包回包，default
         $rs = array();
         $rs['cmd'] = 'linkcallpk_apply_rs';
         $rs['error'] = $error;
-        $rs['singer_state'] = (int)$self_singer_state;
+        $rs['pk_state'] = (int)$pk_state;
         $rs['guest_id'] = (int)$guest_id;
         $rs['host_id'] = (int)$host_id;
         $rs['time_now'] = $time_now;
@@ -271,15 +275,15 @@ class linkcall_pk_api
             'broadcast' => 0,// 发rs包
             'data' => $rs,
         );
-        LogApi::logProcess("on_linkcallpk_apply_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcallpk_apply_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid return:".json_encode($return));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_apply_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_apply_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid return:".json_encode($return));
         return $return;    
     }
     
     // 3.1 主播主场连线pk
     public static function on_linkcallpk_link_rq($params)
     {
-        LogApi::logProcess("on_linkcallpk_link_rq rq:".json_encode($params));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_link_rq rq:".json_encode($params));
         $return       = array();
         $error        = array();
 
@@ -293,6 +297,7 @@ class linkcall_pk_api
         $error['code'] = 0;
         $error['desc'] = '';
         $time_now = time();
+        $pk_state = 0;
         do
         {
         //rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
@@ -305,67 +310,113 @@ class linkcall_pk_api
             }
         //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
             $m = new linkcall_pk_model();
-            //1   设置   发起主播$host_id   对   目标主播$guest_id  的状态
-            //1.1 增加$host_id  主播变更状态       正在连线
-            $add_self_singer_state = linkcall_pk_model::$LINKCALL_PK_SINGER_RQ_LINKING;
-            //1.2 取出$host_id  主播旧状态
-            $get_self_singer_state = $m->redis_get_singer_state(&$error,$host_id,$guest_id);
+            
+            //1 查询该连线的主播是否在线
+            $get_apply_time = $m->redis_get_online_singer_list_opentime(&$error,$guest_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //1.3 合成$host_id  主播新状态         修改百位
-            $self_singer_state = $get_self_singer_state/1000*1000 + $add_self_singer_state + $get_self_singer_state%100;
-            //1.4 设置$host_id  主播新状态
-            $m->redis_set_singer_state(&$error,$self_singer_state,$host_id,$guest_id);
-            if (0 != $error['code'])
+            if ($get_apply_time == 0)
             {
-                //出现了一些逻辑错误
+                //主播下线了，需要返回给连线主播正在    目标主播下线了
+                $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_OFFLINE;
                 break;
             }
             
-            //2   设置   目标主播$guest_id   对   发起主播$host_id  的状态
-            //2.1 增加$guest_id  主播变更状态       允许确认，等待确认
-            $add_obj_singer_state = linkcall_pk_model::$LINKCALL_PK_SINGER_RQ_DEF_LINK;
-            //2.2 取出$guest_id  主播旧状态
-            $get_obj_singer_state = $m->redis_get_singer_state(&$error,$host_id,$guest_id);
+            //2 查询该连线的主播是否正在连麦pk
+            $get_pkid = $m->redis_get_singer_pkid(&$error,$guest_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //2.3 合成$guest_id  主播新状态         修改个位
-            $obj_singer_state = $get_obj_singer_state/10*10 + $add_obj_singer_state;
-            //2.4 设置$guest_id  主播新状态
-            $m->redis_set_singer_state(&$error,$obj_singer_state,$host_id,$guest_id);
+            if ($get_pkid != 0)
+            {
+                //该主播有pkid号，说明还在连麦pk当中，需要返回给连线主播正在    pking
+                $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_PKING;
+                break;
+            }
+            
+            //3 查询该连线的主播是否正在玩游戏
+            $game_api = new game_manager_model();
+            $get_game_g = $game_api->get_game_guess_dice_inf($guest_id);
+            if ($get_game_g['code'] == 0)
+            {
+                //该主播正在玩游戏
+                $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_GAMING;
+                break;
+            }
+            
+            //4 查询该连线的主播是否正在玩游戏
+            $get_game_s = $game_api->get_game_saw_inf($guest_id);
+            if ($get_game_s['code'] == 0)
+            {
+                //该主播正在玩电锯
+                $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_SAWING;
+                break;
+            }
+            
+            //5 查询该连线的主播是否有人已经给他申请
+            $get_popup_time = $m->redis_get_pk_popup(&$error,$guest_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            //如果取出有时间，说明该主播正在pk准备当中
+            if ($get_popup_time)
+            {
+                //该主播有弹窗，需要返回给连线主播正在   这个主播有个弹窗
+                $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_POPUP;
+                break;
+            }
+            
+            //6 如果上述情况均为发生，需要推送nt给目标主播，主场主播连线客场主播，给发送的主播pk状态是： 连线连麦pk（一个请求申请）
+            $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_LINK;
+            $m->linkcallpk_singer_nt_singer_pk_info(&$error,$guest_id,$guest_sid,$host_id,$pk_state);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }   
+            
+            //7 目标主播 $guest_id 已经收到一个弹窗，需要记录这个主播的弹窗时间
+            $m->redis_set_pk_popup(&$error,$guest_id,$time_now);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             } 
             
-            //3 把发起主播的同意连线推送给目标主播 nt
-            $m->linkcallpk_singer_nt_singer_PKinfo(&$error,$host_id,$host_sid,$guest_id);
+            //8 目标主播 $guest_id 已经收到一个弹窗，需要记录是谁发给他的弹窗
+            $m->redis_set_guest_popup_from_host(&$error,$host_id,$guest_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
-            }            
+            }
 
         //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
     
         }while(FALSE);
         if (0 !=$error['code'])
         {
-            LogApi::logProcess("on_linkcallpk_link_rq error:".json_encode($error));
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_link_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
         }
     
         //on_linkcallpk_link_rq 包回包，default
         $rs = array();
         $rs['cmd'] = 'linkcallpk_link_rs';
         $rs['error'] = $error;
-        $rs['singer_state'] = (int)$self_singer_state;
+        $rs['pk_state'] = (int)$pk_state;
         $rs['host_id'] = (int)$host_id;
         $rs['guest_id'] = (int)$guest_id;
         $rs['time_now'] = $time_now;
@@ -375,8 +426,8 @@ class linkcall_pk_api
             'broadcast' => 0,// 发rs包
             'data' => $rs,
         );
-        LogApi::logProcess("on_linkcallpk_apply_rs host_id:$host_id host_sid:$host_sid guest_id:$guest_id guest_sid:$guest_sid rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcallpk_apply_rs host_id:$host_id host_sid:$host_sid guest_id:$guest_id guest_sid:$guest_sid return:".json_encode($return));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_link_rs host_id:$host_id host_sid:$host_sid guest_id:$guest_id guest_sid:$guest_sid rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_link_rs host_id:$host_id host_sid:$host_sid guest_id:$guest_id guest_sid:$guest_sid return:".json_encode($return));
         return $return;
     
     }
@@ -384,21 +435,24 @@ class linkcall_pk_api
     // 3.2 主播客场确认pk功能
     public static function on_linkcallpk_confirm_rq($params)
     {
-        LogApi::logProcess("on_linkcallpk_confirm_rq rq:".json_encode($params));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_confirm_rq rq:".json_encode($params));
         $return       = array();
         $error        = array();
-    
+        $pk_info      = array();
         //on_linkcallpk_confirm_rq 包数据，拆解rq包
         $guest_id   = (int)$params['guest_id'];//发起主播id
         $guest_sid  = (int)$params['guest_sid'];//发起主播sid
         $host_id    = (int)$params['host_id'];//目标主播id
         $host_sid  = (int)$params['host_sid'];//目的主播sid
-        $op_code   = (int)$params['op_code'];//主播同意或拒绝的操作码
+        $op_code   = (int)$params['code'];//主播同意或拒绝的操作码
     
         //b_error.info  rs回包错误信息default
         $error['code'] = 0;
         $error['desc'] = '';
         $time_now = time();
+        $pk_state = 0;
+        $pkid = 0;
+        
         do
         {
         //rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
@@ -410,105 +464,152 @@ class linkcall_pk_api
                 break;
             }
         //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
-            $m = new linkcall_pk_model();
-            //1   设置   发起主播$guest_id   对   目标主播$host_id  的状态
-            //1.1 增加$guest_id  主播变更状态       同意或者拒绝
-            if ($op_code == 1) 
-            {
-                //设置$guest_id该主播的申请状态  申请状态改为   同意连线
-                $add_self_singer_state = linkcall_pk_model::$LINKCALL_PK_SINGER_RS_YES_LINK;
-            }
-            else 
-            {
-                //设置$guest_id该主播的申请状态  申请状态改为  拒绝连线
-                $add_self_singer_state = linkcall_pk_model::$LINKCALL_PK_SINGER_RS_NO_LINK;
-            }
-            //1.2 取出$guest_id  主播旧状态
-            $get_self_singer_state = $m->redis_get_singer_state(&$error,$host_id,$guest_id);
+ 
+            $m = new linkcall_pk_model();           
+            
+            //0.1 需要先去掉主播弹窗限制(弹窗时间)
+            $m->redis_rem_pk_popup(&$error,$guest_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //1.3 合成$guest_id  主播新状态         修改十位
-            $self_singer_state = $get_self_singer_state/100*100 + $add_self_singer_state + $get_self_singer_state%10;
-            //1.4 设置$guest_id  主播新状态
-            $m->redis_set_singer_state(&$error,$self_singer_state,$host_id,$guest_id);
+            //0.2 需要先去掉主播弹窗限制（发送弹窗的主播）
+            $m->redis_rem_guest_popup_from_host(&$error,$guest_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-    
-            //2   设置   目标主播$host_id   对   发起主播$guest_id  的状态
-            //2.1 增加$host_id  主播变更状态       同意或者拒绝
+            
+            //1 查询该同意的主播是否还在线
+            $get_apply_time = $m->redis_get_online_singer_list_opentime(&$error,$host_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            if ($get_apply_time == 0)
+            {
+                //主播下线了
+                $pk_state = linkcall_pk_model::LINKCALL_pk_SINGER_OFFLINE;
+            }           
+
+            //2 设置  pk状态   要么回复同意连麦，要么是回复拒绝连麦
             if ($op_code == 1)
             {
-                //设置$host_id 该主播的申请状态  获得状态   同意连线
-                $add_obj_singer_state = linkcall_pk_model::$LINKCALL_PK_SINGER_RQ_YES_LINK;
+                $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_YES;
+                //同意后需要马上建立一个占位pkid
+                //服务器登记一个占位pkid，编译如果客户端断线重连进行重构pk界面
+                {
+                    //a   创建占位pkid号
+                    $pkid = $m->redis_create_pkid(&$error);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }
+                    //b   登记双方主播正式pk
+                    $m->redis_set_singer_pkid(&$error,$pkid,$host_id);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }
+                    $m->redis_set_singer_pkid(&$error,$pkid,$guest_id);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }
+                    //c   写入创建的 pk 信息
+                    $pk_info["starttime"] = 0;
+                    $pk_info["pkalltime"] = 0;
+                    $pk_info["host_id"] = $host_id;
+                    $pk_info["host_sid"] = $host_sid;
+                    $pk_info["guest_id"] = $guest_id;
+                    $pk_info["guest_sid"] = $guest_sid;
+                    $pk_info["host_gift"] = 0;
+                    $pk_info["guest_gift"] = 0;
+                    
+                    $m->redis_set_pk_info_use_array(&$error,$pkid,&$pk_info);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }
+                    //d  写入创建的占位pk双方信息的状态（创建pk界面）
+                    $pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_READY;
+                    $m->redis_set_pk_info_process(&$error,$pkid,$pk_process);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }   
+                }
             }
             else
             {
-                //设置$host_id 该主播的申请状态  获得状态  拒绝连线
-                $add_obj_singer_state = linkcall_pk_model::$LINKCALL_PK_SINGER_RQ_NO_LINK;
+                $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_NO;
+                //如果是拒绝，需要在发起连线请求的主播列表当中移除  这个主播的申请连线请求
+                $m->redis_rem_singer_host_link_list(&$error,$host_id,$guest_id);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                
             }
-            //2.2 取出$host_id  主播旧状态
-            $get_obj_singer_state = $m->redis_get_singer_state(&$error,$host_id,$guest_id);
+            
+            //3 把发起主播的申请推送给目标主播 nt
+            $m->linkcallpk_singer_nt_singer_pk_info(&$error,$host_id,$host_sid,$guest_id,$pk_state);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //2.3 合成$host_id  主播新状态         修改个位
-            $obj_singer_state = $get_obj_singer_state/10*10 + $add_obj_singer_state;
-            //2.4 设置$host_id  主播新状态
-            $m->redis_set_singer_state(&$error,$obj_singer_state,$host_id,$guest_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-    
-            //3 把发起主播的同意连线推送给目标主播 nt
-            $m->linkcallpk_singer_nt_singer_PKinfo(&$error,$host_id,$host_sid,$guest_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
+
     
         //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
     
         }while(FALSE);
         if (0 !=$error['code'])
         {
-            LogApi::logProcess("on_linkcallpk_confirm_rq error:".json_encode($error));
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_confirm_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
         }
     
         //on_linkcallpk_confirm_rq 包回包，default
         $rs = array();
         $rs['cmd'] = 'linkcallpk_confirm_rs';
         $rs['error'] = $error;
-        $rs['singer_state'] = (int)$self_singer_state;
-        $rs['host_id'] = (int)$host_id;
+        $rs['pk_state'] = (int)$pk_state;
         $rs['guest_id'] = (int)$guest_id;
+        $rs['host_id'] = (int)$host_id;
         $rs['time_now'] = $time_now;
         $rs['op_code'] = $op_code;
+        $rs['pkid'] = (int)$pkid;
+        $rs['pk'] = $pk_info;
     
         $return[] = array
         (
             'broadcast' => 0,// 发rs包
             'data' => $rs,
         );
-        LogApi::logProcess("on_linkcallpk_apply_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid op_code:$op_code rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcallpk_apply_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid op_code:$op_code return:".json_encode($return));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_confirm_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid op_code:$op_code rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_confirm_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid op_code:$op_code return:".json_encode($return));
         return $return;    
     }
     
     // 4 主场主播启动连麦pk（包括结算后再次pk，都是新产生一个pkid，全新的环境来pk）
     public static function on_linkcallpk_start_rq($params)
     {
-        LogApi::logProcess("on_linkcallpk_start_rq rq:".json_encode($params));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_start_rq rq:".json_encode($params));
         $return       = array();
         $error        = array();
         $pk_info      = array();
@@ -522,6 +623,9 @@ class linkcall_pk_api
         $error['code'] = 0;
         $error['desc'] = '';
         $time_now = time();
+        $pk_state = 0;
+        $pkid = 0;
+        
         do
         {
         //rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
@@ -534,21 +638,69 @@ class linkcall_pk_api
             }
         //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
             $m = new linkcall_pk_model();
-            //1   创建pkid号
-            $pkid = $m->redis_create_pkid(&$error);
+            //A  判断主场是否可以开启连麦（条件1：刚刚创建连麦界面；条件2：客户端做了pk请求结算；条件3：由于双方客户端都断线，系统自己进行了结算）
+            //B   首先取出主场主播之前的pkid号
+            $get_h_pkid = $m->redis_get_singer_pkid(&$error,$host_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //2   取出 $pkalltime
+            $pkid = $get_h_pkid;
+            //C   根据pkid 判断当前的pk状态，并获得当前pk信息（如果pkid = 0，取出的pk状态是没有pk）
+            $get_pk_info = array();//备注本次取出的pk_info 没有什么用，只用于函数参数签名
+            $get_pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK;//初始化
+            $m->linkcallpk_pk_info_process_by_pkid(&$error,$pkid,&$pk_process,&$get_pk_info);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            //情况一：如果这个pkid对应的pk没有在进行，有可能客户端掉线了，服务器登记的pk状态由于有主播退出导致结束pk。这个客户端再次来查询
+            if ($pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK)
+            {
+                // 4033400026(026)PK结束
+                $error['code'] = 4033400026;
+                $error['desc'] = 'PK结束';
+                break;
+            }
+            //情况二：如果这个pkid对应的pk还在进行，未结束
+            if ($pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_PKING)
+            {
+                // 4033400025(025)主播正在pk当中
+                $error['code'] = 4033400025;
+                $error['desc'] = '主播正在pk当中';
+                break;
+            }
+            //三种情况下启动pk：1，刚刚创建连麦界面（不需要再生成新的pkid）    2，客户端做了pk请求结算    3，系统自己进行了结算
+            //   启用pkid号
+            if ($pk_process != linkcall_pk_model::$LINKCALL_PK_PKINFO_READY)
+            {
+                //在创建新的PKid前，如果主播直接点击开启连麦pk，默认主播发送了结算按钮，应该把上次的pkid给结束了
+                $new_pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_ACCOUNT;
+                $m->redis_set_pk_info_process(&$error,$get_h_pkid,$new_pk_process);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                //如果是已经pk结算后的，需要重新创建一个新的pkid号，老的pkid只用于后续查询使用
+                $pkid = $m->redis_create_pkid(&$error);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }                
+            }
+
+            //2   取出系统配置给的pk时间  $pkalltime
             $pkalltime = $m->redis_get_mysql_info(&$error,linkcall_pk_model::$LINKCALL_PK_LINK_PKTIME);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //3   登记双方主播正式PK
+            //3   刷新双方主播正式pk 新的pkid号
             $m->redis_set_singer_pkid(&$error,$pkid,$host_id);
             if (0 != $error['code'])
             {
@@ -561,16 +713,15 @@ class linkcall_pk_api
                 //出现了一些逻辑错误
                 break;
             }
-            //4.1  登记双方主播正式PK 的初始送礼金额（开始新的一局PK，礼物重新结算）   
-            $host_gift  = 0;//主场主播金额是0
-            $guest_gift = 0;//客场主播金额是0
-            $m->redis_set_PKing_info_singer_gift(&$error,$host_id,$host_gift);
+            //4.1  移除双方之前有的送礼金币数据（开始新的一局pk，礼物重新结算,需要删除之前送礼数据）
+            $m->redis_rem_pking_info_singer_gift(&$error,$host_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            $m->redis_set_PKing_info_singer_gift(&$error,$guest_id,$guest_gift);
+            
+            $m->redis_rem_pking_info_singer_gift(&$error,$guest_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
@@ -589,45 +740,63 @@ class linkcall_pk_api
                 //出现了一些逻辑错误
                 break;
             }
-            //5   登记PK信息(包括结算后再次pk，都是新产生一个pkid，全新的环境来pk,因此双方礼物金币都是0)
+            //5   登记pk信息,修改pk状态变为正在pk(包括结算后再次pk，都是新产生一个pkid，全新的环境来pk,因此双方礼物金币都是0)            
             $time_now  = time(); //修正系统时间误差
             $starttime = $time_now;
-            $m->redis_set_PK_info(&$error,$pkid,$starttime,$pkalltime,$host_id,$guest_id,$host_gift,$guest_gift);
+            $pkalltime_3s = $pkalltime * 60 + 3;//备注：启动pk还有个3s的倒计时需要添加进去，取出的时间是分钟单位
+            $pk_info["starttime"] = $starttime;
+            $pk_info["pkalltime"] = $pkalltime_3s;
+            $pk_info["host_id"] = $host_id;
+            $pk_info["host_sid"] = $host_sid;
+            $pk_info["guest_id"] = $guest_id;
+            $pk_info["guest_sid"] = $guest_sid;
+            $pk_info["host_gift"] = 0;
+            $pk_info["guest_gift"] = 0;
+            $m->redis_set_pk_info_use_array(&$error,$pkid,&$pk_info);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //6   推送PK 开启  给 客场主播$guest_id
-            $m->linkcallpk_singer_nt_singer_PKinfo(&$error,$guest_id,$guest_sid,$host_id);
+            $pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_PKING;
+            $m->redis_set_pk_info_process(&$error,$pkid,$pk_process);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //7   在两个房间进行广播  PK (当前只是推送PK信息，没有送礼信息，因此送礼用户和接收用户都为0，送礼消失为空) 
+            
+            //6   推送pk 开启  给 客场主播$guest_id
+            $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_START;
+            $m->linkcallpk_singer_nt_singer_pk_info(&$error,$guest_id,$guest_sid,$host_id,$pk_state);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            //7   在两个房间进行广播  pk信息 (当前只是推送pk信息，没有送礼信息，因此送礼用户和接收用户都为0，送礼消失为空)
             $user_id = 0 ;//送礼用户是空
             $singer_id = 0;//收礼用户是空
-            $m->linkcallpk_room_nt_PKinfo(&$error,$host_id,$host_sid,$guest_id,$guest_sid,$user_id,$singer_id);
+            $m->linkcallpk_room_nt_pk_info(&$error,$pkid,$user_id,$singer_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //8   给rs回包取出pk信息            
-            $m->linkcallpk_PK_info_by_PKsinger(&$error,$pkid,&$pk_info);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-    
+
+            
         //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
     
         }while(FALSE);
         if (0 !=$error['code'])
         {
-            LogApi::logProcess("on_linkcallpk_start_rq error:".json_encode($error));
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_start_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
         }
     
         //on_linkcallpk_confirm_rq 包回包，default
@@ -636,14 +805,16 @@ class linkcall_pk_api
         $rs['error'] = $error;
         $rs['host_id'] = (int)$host_id;
         $rs['time_now'] = $time_now;
+        $rs['pk_state'] = (int)$pk_state;
+        $rs['pkid'] = (int)$pkid;        
         $rs['pk'] = $pk_info;
         $return[] = array
         (
             'broadcast' => 0,// 发rs包
             'data' => $rs,
         );
-        LogApi::logProcess("on_linkcallpk_apply_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid op_code:$op_code rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcallpk_apply_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid op_code:$op_code return:".json_encode($return));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_start_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_start_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid return:".json_encode($return));
         return $return;
     }
     
@@ -651,12 +822,11 @@ class linkcall_pk_api
     // 5.1 主播结算pk（主场和客场主播都发结束请求，按照先到请求，并且满足pk结束时间来结算）
     public static function on_linkcallpk_count_rq($params)
     {
-        LogApi::logProcess("on_linkcallpk_count_rq rq:".json_encode($params));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_count_rq rq:".json_encode($params));
         $return       = array();
         $error        = array();
         $pk_info      = array();
         //on_linkcallpk_count_rq 包数据，拆解rq包
-        $pkid       = (int)$params['pkid'];     //pk 的 id号  
         $host_id    = (int)$params['host_id'];  //发起主播id
         $host_sid   = (int)$params['host_sid']; //发起主播sid
         $guest_id   = (int)$params['guest_id']; //目标主播id
@@ -666,10 +836,11 @@ class linkcall_pk_api
         $error['code'] = 0;
         $error['desc'] = '';
         $time_now = time();
+        $pk_state = 0;
         do
         {
         //rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
-            if (0 == $guest_id ||0 == $guest_sid ||0 == $host_id ||0 == $host_sid ||$pkid == 0)
+            if (0 == $guest_id ||0 == $guest_sid ||0 == $host_id ||0 == $host_sid )
             {
                 // 4033400021(021)无效的参数
                 $error['code'] = 403400021;
@@ -678,125 +849,113 @@ class linkcall_pk_api
             }
         //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
             $m = new linkcall_pk_model();
-            //0  查看之前是否有进行结算（主场客场都会发结算请求，只按照满足要求最先到的rq来结算，后来那个rq会返回已经结算错误，这个错误客户端需要忽略）
-            //0.1 查询该主场主播的   服务器正在pk列表，如果pk列表反馈的pkid = 0，说明已经被结算完成了。
+            //1  查看之前是否有进行结算，然后结算pk（主场客场都会发结算请求，只按照满足要求最先到的rq来结算，后来那个rq会返回已经结算错误，这个错误客户端需要忽略）
+            //1.1 查询该主场主播的   服务器正在pk列表，如果pk列表反馈的pkid = 0，说明当前pk已经结算。
             $get_pkid = $m->redis_get_singer_pkid(&$error,$host_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            if ($get_pkid == 0) {
-                // 4033400022(022)连麦PK已经结算完成，忽略错误
-                $error['code'] = 403400022;
-                $error['desc'] = '连麦PK已经结算完成，忽略错误';
-                break;
-            }       
-            //0.2 取出pk信息，查看系统时刻是否已经完成了pk。
-            $pk_info  = array();
-            $get_pkid = $m->linkcallpk_PK_info_by_PKsinger(&$error,$pkid,&$pk_info);
-            if (0 != $error['code'])
+            if ($get_pkid == 0)
             {
-                //出现了一些逻辑错误
+                // 4033400026(026)PK结束
+                $error['code'] = 4033400026;
+                $error['desc'] = 'PK结束';
                 break;
             }
-            if ($pk_info["starttime"] + $pk_info["pkalltime"] > $time_now ) {
-                // 4033400024(024)连麦PK还有计时未用完
-                $error['code'] = 4033400024;
-                $error['desc'] = '连麦PK还有计时未用完';
-                break;
-            }
-            
-            //1   设置   双方主播$host_id  和     $guest_id  的状态   结束PK
-            //1.1 增加$host_id  主播变更状态       结束PK
-            $add_host_singer_state = linkcall_pk_model::$LINKCALL_PK_SINGER_RS_PKCOUNT;
-            //1.2 取出$host_id  主播旧状态
-            $get_host_singer_state = $m->redis_get_singer_state(&$error,$host_id,$guest_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-            //1.3 合成$host_id  主播新状态         修改百位
-            $host_singer_state = $get_host_singer_state/1000*1000 + $add_host_singer_state + $get_host_singer_state%100;
-            //1.4 设置$host_id  主播新状态
-            $m->redis_set_singer_state(&$error,$host_singer_state,$host_id,$guest_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-            //1.5 增加$guest_id  主播变更状态       结束PK
-            $add_guest_singer_state = linkcall_pk_model::$LINKCALL_PK_SINGER_RS_PKCOUNT;
-            //1.6 取出$guest_id  主播旧状态
-            $get_guest_singer_state = $m->redis_get_singer_state(&$error,$guest_id,$host_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-            //1.7 合成$guest_id  主播新状态         修改百位
-            $guest_singer_state = $get_guest_singer_state/1000*1000 + $add_guest_singer_state + $get_guest_singer_state%100;
-            //1.8 设置$guest_id  主播新状态
-            $m->redis_set_singer_state(&$error,$guest_singer_state,$guest_id,$host_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-            
-            //2   推送nt给两个主播，服务器已经进行了结算
-            $m->linkcallpk_singer_nt_singer_PKinfo(&$error,$guest_id,$guest_sid,$host_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-            $m->linkcallpk_singer_nt_singer_PKinfo(&$error,$host_id,$host_sid,$guest_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }            
 
-            //3   在两个房间进行广播  PK (当前只是推送PK结算信息，没有送礼信息，因此送礼用户和接收用户都为0，送礼消失为空)
-            $user_id = 0 ;//送礼用户是空
-            $singer_id = 0;//收礼用户是空
-            $m->linkcallpk_room_nt_PKinfo(&$error,$host_id,$host_sid,$guest_id,$guest_sid,$user_id,$singer_id);
+            //1.2 取出pk信息。
+            $pkid = $get_pkid;
+            $get_pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK;//初始化
+            $m->linkcallpk_pk_info_process_by_pkid(&$error,$pkid,&$get_pk_process,&$pk_info);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //4   移除 双方主播  服务器pk信息
-            $m->redis_rem_singer_pkid(&$error,$host_id);
-            if (0 != $error['code'])
+            //2  查询到的是系统已经自动进行结算
+            if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_BEYOND)
+            {     
+                //2.1   推送nt给两个主播，服务器已经进行了结算
+                $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_COUNT;
+                $m->linkcallpk_singer_nt_singer_pk_info(&$error,$guest_id,$guest_sid,$host_id,$pk_state);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                $m->linkcallpk_singer_nt_singer_pk_info(&$error,$host_id,$host_sid,$guest_id,$pk_state);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                
+                //2.2   在两个房间进行广播  pk 信息 (当前只是推送pk结算信息，没有送礼信息，因此送礼用户和接收用户都为0，送礼消失为空)
+                $user_id = 0 ;//送礼用户是空
+                $singer_id = 0;//收礼用户是空
+                $m->linkcallpk_room_nt_pk_info(&$error,$pkid,$user_id,$singer_id);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                //2.3  刷新这个pkid 的pk 过程状态 改为：已经结算
+                $pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_ACCOUNT;
+                $m->redis_set_pk_info_process(&$error,$pkid,$pk_process);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }  
+                $error['code'] = 0;
+                $error['desc'] = '';
+                break;
+                
+            }
+            if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_PKING)
             {
-                //出现了一些逻辑错误
+                // 4033400023(023)连麦pk还有计时未用完
+                $error['code'] = 4033400023;
+                $error['desc'] = '连麦pk还有计时未用完';
                 break;
             }
-            $m->redis_rem_singer_pkid(&$error,$guest_id);
-            if (0 != $error['code'])
+            if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_ACCOUNT)
             {
-                //出现了一些逻辑错误
+                // 4033400022(022)连麦pk已经结算完成，忽略错误
+                $error['code'] = 403400022;
+                $error['desc'] = '连麦pk已经结算完成，忽略错误';
                 break;
             }
-            //备注，结算的时候只是移除服务器正在PK的主播当中这两个主播，其他数据都必须保留，如果主播选择延长PK，这些信息还需要继续使用 
-            
-            //5   给rs回包取出pk信息
-            $m->linkcallpk_PK_info_by_PKsinger(&$error,$pkid,&$pk_info);
-            if (0 != $error['code'])
+            if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK)
             {
-                //出现了一些逻辑错误
+                // 4033400026(026)PK结束
+                $error['code'] = 4033400026;
+                $error['desc'] = 'PK结束';
                 break;
             }
+            if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_READY)
+            {
+                // 4033400027(027)PK还没有开始
+                $error['code'] = 4033400027;
+                $error['desc'] = 'PK还没有开始';
+                break;
+            }
+ 
     
         //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
     
         }while(FALSE);
         if (0 !=$error['code'])
         {
-            LogApi::logProcess("on_linkcallpk_count_rq error:".json_encode($error));
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_count_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
         }
     
         //on_linkcallpk_count_rq 包回包，default
@@ -804,26 +963,27 @@ class linkcall_pk_api
         $rs['cmd'] = 'linkcallpk_count_rs';
         $rs['error'] = $error;
         $rs['time_now'] = $time_now;
+        $rs['pk_state'] = (int)$pk_state;
+        $rs['pk_state'] = (int)$pkid;
         $rs['pk'] = $pk_info;
         $return[] = array
         (
             'broadcast' => 0,// 发rs包
             'data' => $rs,
         );
-        LogApi::logProcess("on_linkcallpk_apply_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid pkid:$pkid rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcallpk_apply_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid pkid:$pkid return:".json_encode($return));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_count_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid pkid:$pkid rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_count_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid pkid:$pkid return:".json_encode($return));
         return $return;
     } 
     
     // 5.2 主播延长连麦pk
     public static function on_linkcallpk_addtime_rq($params)
     {
-        LogApi::logProcess("on_linkcallpk_addtime_rq rq:".json_encode($params));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_addtime_rq rq:".json_encode($params));
         $return       = array();
         $error        = array();
         $pk_info      = array();
         //on_linkcallpk_addtime_rq 包数据，拆解rq包
-        $old_pkid   = (int)$params['pkid'];     //旧的 pk 的 id号
         $host_id    = (int)$params['host_id'];  //发起主播id
         $host_sid   = (int)$params['host_sid']; //发起主播sid
         $guest_id   = (int)$params['guest_id']; //目标主播id
@@ -833,10 +993,12 @@ class linkcall_pk_api
         $error['code'] = 0;
         $error['desc'] = '';
         $time_now = time();
+        $pk_state = 0;
+        $pkid = 0;
         do
         {
         //rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
-            if (0 == $guest_id ||0 == $guest_sid ||0 == $host_id ||0 == $host_sid ||$pkid == 0)
+            if (0 == $guest_id ||0 == $guest_sid ||0 == $host_id ||0 == $host_sid )
             {
                 // 4033400020(020)无效的参数
                 $error['code'] = 403400021;
@@ -845,21 +1007,65 @@ class linkcall_pk_api
             }
         //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
             $m = new linkcall_pk_model();
-            //1   创建pkid号
+            //A  判断主场是否可以开启延长连麦（条件1：客户端做了pk请求结算；条件2：由于双方客户端都断线，系统自己进行了结算）
+            //B   首先取出主场主播之前的pkid号
+            $get_h_pkid = $m->redis_get_singer_pkid(&$error,$host_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            
+            //C   根据pkid 判断当前的pk状态，并获得当前pk信息（如果pkid = 0，取出的pk状态是没有pk）
+            $get_pk_info = array();//备注本次取出的pk_info 没有什么用，只用于函数参数签名
+            $get_pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK;//初始化
+            $m->linkcallpk_pk_info_process_by_pkid(&$error,$get_h_pkid,&$pk_process,&$get_pk_info);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            //情况一：如果这个pkid对应的pk没有在进行，有可能客户端掉线了，服务器登记的pk状态由于有主播退出导致结束pk。这个客户端再次来查询
+            if ($pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK)
+            {
+                // 4033400026(026)PK结束
+                $error['code'] = 4033400026;
+                $error['desc'] = 'PK结束';
+                break;
+            }
+            //情况二：如果这个pkid对应的pk还在进行，未结束
+            if ($pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_PKING)
+            {
+                // 4033400025(025)主播正在pk当中
+                $error['code'] = 4033400025;
+                $error['desc'] = '主播正在pk当中';
+                break;
+            }
+            //两种情况下启动pk：1，客户端做了pk请求结算    2，系统自己进行了结算
+            //在创建新的PKid前，如果主播直接点击开启连麦pk，默认主播发送了结算按钮，应该把上次的pkid给结束了
+            $new_pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_ACCOUNT;
+            $m->redis_set_pk_info_process(&$error,$get_h_pkid,$new_pk_process);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            //重新创建一个新的pkid号
             $pkid = $m->redis_create_pkid(&$error);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //2   取出 延长时间
-            $addtime = $m->redis_get_mysql_info(&$error,linkcall_pk_model::LINKCALL_PK_LINK_ADDTIME);
+            
+            //2   取出系统配置给的pk时间  $pkalltime（延长时间）
+            $pkalltime = $m->redis_get_mysql_info(&$error,linkcall_pk_model::$LINKCALL_PK_LINK_ADDTIME);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //3   登记双方主播正式PK 覆盖以前的old_pkid
+            //3   刷新双方主播正式pk 新的pkid号
             $m->redis_set_singer_pkid(&$error,$pkid,$host_id);
             if (0 != $error['code'])
             {
@@ -872,97 +1078,109 @@ class linkcall_pk_api
                 //出现了一些逻辑错误
                 break;
             }
-            //4  取出主客场双方礼物值送礼金额（延长pk，因此需要加载之前的pk礼物值）
-            $host_gift = $m->redis_get_PKing_info_singer_gift(&$error,$host_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-            $guest_gift = $m->redis_get_PKing_info_singer_gift(&$error,$guest_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
+            //4  刷新新id情况下，双方主播的送礼金币,即新pkid的双方金币用旧pkid金币更新
 
-            //5   登记PK信息(新产生一个pkid，用之前old_pkid的双方礼物值来填充pk信息)
+
+            //5   登记pk信息,修改pk状态变为正在pk(包括结算后再次pk，都是新产生一个pkid，全新的环境来pk,因此双方礼物金币都是0)
             $time_now  = time(); //修正系统时间误差
             $starttime = $time_now;
-            $m->redis_set_PK_info(&$error,$pkid,$starttime,$addtime,$host_id,$guest_id,$host_gift,$guest_gift);
+            $pkalltime_3s = $pkalltime * 60 + 3;//备注：启动pk还有个3s的倒计时需要添加进去，取出的时间是分钟单位
+            $pk_info["starttime"] = $starttime;
+            $pk_info["pkalltime"] = $pkalltime_3s;
+            $pk_info["host_id"] = $host_id;
+            $pk_info["host_sid"] = $host_sid;
+            $pk_info["guest_id"] = $guest_id;
+            $pk_info["guest_sid"] = $guest_sid;
+            $pk_info["host_gift"] = $get_pk_info["host_gift"];
+            $pk_info["guest_gift"] = $get_pk_info["guest_gift"];
+            $m->redis_set_pk_info_use_array(&$error,$pkid,&$pk_info);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //6   推送PK 开启  给 客场主播$guest_id
-            $m->linkcallpk_singer_nt_singer_PKinfo(&$error,$guest_id,$guest_sid,$host_id);
+            $pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_PKING;
+            $m->redis_set_pk_info_process(&$error,$pkid,$pk_process);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //7   在两个房间进行广播  PK (当前只是推送PK信息，没有送礼信息，因此送礼用户和接收用户都为0，送礼消失为空)
-            $m->linkcallpk_room_nt_PKinfo(&$error,$host_id,$host_sid,$guest_id,$guest_sid,0,0);
+            
+            //6   推送pk 开启  给 客场主播$guest_id
+            $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_ADDTIME;
+            $m->linkcallpk_singer_nt_singer_pk_info(&$error,$guest_id,$guest_sid,$host_id,$pk_state);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //8   给rs回包取出pk信息
-            $m->linkcallpk_PK_info_by_PKsinger(&$error,$pkid,&$pk_info);
+            //7   在两个房间进行广播  pk信息 (当前只是推送pk信息，没有送礼信息，因此送礼用户和接收用户都为0，送礼消失为空)
+            $user_id = 0 ;//送礼用户是空
+            $singer_id = 0;//收礼用户是空
+            $m->linkcallpk_room_nt_pk_info(&$error,$pkid,$user_id,$singer_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-    
+            
         //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
     
         }while(FALSE);
         if (0 !=$error['code'])
         {
-            LogApi::logProcess("on_linkcallpk_addtime_rq error:".json_encode($error));
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_addtime_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
         }
     
         //on_linkcallpk_addtime_rq 包回包，default
         $rs = array();
         $rs['cmd'] = 'linkcallpk_addtime_rs';
         $rs['error'] = $error;
+        $rs['host_id'] = (int)$host_id;
         $rs['time_now'] = $time_now;
+        $rs['pk_state'] = (int)$pk_state;
+        $rs['pkid'] = (int)$pkid;
         $rs['pk'] = $pk_info;
         $return[] = array
         (
             'broadcast' => 0,// 发rs包
             'data' => $rs,
         );
-        LogApi::logProcess("on_linkcallpk_addtime_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid old_pkid:$old_pkid rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcallpk_addtime_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid old_pkid:$old_pkid return:".json_encode($return));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_addtime_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid pkid:$pkid rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_addtime_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid pkid:$pkid return:".json_encode($return));
         return $return;
     }
     
     // 5.3 主播结束连麦pk
     public static function on_linkcallpk_close_rq($params)
     {
-        LogApi::logProcess("on_linkcallpk_close_rq rq:".json_encode($params));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_close_rq rq:".json_encode($params));
         $return       = array();
         $error        = array();
         $pk_info      = array();
         //on_linkcallpk_close_rq 包数据，拆解rq包
-        $pkid       = (int)$params['pkid'];     //pk 的 id号
-        $host_id    = (int)$params['host_id'];  //发起主播id
-        $host_sid   = (int)$params['host_sid']; //发起主播sid
-        $guest_id   = (int)$params['guest_id']; //目标主播id
-        $guest_sid  = (int)$params['guest_sid'];//目的主播sid
+        $host_id    = (int)$params['host_id'];  
+        $host_sid   = (int)$params['host_sid']; 
+        $guest_id   = (int)$params['guest_id']; 
+        $guest_sid  = (int)$params['guest_sid'];
     
         //b_error.info  rs回包错误信息default
         $error['code'] = 0;
         $error['desc'] = '';
         $time_now = time();
+        $pk_state = 0;
+        $pkid = 0;
         do
         {
         //rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
-            if (0 == $guest_id ||0 == $guest_sid ||0 == $host_id ||0 == $host_sid ||$pkid == 0)
+            if (0 == $guest_id ||0 == $guest_sid ||0 == $host_id ||0 == $host_sid )
             {
                 // 4033400021(021)无效的参数
                 $error['code'] = 403400021;
@@ -971,92 +1189,120 @@ class linkcall_pk_api
             }
         //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
             $m = new linkcall_pk_model();
-            //0  查看之前是否有进行结算（主场客场都会发结算请求，只按照满足要求最先到的rq来结算，后来那个rq会返回已经结算错误，这个错误客户端需要忽略）
-            //0.1 查询该主场主播的   服务器正在pk列表，如果pk列表反馈的pkid = 0，说明已经被结算完成了。
+            //1  查看之前是否做过结算（是结算不是结束关闭）
+            //1.1 查询该主场主播的   服务器正在pk列表，如果pk列表反馈的pkid = 0，说明当前pk已经结算。
             $get_pkid = $m->redis_get_singer_pkid(&$error,$host_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            if ($get_pkid == 0) {
-                // 4033400023(023)连麦PK已经结算完成，忽略错误
-                $error['code'] = 403400023;
-                $error['desc'] = '连麦PK已经结算完成，忽略错误';
+            if ($get_pkid == 0)
+            {
+                // 4033400026(026)PK结束，可以直接返回客户端接收关闭完成
+                $error['code'] = 0;
+                $error['desc'] = '';
                 break;
             }
-    
-            //1   设置   双方主播$host_id  和     $guest_id  的状态   结束PK
-            //1.1 增加$host_id  主播变更状态       结束PK
-            $add_host_singer_state = linkcall_pk_model::$LINKCALL_PK_SINGER_RS_PKOVER;
-            //1.2 取出$host_id  主播旧状态
-            $get_host_singer_state = $m->redis_get_singer_state(&$error,$host_id,$guest_id);
+            $pkid = $get_pkid;
+            
+            //1.2 取出pk信息。
+            $get_pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK;//初始化
+            $get_pk_info = array();
+            $m->linkcallpk_pk_info_process_by_pkid(&$error,$pkid,&$get_pk_process,&$get_pk_info);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //1.3 合成$host_id  主播新状态         修改百位
-            $host_singer_state = $get_host_singer_state/1000*1000 + $add_host_singer_state + $get_host_singer_state%100;
-            //1.4 设置$host_id  主播新状态
-            $m->redis_set_singer_state(&$error,$host_singer_state,$host_id,$guest_id);
+            $pk_info = $get_pk_info;
+            //2  观察pk状态做处理
+            //2.1 已经结束关闭
+            if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK)
+            {
+                // 4033400026(026)PK结束，可以直接返回客户端接收关闭完成
+                $error['code'] = 0;
+                $error['desc'] = '';
+                break;
+            }
+            //2.2 刚刚创建pk界面，只需要推送双方主播和广播房间
+            if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_READY)
+            {
+                //不做任何处理
+            }
+            //2.3  查询到还在pk（需要提前进行结算，再推送双方主播和广播房间）
+            if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_PKING)
+            {
+                //a 取出主客场送礼总金额
+                {
+                    //取出主场主播最新的礼物总金额
+                    $get_host_gift = $m->redis_get_pking_info_singer_gift(&$error,$host_id);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }
+                    //取出客场主播最新的礼物总金额
+                    $get_guest_gift = $m->redis_get_pking_info_singer_gift(&$error,$guest_id);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }
+                }
+                //b 刷新最新的 $pk_info 信息
+                $pk_info["host_gift"] = $get_host_gift;
+                $pk_info["guest_gift"] = $get_guest_gift;
+                //c 登记结算$pk_info 到缓存
+                $m->redis_set_pk_info_use_array(&$error,$pkid,&$pk_info);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+            }
+            
+            //2.4  查询到的是系统已经自动进行结算（说明完成了正常的pk）,只需要推送双方主播和广播房间
+            if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_BEYOND)
+            {
+                //不做任何处理
+
+            }
+            
+            //3  对双方主播做推送和广播
+            $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_COUNT;
+            $m->linkcallpk_singer_nt_singer_pk_info(&$error,$guest_id,$guest_sid,$host_id,$pk_state);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //1.5 增加$guest_id  主播变更状态       结束PK
-            $add_guest_singer_state = linkcall_pk_model::$LINKCALL_PK_SINGER_RS_PKOVER;
-            //1.6 取出$guest_id  主播旧状态
-            $get_guest_singer_state = $m->redis_get_singer_state(&$error,$guest_id,$host_id);
+            $m->linkcallpk_singer_nt_singer_pk_info(&$error,$host_id,$host_sid,$guest_id,$pk_state);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            //1.7 合成$guest_id  主播新状态         修改百位
-            $guest_singer_state = $get_guest_singer_state/1000*1000 + $add_guest_singer_state + $get_guest_singer_state%100;
-            //1.8 设置$guest_id  主播新状态
-            $m->redis_set_singer_state(&$error,$guest_singer_state,$guest_id,$host_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-    
-            //2   推送nt给两个主播，服务器已经进行了结算
-            $m->linkcallpk_singer_nt_singer_PKinfo(&$error,$guest_id,$guest_sid,$host_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-            $m->linkcallpk_singer_nt_singer_PKinfo(&$error,$host_id,$host_sid,$guest_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-    
-            //3   在两个房间进行广播  PK (当前只是推送PK结算信息，没有送礼信息，因此送礼用户和接收用户都为0，送礼消失为空)
+            
+            //4   在两个房间进行广播  pk 信息 (当前只是推送pk结算信息，没有送礼信息，因此送礼用户和接收用户都为0，送礼消失为空)
             $user_id = 0 ;//送礼用户是空
             $singer_id = 0;//收礼用户是空
-            $m->linkcallpk_room_nt_PKinfo(&$error,$host_id,$host_sid,$guest_id,$guest_sid,$user_id,$singer_id);
+            $m->linkcallpk_room_nt_pk_info(&$error,$pkid,$user_id,$singer_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
             
-            //4   给rs回包取出pk信息
-            $m->linkcallpk_PK_info_by_PKsinger(&$error,$pkid,&$pk_info);
+            //5   登记这个pkid已经结束
+            $get_pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK;
+            $m->redis_set_pk_info_process(&$error,$pkid,$pk_process);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            
-            //5   移除 双方主播  服务器pk信息
+            //6   移除服务器双方正在pk的列表
             $m->redis_rem_singer_pkid(&$error,$host_id);
             if (0 != $error['code'])
             {
@@ -1069,14 +1315,84 @@ class linkcall_pk_api
                 //出现了一些逻辑错误
                 break;
             }
-            //6  删除两个主播有可能的之前     用户送礼列表
-            $m->redis_del_user_gift_list(&$error,$host_id);
+            
+    
+        //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
+    
+        }while(FALSE);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_close_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
+        }
+    
+        //on_linkcallpk_close_rq 包回包，default
+        $rs = array();
+        $rs['cmd'] = 'linkcallpk_close_rs';
+        $rs['error'] = $error;
+        $rs['host_id'] = (int)$host_id;
+        $rs['time_now'] = $time_now;
+        $rs['pk_state'] = (int)$pk_state;
+        $rs['pkid'] = (int)$pkid;
+        $rs['pk'] = $pk_info;
+        $return[] = array
+        (
+            'broadcast' => 0,// 发rs包
+            'data' => $rs,
+        );
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_close_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid pkid:$pkid rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_close_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid pkid:$pkid return:".json_encode($return));
+        return $return;
+    }
+    
+    // 6、用户查询连麦pk主播信息
+    public static function on_linkcallpk_user_seek_pk_rq($params)
+    {
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_seek_pk_rq rq:".json_encode($params));
+        $return       = array();
+        $error        = array();
+        $pk_info      = array();
+        //on_linkcallpk_user_seek_pk_rq 包数据，拆解rq包
+        $singer_id   = (int)$params['singer_id'];
+        $singer_sid  = (int)$params['singer_sid'];
+    
+        //b_error.info  rs回包错误信息default
+        $error['code'] = 0;
+        $error['desc'] = '';
+        $time_now = time();
+        $pkid = 0;
+        do
+        {
+        //rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
+            if (0 == $singer_id || 0 == $singer_sid )
+            {
+                // 4033400021(021)无效的参数
+                $error['code'] = 403400021;
+                $error['desc'] = '无效的请求参数';
+                break;
+            }
+        //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
+            $m = new linkcall_pk_model();
+            //1    取出该主播是否在pk
+            $pkid = $m->redis_get_singer_pkid(&$error,$singer_id);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
                 break;
             }
-            $m->redis_del_user_gift_list(&$error,$guest_id);
+            if ($pkid == 0)
+            {
+                //该主播不在pk，pk信息为空
+                break;
+            }
+            //2    取出该pkid对应的pk信息
+            $get_pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK;//初始化
+            $m->linkcallpk_pk_info_process_by_pkid(&$error,$pkid,&$pk_process,&$pk_info);
             if (0 != $error['code'])
             {
                 //出现了一些逻辑错误
@@ -1088,35 +1404,45 @@ class linkcall_pk_api
         }while(FALSE);
         if (0 !=$error['code'])
         {
-            LogApi::logProcess("on_linkcallpk_close_rq error:".json_encode($error));
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_seek_pk_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
         }
     
-        //on_linkcallpk_close_rq 包回包，default
+        //on_linkcallpk_user_seek_pk_rq 包回包，default
         $rs = array();
-        $rs['cmd'] = 'linkcallpk_close_rs';
+        $rs['cmd'] = 'linkcallpk_user_seek_pk_rs';
         $rs['error'] = $error;
+        $rs['singer_id'] = (int)$singer_id;
         $rs['time_now'] = $time_now;
+        $rs['pkid'] = (int)$pkid;
         $rs['pk'] = $pk_info;
+    
         $return[] = array
         (
             'broadcast' => 0,// 发rs包
             'data' => $rs,
         );
-        LogApi::logProcess("on_linkcallpk_apply_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid pkid:$pkid rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcallpk_apply_rs guest_id:$guest_id guest_sid:$guest_sid host_id:$host_id host_sid:$host_sid pkid:$pkid return:".json_encode($return));
-        return $return;
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_seek_pk_rs singer_id：$singer_id singer_sid:".$singer_sid." rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_seek_pk_rs singer_id：$singer_id singer_sid:".$singer_sid." return:".json_encode($return));
+        return $return;    
     }
     
-    // 6、用户查询连麦pk主播信息
-    public static function on_linkcallpk_user_seek_pk_rq($params)
+    
+    //7、 用户查询连麦pk用户送礼信息(只用于推送最前面的5个列表，用于客户展示最前面的5个人头)
+    public static function on_linkcallpk_user_seek_gift_rq($params)
     {
-        LogApi::logProcess("on_linkcallpk_user_seek_pk_rq rq:".json_encode($params));
-        $return       = array();
-        $error        = array();
-        $pk           = array();
-        //on_linkcallpk_user_seek_pk_rq 包数据，拆解rq包
-        $singer_id   = (int)$params['guest_id'];
-        $singer_sid  = (int)$params['guest_sid'];
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_seek_gift_rq rq:".json_encode($params));
+        $return               = array();
+        $error                = array();
+        $users                = array();
+        //on_linkcallpk_user_seek_gift_rq 包数据，拆解rq包
+        $singer_id   = (int)$params['singer_id'];
+        $singer_sid  = (int)$params['singer_sid'];
     
         //b_error.info  rs回包错误信息default
         $error['code'] = 0;
@@ -1134,81 +1460,7 @@ class linkcall_pk_api
             }
         //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
             $m = new linkcall_pk_model();
-            //1    取出该主播是否在PK
-            $pkid = $m->redis_get_singer_pkid(&$error,$singer_id);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-            if ($pkid == 0)
-            {
-                //该主播不在pk，pk信息为空
-                break;
-            }
-            //2    取出该pkid对应的pk信息
-            $m->linkcallpk_PK_info_by_PKsinger(&$error,$pkid,&$pk);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-    
-        //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
-    
-        }while(FALSE);
-        if (0 !=$error['code'])
-        {
-            LogApi::logProcess("on_linkcallpk_user_seek_pk_rq error:".json_encode($error));
-        }
-    
-        //on_linkcallpk_user_seek_pk_rq 包回包，default
-        $rs = array();
-        $rs['cmd'] = 'linkcallpk_user_seek_pk_rs';
-        $rs['error'] = $error;
-        $rs['singer_id'] = (int)$singer_id;
-        $rs['time_now'] = $time_now;
-        $rs['pk'] = $pk;
-    
-        $return[] = array
-        (
-            'broadcast' => 0,// 发rs包
-            'data' => $rs,
-        );
-        LogApi::logProcess("on_linkcallpk_siger_seek_online_list_rs singer_id：$singer_id singer_sid:".$singer_sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcallpk_siger_seek_online_list_rs singer_id：$singer_id singer_sid:".$singer_sid." return:".json_encode($return));
-        return $return;    
-    }
-    
-    
-    //7、 用户查询连麦pk用户送礼信息(只用于推送最前面的5个列表，用于客户展示最前面的5个人头)
-    public static function on_linkcallpk_user_seek_pk_rq($params)
-    {
-        LogApi::logProcess("on_linkcallpk_user_seek_pk_rq rq:".json_encode($params));
-        $return               = array();
-        $error                = array();
-        $users                = array();
-        //on_linkcallpk_user_seek_pk_rq 包数据，拆解rq包
-        $singer_id   = (int)$params['guest_id'];
-        $singer_sid  = (int)$params['guest_sid'];
-    
-        //b_error.info  rs回包错误信息default
-        $error['code'] = 0;
-        $error['desc'] = '';
-        $time_now = time();
-        do
-        {
-            //rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
-            if (0 == $singer_id || 0 == $singer_sid )
-            {
-                // 4033400021(021)无效的参数
-                $error['code'] = 403400021;
-                $error['desc'] = '无效的请求参数';
-                break;
-            }
-            //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
-            $m = new linkcall_pk_model();
-            //1    取出该主播是否在PK
+            //1    取出该主播是否在pk
             $pkid = $m->redis_get_singer_pkid(&$error,$singer_id);
             if (0 != $error['code'])
             {
@@ -1218,6 +1470,9 @@ class linkcall_pk_api
             if ($pkid == 0)
             {
                 //该主播不在pk，送礼列表为空
+                // 4033400026(026)PK结束
+                $error['code'] = 4033400026;
+                $error['desc'] = 'PK结束';
                 break;
             }
             //2    取出该用户查询主播的送礼用户列表
@@ -1251,15 +1506,21 @@ class linkcall_pk_api
                 $users[] = $user_info;
             }
     
-            //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
+        //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
     
         }while(FALSE);
         if (0 !=$error['code'])
         {
-            LogApi::logProcess("on_linkcallpk_user_seek_pk_rq error:".json_encode($error));
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_seek_gift_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
         }
     
-        //on_linkcallpk_user_seek_pk_rq 包回包，default
+        //on_linkcallpk_user_seek_gift_rq 包回包，default
         $rs = array();
         $rs['cmd'] = 'linkcallpk_user_seek_gift_rs';
         $rs['error'] = $error;
@@ -1273,21 +1534,705 @@ class linkcall_pk_api
             'broadcast' => 0,// 发rs包
             'data' => $rs,
         );
-        LogApi::logProcess("on_linkcallpk_siger_seek_online_list_rs singer_id：$singer_id singer_sid:".$singer_sid." rs:".json_encode($rs));
-        LogApi::logProcess("on_linkcallpk_siger_seek_online_list_rs singer_id：$singer_id singer_sid:".$singer_sid." return:".json_encode($return));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_seek_gift_rs singer_id：$singer_id singer_sid:".$singer_sid." rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_seek_gift_rs singer_id：$singer_id singer_sid:".$singer_sid." return:".json_encode($return));
+        return $return;
+    }  
+
+    
+    // 8、主播查询客场其他主播给自己的连麦pk列表申请的请求列表
+    public static function on_linkcallpk_singer_seek_link_list_rq($params)
+    {
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_seek_link_list_rq rq:".json_encode($params));
+        $return       = array();
+        $error        = array();
+        $singers      = array();
+        //on_linkcallpk_singer_seek_link_list_rq 包数据，拆解rq包
+        $singer_id   = (int)$params['singer_id'];
+        $singer_sid  = (int)$params['singer_sid'];
+        $page_num    = (int)$params['page_num'];
+    
+        //b_error.info  rs回包错误信息default
+        $error['code'] = 0;
+        $error['desc'] = '';
+        $time_now = time();
+        do
+        {
+        //rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
+            if (0 == $singer_id || 0 == $singer_sid )
+            {
+                // 4033400021(021)无效的参数
+                $error['code'] = 403400021;
+                $error['desc'] = '无效的请求参数';
+                break;
+            }
+        //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
+             $m = new linkcall_pk_model();
+            //1 取出分页为pag_num 的主播信息发给客户端（如果已经点击连线的主播，并且这个主播未回复的，需要保留已连线）
+            $m->linkcallpk_link_singer_datas_by_pag_num(&$error,$singer_id,$page_num,&$singers);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+    
+        //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
+    
+        }while(FALSE);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_seek_link_list_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
+        }
+    
+        //on_linkcallpk_user_seek_pk_rq 包回包，default
+        $rs = array();
+        $rs['cmd'] = 'linkcallpk_singer_seek_link_list_rs';
+        $rs['error'] = $error;
+        $rs['singer_id'] = (int)$singer_id;
+        $rs['time_now'] = $time_now;
+        $rs['singers'] = $singers;
+    
+        $return[] = array
+        (
+            'broadcast' => 0,// 发rs包
+            'data' => $rs,
+        );
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_seek_link_list_rs page_num:$page_num singer_id：$singer_id singer_sid:".$singer_sid." rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_seek_link_list_rs page_num:$page_num inger_id：$singer_id singer_sid:".$singer_sid." return:".json_encode($return));
+        return $return;
+    }
+    
+    // 9、用户进入房间 
+    public static function on_linkcallpk_user_comein_room_rq($params)
+    {
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_comein_room_rq rq:".json_encode($params));
+        $return       = array();
+        $error        = array();
+        $pk_info      = array();
+        $h_users      = array();
+        $g_users      = array();
+        //on_linkcallpk_user_comein_room_rq 包数据，拆解rq包
+        $singer_id   = (int)$params['singer_id'];
+        $singer_sid  = (int)$params['singer_sid'];
+    
+        //b_error.info  rs回包错误信息default
+        $error['code'] = 0;
+        $error['desc'] = '';
+        $time_now = time();
+        $pkid = 0;
+        do
+        {
+        //rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
+            if (0 == $singer_id || 0 == $singer_sid )
+            {
+                // 4033400021(021)无效的参数
+                $error['code'] = 403400021;
+                $error['desc'] = '无效的请求参数';
+                break;
+            }
+        //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
+             $m = new linkcall_pk_model();
+             //1    取出该主播是否在pk
+             $pkid = $m->redis_get_singer_pkid(&$error,$singer_id);
+             if (0 != $error['code'])
+             {
+                 //出现了一些逻辑错误
+                 break;
+             }
+             if ($pkid == 0)
+             {
+                 //该主播不在pk，pk信息为空
+                 break;
+             }
+             //2    取出该pkid对应的pk信息
+             $get_pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK;//初始化
+             $m->linkcallpk_pk_info_process_by_pkid(&$error,$pkid,&$pk_process,&$pk_info);
+             if (0 != $error['code'])
+             {
+                 //出现了一些逻辑错误
+                 break;
+             }
+             $host_id = $pk_info["host_id"];
+             $guest_id = $pk_info["guest_id"];
+             //如果取出的信息是双方主播刚刚创建pk , 不需要继续下步查找，直接返回两个空的送礼列表
+             if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_READY)
+             {
+                 break;
+             }
+             
+             //2    取出主场客场主播的送礼用户列表
+             $h_user_gift_list = array();
+             $m->redis_get_user_gift_5list(&$error,$host_id,&$h_user_gift_list);
+             if (0 != $error['code'])
+             {
+                 //出现了一些逻辑错误
+                 break;
+             }
+             LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_comein_room_rq $h_user_gift_list:".json_encode($h_user_gift_list));
+             if (true != empty($h_user_gift_list))
+             {
+                 foreach ($h_user_gift_list as $h_user_id_gift)
+                 {
+                     $h_user_info = array();
+                     //根据user_di 去取出对应的用户信息
+                     $h_user_id = $h_user_id_gift["user_id"];
+                     $m->linkcallpk_user_info_by_userid(&$error,$host_id,$h_user_id,&$h_user_info);
+                     if (0 != $error['code'])
+                     {
+                         //出现了一些逻辑错误
+                         break;
+                     }
+                     $h_users = $h_user_info;
+                 }
+
+             }
+             
+             $g_user_gift_list = array();
+             $m->redis_get_user_gift_5list(&$error,$guest_id,&$g_user_gift_list);
+             if (0 != $error['code'])
+             {
+                 //出现了一些逻辑错误
+                 break;
+             }
+             if (true != empty($g_user_gift_list))
+             {
+                 foreach ($g_user_gift_list as $g_user_id_gift)
+                 {
+                     $g_user_info = array();
+                     //根据user_di 去取出对应的用户信息
+                     $g_user_id = $g_user_id_gift["user_id"];
+                     $m->linkcallpk_user_info_by_userid(&$error,$guest_id,$g_user_id,&$g_user_info);
+                     if (0 != $error['code'])
+                     {
+                         //出现了一些逻辑错误
+                         break;
+                     }
+                     $g_users = $g_user_info;
+                 }             
+             }
+    
+        //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
+    
+        }while(FALSE);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_comein_room_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
+        }
+    
+        //on_linkcallpk_user_comein_room_rq 包回包，default
+        $rs = array();
+        $rs['cmd'] = 'linkcallpk_user_comein_room_rs';
+        $rs['error'] = $error;
+        $rs['singer_id'] = (int)$singer_id;
+        $rs['time_now'] = $time_now;
+        $rs['pkid'] = (int)$pkid;
+        $rs['pk'] = $pk_info;
+        $rs['h_users'] = $h_users;
+        $rs['g_users'] = $g_users;
+    
+        $return[] = array
+        (
+            'broadcast' => 0,// 发rs包
+            'data' => $rs,
+        );
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_comein_room_rs singer_id：$singer_id singer_sid:".$singer_sid." rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_comein_room_rs singer_id：$singer_id singer_sid:".$singer_sid." return:".json_encode($return));
+        return $return;
+    }
+    
+    
+    // 10、用户离开房间
+    // 不影响该功能，忽略
+    
+    // 11 主播进入房间
+    // 主播是断线重连才需要，需要客户端补发接口操作，如果是关播，被迫踢下线，重新开播，应该先开启连麦pk功能，有客户端开启
+    public static function on_linkcallpk_singer_comein_room_rq($params)
+    {
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_comein_room_rq rq:".json_encode($params));
+        $return       = array();
+        $error        = array();
+        $pk_info      = array();
+        //on_linkcallpk_singer_comein_room_rq 包数据，拆解rq包
+        $singer_id   = (int)$params['singer_id'];
+        $singer_sid  = (int)$params['singer_sid'];
+    
+        //b_error.info  rs回包错误信息default
+        $error['code'] = 0;
+        $error['desc'] = '';
+        $time_now = time();
+        $pkid = 0;
+        $functiontime = 0;
+        $popup_time = 0;
+        $popup_id = 0;
+        $popup_live = 0;
+        do
+        {
+            //rq包验证////////////////////////////////////////////////////////////////////////////////////////////////
+            if (0 == $singer_id || 0 == $singer_sid )
+            {
+                // 4033400021(021)无效的参数
+                $error['code'] = 403400021;
+                $error['desc'] = '无效的请求参数';
+                break;
+            }
+            //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
+            $m = new linkcall_pk_model();
+            //0    取出该主播是否还开启着连麦pk功能
+            $functiontime = $m->redis_get_online_singer_list_opentime(&$error,$singer_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            if ($functiontime == 0)
+            {
+                //该主播已经关闭pk功能了，直接退出返回
+                break;
+            }
+            //1    查看主播是否有收到其他主播给的弹窗信息
+            $popup_time = $m->redis_get_pk_popup(&$error,$singer_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+
+            if ($popup_time != 0)
+            {
+                //有弹窗信息
+                //1.1    如果有弹窗信息，需要取出是谁给的弹窗信息
+                $popup_id = $m->redis_get_guest_popup_from_host(&$error,$singer_id);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                //1.2    如果有弹窗信息，判断发给这个弹窗信息的主播是否还在进行有pk（如果他下线了，就去掉这个弹窗所有信息，同理，这个主播也没有pkid号了）
+                $pk_opentime_popupsinger = $m->redis_get_online_singer_list_opentime(&$error,$popup_id);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                if ($pk_opentime_popupsinger == 0)
+                {
+                    //发弹窗的主播都下线了，删掉弹窗信息，直接退出返回
+                    $m->redis_rem_pk_popup(&$error,$singer_id);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }
+                    $m->redis_rem_guest_popup_from_host(&$error,$singer_id);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }
+                    // 令$popup_time  和    $popup_id =0 直接返回退出
+                    $popup_time = 0;
+                    $popup_id = 0;    
+                    break;
+                }
+                
+                //1.3    如果有弹窗信息，需要给客户端系统给定的弹窗生命周期
+                $id_sys_poptime =linkcall_pk_model::$LINKCALL_PK_LINK_POPUPTIME;
+                $popup_live = $m->redis_get_mysql_info(&$error,$id_sys_poptime);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                //一个主播只能如果有弹窗了，就不可能有pkid号。
+                break;
+            }
+            
+            //2    取出该主播是否在pk
+            $pkid = $m->redis_get_singer_pkid(&$error,$singer_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            if ($pkid != 0)
+            {
+                //该主播在PK中，取出pk信息             
+                $get_pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK;//初始化
+                $m->linkcallpk_pk_info_process_by_pkid(&$error,$pkid,&$pk_process,&$pk_info);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+            }
+
+
+            //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
+    
+        }while(FALSE);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_comein_room_rq error:".json_encode($error));
+        }
+        if (403400001 < $error['code'] && $error['code'] < 4033400020)
+        {
+            //屏蔽服务器细节问题，统一发给客户端一个错误码
+            $error['code'] = 4033400020;
+            $error['desc'] = '服务器出现一丢丢问题';
+        }
+    
+        //on_linkcallpk_singer_comein_room_rq 包回包，default
+        $rs = array();
+        $rs['cmd'] = 'linkcallpk_singer_comein_room_rs';
+        $rs['error'] = $error;
+        $rs['time_now'] = $time_now;
+        $rs['functiontime'] = $functiontime;        
+        $rs['singer_id'] = (int)$singer_id;
+        $rs['popup_time'] = (int)$popup_time;
+        $rs['popup_id'] = (int)$popup_id;
+        $rs['popup_live'] = (int)$popup_live;        
+        $rs['pkid'] = (int)$pkid;
+        $rs['pk'] = $pk_info;
+
+    
+        $return[] = array
+        (
+            'broadcast' => 0,// 发rs包
+            'data' => $rs,
+        );
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_comein_room_rs singer_id：$singer_id singer_sid:".$singer_sid." rs:".json_encode($rs));
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_comein_room_rs singer_id：$singer_id singer_sid:".$singer_sid." return:".json_encode($return));
         return $return;
     }
     
     
     
+    // 12 主播离开房间（主播关闭直播间）
+    public static function on_linkcallpk_singer_leave_event($params)
+    {
+        $error = array();
+        $error['code'] = 0;
+        $error['desc'] = '';
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_leave_event nt:".json_encode($params));
+        $sid         = $params['singer_sid'];
+        $singer_id   = $params['singer_id'];
+        do
+        {
+        //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
+            $m = new linkcall_pk_model();
+            //0    取出该主播是否还开启着连麦pk功能
+            $pk_opentime = $m->redis_get_online_singer_list_opentime(&$error,$singer_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            if ($pk_opentime == 0)
+            {
+                //该主播已经关闭pk功能了，直接退出返回
+                break;
+            }
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_leave_event  pk_opentime:$pk_opentime");
+            //1    查看主播是否有收到其他主播给的弹窗信息
+            $popup_time = $m->redis_get_pk_popup(&$error,$singer_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_leave_event  popup_time:$popup_time");
+            if ($popup_time != 0)
+            {
+                //有弹窗信息，需要删掉弹窗信息
+                $m->redis_rem_pk_popup(&$error,$singer_id);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                $m->redis_rem_guest_popup_from_host(&$error,$singer_id);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+
+            }            
+            
+            //2.1 取出pkid,查看该主播是否在连麦pk当中，取出pkid，根据pkid做细致判断
+            $get_pkid = $m->redis_get_singer_pkid(&$error,$singer_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_leave_event  get_pkid:$get_pkid");
+            if ($get_pkid != 0)
+            {         
+
+                $pkid = $get_pkid;
+                
+                //2.2 取出pk信息。
+                $get_pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK;//初始化
+                $get_pk_info = array();
+                $m->linkcallpk_pk_info_process_by_pkid(&$error,$pkid,&$get_pk_process,&$get_pk_info);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                $pk_info = $get_pk_info;
+                $host_id = $pk_info["host_id"];
+                $guest_id = $pk_info["guest_id"];
+                $host_sid = $pk_info["host_sid"];
+                $guest_sid = $pk_info["guest_sid"];
+                //  观察pk状态做处理
+                //2.3 已经结束关闭
+                if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK)
+                {
+                    // 4033400026(026)PK结束，可以直接返回客户端接收关闭完成
+                    $error['code'] = 0;
+                    $error['desc'] = '';
+                    break;
+                }
+                //2.4 刚刚创建pk界面，只需要推送双方主播和广播房间
+                if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_READY)
+                {
+                    //不做任何处理
+                }
+                //2.5  查询到还在pk（需要提前进行结算，再推送双方主播和广播房间）
+                if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_PKING)
+                {
+                    //a 取出主客场送礼总金额
+                    {
+                        //取出主场主播最新的礼物总金额
+                        $get_host_gift = $m->redis_get_pking_info_singer_gift(&$error,$host_id);
+                        if (0 != $error['code'])
+                        {
+                            //出现了一些逻辑错误
+                            break;
+                        }
+                        //取出客场主播最新的礼物总金额
+                        $get_guest_gift = $m->redis_get_pking_info_singer_gift(&$error,$guest_id);
+                        if (0 != $error['code'])
+                        {
+                            //出现了一些逻辑错误
+                            break;
+                        }
+                    }
+                    //b 刷新最新的 $pk_info 信息
+                    $pk_info["host_gift"] = $get_host_gift;
+                    $pk_info["guest_gift"] = $get_guest_gift;
+                    //c 登记结算$pk_info 到缓存
+                    $m->redis_set_pk_info_use_array(&$error,$pkid,&$pk_info);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }
+                }
+                
+                //2.6  查询到的是系统已经自动进行结算（说明完成了正常的pk）,只需要推送双方主播和广播房间
+                if ($get_pk_process == linkcall_pk_model::$LINKCALL_PK_PKINFO_BEYOND)
+                {
+                    //不做任何处理
+                
+                }
+                
+                //2.7  对双方主播做推送和广播
+                $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_COUNT;
+                $m->linkcallpk_singer_nt_singer_pk_info(&$error,$guest_id,$guest_sid,$host_id,$pk_state);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                $m->linkcallpk_singer_nt_singer_pk_info(&$error,$host_id,$host_sid,$guest_id,$pk_state);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                
+                //2.8   在两个房间进行广播  pk 信息 (当前只是推送pk结算信息，没有送礼信息，因此送礼用户和接收用户都为0，送礼消失为空)
+
+                $m->linkcallpk_room_nt_pk_info(&$error,$pkid,0,0);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                
+                //2.9   登记这个pkid已经结束
+                $get_pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK;
+                $m->redis_set_pk_info_process(&$error,$pkid,$pk_process);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                //2.10   移除服务器双方正在pk的列表
+                $m->redis_rem_singer_pkid(&$error,$host_id);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+                $m->redis_rem_singer_pkid(&$error,$guest_id);
+                if (0 != $error['code'])
+                {
+                    //出现了一些逻辑错误
+                    break;
+                }
+            }
+
+            //3 找到该主播申请的申请列表，对申请过的主播一一进行推送，主播下线了
+            $objsinger_list = array();
+            $m->redis_get_singer_guest_apply_list(&$error,$singer_id,&$objsinger_list);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            if(true == empty($objsinger_list))
+            {
+                // 403400012(012)读取数据为空,不需要进行任何nt操作
+
+            }
+            else 
+            {
+                foreach ($objsinger_list as $nt_singer_id)
+                {
+                    //1 根据主播id，查找主播sid
+                    $nt_singer_cache = array();
+                    $m->redis_get_singer_info(&$error,$nt_singer_id,&$nt_singer_cache);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }
+                    $nt_singer_sid = $nt_singer_cache["singer_sid"];
+                    
+                    //给所有申请了的主播推送主播下线了
+                    $pk_state = linkcall_pk_model::$LINKCALL_PK_SINGER_OFFLINE;
+                    $m->linkcallpk_singer_nt_singer_pk_info(&$error,$nt_singer_id,$nt_singer_sid,$singer_id,$pk_state);
+                    if (0 != $error['code'])
+                    {
+                        //出现了一些逻辑错误
+                        break;
+                    }
+                    
+                }
+            }
+            
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_leave_event  singer_id:$singer_id");
+            //4 删除该主播申请列表
+            $m->redis_del_singer_guest_apply_list(&$error,$singer_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            
+            //5 删除该主播请求列表
+            $m->redis_del_singer_host_link_list(&$error,$singer_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            
+            //6 该主播在在线连麦pk列表中移除
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_leave_event rem singer_id:$singer_id ");
+            $m->redis_rem_online_singer_list(&$error,$singer_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+        
+        //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
+        
+        }while(FALSE);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_singer_leave_event error:".json_encode($error));
+        }
+  
+    }
     
+    // 13、用户送礼事件
+    public static function on_linkcallpk_user_send_gift_event($pkid,$user_id,$giftall,$singer_id)
+    {
+        LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_send_gift_event pkid:$pkid user_id:$user_id giftall:$giftall singer_id:$singer_id");
+
+        do
+        {
+        //逻辑功能/////////////////////////////////////////////////////////////////////////////////////////////////
+            $m = new linkcall_pk_model();
+            
+            //1 刷新该用户的缓存信息
+            //根据用户id，搜集用户缓存信息
+            $user_cache = array();
+            $userInfo = new UserInfoModel();
+            $get_user_info = $userInfo->getInfoById($user_id);
+            $userlevel = new UserAttributeModel();
+            $get_user_level = $userlevel->getAttrByUid($user_id);
+            $user_cache["user_id"] = $user_id;
+            $user_cache["user_level"] = $get_user_level["active_level"];
+            $user_cache["user_icon"]  = $get_user_info["photo"] ;
+            $user_cache["user_wealth"]  = $get_user_level["consume_level"];            
+            $m->redis_set_user_info(&$error,$user_id,&$user_cache);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            
+            //2 刷新主播送礼用户列表数据
+            $m->redis_set_user_gift(&$error,$singer_id,$user_id,$giftall);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            
+            //3 刷新该主播礼物总金额
+            $m->redis_set_pking_info_singer_gift(&$error,$singer_id,$giftall);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }            
+            //4 推送两个房间送礼信息
+            $m->linkcallpk_room_nt_pk_info(&$error,$pkid,$user_id,$singer_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
     
+        //逻辑功能结束//////////////////////////////////////////////////////////////////////////////////////////////
     
-    
-    
-    
-    
-    
+        }while(FALSE);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("linkcall_pk_api.on_linkcallpk_user_send_gift_event error:".json_encode($error));
+        }
+
+    }
     
     
     

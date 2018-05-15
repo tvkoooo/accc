@@ -1,0 +1,50 @@
+//代理上面不能使用
+//监控redis io（调试使用）
+redis-cli -h 101.200.169.28 -p 50500 monitor 
+
+//查看当前状态
+redis-cli -h 101.200.169.28 -p 50500 info
+
+//关键内容
+config_file:/usr/local/codis/config/redis_11194.conf   配置文件目录
+instantaneous_ops_per_sec:69 每秒访问次数
+instantaneous_input_kbps:1.75
+instantaneous_output_kbps:4.48
+used_memory_human:597.94M  内存
+db0:keys=103824,expires=47,avg_ttl=296263896206135
+connected_clients:71 当前客户端连接数
+
+
+//动态获取当前配置：例如最大连接数
+CONFIG GET maxclients
+1) "maxclients"
+2) "10000"
+
+
+//bgsave  主库不能bgsave，从库才可以
+调整办法，查看机器最大内存和配置内存，redis maxmemory 和物理最大内存比较，3/4 或者1/2
+原因：
+```
+BGSAVE 命令执行之后立即返回 OK ，然后 Redis fork 出一个新子进程，原来的 Redis 进程(父进程)继续处理客户端请求，而子进程则负责将数据保存到磁盘，然后退出。
+子进程则负责将数据保存到磁盘
+	会导致物理内存不足，分配虚存，会写盘。导致死循环，redis会继续进行产生bgsave，导致越来越慢，死翘翘了
+```
+
+//数据迁移（1停服拷贝）
+```
+1、停服（业务服）
+2、在bgsave，或者save
+3、关闭redis
+4、拷贝rdb到相应目录
+5、启动redis，
+6、开服（业务服）连接到新机器上面
+```
+//数据迁移（2主从拷贝，热切换）
+```
+1、SLAVEOF 目标 ，新机器用来做老主库的从库
+2、SYNC    目标 ，新机器从库同步主库（同步的数据是不全的，大部分，最新数据没有同步）
+3、停服（业务服）
+4、SYNC（全部数据都会同步）
+5、SLAVEOF NO ONE 从库提示变为主库
+6、开服（业务服）连接到新机器上面
+```

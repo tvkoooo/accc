@@ -11,7 +11,13 @@ http://192.168.111.223/zentao/bug-view-992.html
  
  new 
 cd /data/xcbb_project/xcbb_project/server.kr.2/server/fpm_script/rcec/models
- 
+
+fenbu  日志
+cd /data/vnc_log/vnc/vnc_fpm_script 
+fenbu  php发行地方
+cd /data/vnc_release/bin/vnc_fpm_script/
+fenbu  错误日志
+cd /data/phplog
  
  
  运行目录

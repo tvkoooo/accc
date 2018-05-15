@@ -1,0 +1,40 @@
+//创建脚本
+```
+touch ljbash
+```
+
+//入参
+ljbash 
+```
+echo 0=${0} 1=${1}
+echo 2=${@}
+make clean
+rm core
+
+make
+
+ls -trlsh | grep mmmm
+
+./mmmmm
+
+gdb ./mmmmm core
+```
+
+//执行 ljbash 
+```
+bash ./ljbash
+```
+
+
+//echo 打印
+//${0}代表第一个参数，就是脚本文件
+//${1}代表第二个参数，就是脚本文件后面那个参数
+//${@}排除脚本文件后面的所有入参
+
+
+
+
+
+
+
+

@@ -1,0 +1,45 @@
+//创建文件
+```
+touch + 文件名
+```
+
+//崩溃例子的Makefile
+```
+projectname = mmmmm
+objects = main.o
+$(projectname) : $(objects)
+	cc -o $(projectname) $(objects)
+main.o : main.c 
+	cc -c main.c
+.PHONY : clean
+clean :
+	rm $(projectname) $(objects)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

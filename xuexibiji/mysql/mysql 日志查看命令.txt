@@ -1,0 +1,40 @@
+show variables like '%version%';
+show variables like '%general%';
+show variables like '%log_output%';
+
+
+show variables like '%quer%';
+
+
+
+开启通用日志查询： set global general_log=on;
+
+关闭通用日志查询： set globalgeneral_log=off;
+
+设置通用日志输出为表方式： set globallog_output=’TABLE’;
+
+设置通用日志输出为文件方式： set globallog_output=’FILE’;
+
+设置通用日志输出为表和文件方式：set global log_output=’FILE,TABLE’
+
+
+查看mysql线程
+SHOW PROCESSLIST
+
+杀死mysql线程
+kill 6
+
+查看状态
+show status
+查看状态，筛选
+show status like 'Threads%';
+
+这是是查询数据库当前设置的最大连接数
+show variables like '%max_connections%';
+
+可以在/etc/my.cnf里面设置数据库的最大连接数
+[mysqld]
+max_connections = 1000
+
+windows的mysql配置文件位置
+D:\ProgramData\MySQL\MySQL Server 5.6\my.ini

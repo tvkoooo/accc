@@ -1,0 +1,74 @@
+//设置打开崩溃文件core dump
+```
+ulimit -c unlimited
+```
+
+main.c
+```
+#include <assert.h>
+#include <stdio.h>
+void mm()
+{
+	int *a = NULL;
+	*a = 1;
+}
+int  main(void )
+{
+	mm();
+	return 0;
+}
+```
+//崩溃的例子
+
+//编译的例子
+```
+g++ main.c -o mmmmm
+```
+
+//运行
+```
+./mmmmm
+```
+
+//崩溃调试
+```
+gdb ./mmmmm core
+```
+
+//进入调试后
+```
+bt
+```
+
+//vim使用
+```
+vim +文件名     //进入
+按 i             //进入插入模式
+esc            //退出当前模式
+:   //基本模式才有效，进入命令模式 
+	wq     //写入退出
+	q      //退出
+	q!     //退出不保存
+```
+
+//创建文件
+```
+touch + 文件名
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
