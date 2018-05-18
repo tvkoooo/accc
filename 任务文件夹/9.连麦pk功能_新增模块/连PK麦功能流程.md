@@ -72,7 +72,7 @@ linkcallpk_user_data
     member(uint64 singer_id),
 } 
 (cache)EXPIRE 3*24*60*60(s)//默认功能关闭3天后清理
-4、主播客场pk申请列表（guest_id）
+4、主播客场pk申请列表（singer_id）
 (redis)zset linkcallpk:singer:guestlist:zset:(singer_id)
 {
     score(uint32 timeapply),//记录主播给其他主播申请的申请时间
@@ -81,7 +81,7 @@ linkcallpk_user_data
 (cache)EXPIRE 3*24*60*60(s)//最多3天,主播关播会清除
 
 5、主播主场pk连线列表（singer_id）
-(redis)zset linkcallpk:singer:hostlist:zset:(host_id)
+(redis)zset linkcallpk:singer:hostlist:zset:(singer_id)
 {
     score(uint32 timeapply),//记录其他主播给这个主播发出连麦pk申请的时间
     member(uint64 singer_id),
@@ -106,8 +106,8 @@ cache linkcallpk_pk_info_cache(pkid)
 }
 (redis)hash linkcallpk:pk:info:hash（pkid）
 {
-    k(string k),//
-    v(uint64 v),//
+    $pkid，json(linkcallpk_pk_info_cache(pkid))//pkid 和对应的缓存
+    "pk_process",$pk_process//pk_process 和对应的这个pkid的连麦pk状态
 } 
 (cache)EXPIRE 3*24*60*60(s)//默认功能关闭3天后清理
 
@@ -139,7 +139,7 @@ cache linkcallpk_pk_info_cache(pkid)
 11、redis 服务器记录当前服务器所有 正在有弹窗确认的主播（一个主播只能有一个弹窗选择）
 (redis)hash linkcallpk:singer:popup:zset:
 {
-    score(uint64 link_time),//连线申请时间（只取30内的数据），弹窗只有30s
+    score(uint64 link_time),//连线申请时间
     member(uint64 singer_id),
 } 
 (cache)EXPIRE 3*24*60*60(s)//最多3天,服务器主播禁用pk功能3天后消失
@@ -289,7 +289,7 @@ note right of client: 主播申请连线
 client->>server: linkcallpk_apply_rq
 note right of server:校验数据判空等状态合法性
 note right of server:nt对象主播需要增加一条请求记录（pk_state=apply）
-server->>主播:linkcallpk_singer_apply_nt
+server->>主播:linkcallpk_singer_state_nt
 note right of client: rs返回pk状态（pk_state=apply）
 server->>client: linkcallpk_apply_rs
 ```
@@ -320,7 +320,7 @@ note right of server:校验数据判空等状态合法性
 note right of server:判断对象主播的状态
 note right of server:（状态：pk，游戏，电锯，其他主播的连线申请，下线）
 note right of server:需要单播，nt对象主播需要增加一个弹窗（pk_state=popup）
-server->>主播:linkcallpk_singer_apply_nt
+server->>主播:linkcallpk_singer_state_nt
 note right of client: rs返回pk状态
 note right of client:（pk_state=pking/gaming/sawing/offline/popup）
 server->>client: linkcallpk_link_rs
@@ -350,7 +350,7 @@ note right of client: 主播连线请求
 client->>server: linkcallpk_confirm_rq
 note right of server:校验数据判空等状态合法性
 note right of server:需要单播，nt对象主播一个nt（pk_state=yes/no）
-server->>主播:linkcallpk_singer_apply_nt
+server->>主播:linkcallpk_singer_state_nt
 note right of client: rs返回（pk_state=yes/no）
 server->>client: linkcallpk_confirm_rs
 ```
@@ -380,11 +380,11 @@ message linkcallpk_confirm_rs
 	required uint64 host_id			      = 4 [default =  0 ]; // 主场主播id
 	required uint64 time_now			  = 5 [default =  0 ]; // 系统时间	
 	required op_code code                 = 6 ; // 操作码
-	required uint64 pkid				  = 7 [default =  0 ]; // pkid号（占位id）
-    epeated linkcallpk_pk_info pk         = 8 ; // pk信息（占位pk信息）
+	required uint64 pkid				  = 7 [default =  0 ]; // pkid号
+    epeated linkcallpk_pk_info pk         = 8 ; // pk信息
 }
 ```
-###4、主场主播启动连麦pk（包括结算后再次pk，都是新产生一个pkid，全新的环境来pk）
+###4、主场主播启动连麦pk（如果是第一次启动，会是原来创建的pkid，如果是再次启动，会生成一个新的pkid）
 ```seq
 note right of client: 主播启动连线
 client->>server: linkcallpk_start_rq
@@ -417,7 +417,7 @@ message linkcallpk_start_rs
 
 }
 ```
-###5.1 主播结算pk（主场和客场主播都发结束请求，按照先到请求，并且满足pk结束时间来结算，后到的会查询已经结算，返回error忽略）
+###5.1 主播结算pk（主场和客场主播都可以发结算信息，如果不发结算，系统会自动结算）
 ```seq
 note right of client: 主播启动连线
 client->>server: linkcallpk_count_rq
@@ -433,7 +433,6 @@ server->>client: linkcallpk_count_rs
 message linkcallpk_count_rq
 {
 	enum msg{ id=0x99990021;} 
-    required uint64 pkid		          = 1 [default = "" ]; // pk的id号
 	required uint64 guest_id			  = 2 [default =  0 ]; // 客场主播id
 	required uint64 guest_sid			  = 3 [default =  0 ]; // 客场主播sid	
 	required uint64 host_id			      = 4 [default =  0 ]; // 主场主播id
@@ -449,7 +448,7 @@ message linkcallpk_count_rs
     epeated linkcallpk_pk_info pk         = 5 ; // pk信息
 }
 ```
-###5.2 主播延长连麦pk（主播延长pk，后台结算是先结算本次pkid，把本次pkid两边礼物值和两边用户送礼信息复制一份到新的pkid当中，老的pkid信息不变，便于后续有可能的查询，并在nt和rs当中放入新的pkid及pk信息，但是原来两边主播的送礼信息还是原来那份继续操作，缓存是用singer_id做唯一索引的）
+###5.2 主播延长连麦pk（主播延长pk，重新生成一个pkid，沿用上个pkid数据继续pk）
 ```seq
 note right of client: 主播启动连线
 client->>server: linkcallpk_addtime_rq
@@ -482,14 +481,14 @@ message linkcallpk_addtime_rs
     epeated linkcallpk_pk_info pk         = 6 ; // pk信息
 }
 ```
-###5.3 主播结束连麦pk
+###5.3 主播结束连麦pk（释放PK情景，一个主播只能存在一个pk情景，从创建pk界面开始）
 ```seq
 note right of client: 主播结束连线
 client->>server: linkcallpk_close_rq
 note right of server:校验数据判空等状态合法性
 note right of server:服务器提前进行结算pk
 note right of server:需要单播，nt对象主播一个nt（pk_state=over）
-server->>主播:linkcallpk_singer_apply_nt(只推送给对方连麦pk主播)
+server->>主播:linkcallpk_singer_state_nt(只推送给对方连麦pk主播)
 server->>房间:linkcallpk_room_pk_info_nt(推送两个房间)
 note right of server:刷新服务器主播在线pk列表时间
 note right of client: 系统rs返回（pk_state=over）
@@ -593,7 +592,7 @@ message linkcallpk_singer_seek_link_list_rs
 	repeated linkcallpk_singer_info singers = 4         ; // 主播列表信息
 }
 ```
-###9、用户进入房间
+###9、用户进入房间（这个是总命令，可以返回连麦pk信息）
 ```seq
 note right of client: 用户进入房间
 client->>server: linkcallpk_user_comein_room_rq
@@ -628,7 +627,7 @@ message linkcallpk_user_comein_room_rs
 不影响该功能，忽略
 ```
 
-###11、主播进入直播房间
+###11、主播进入直播房间（可以查看是否主播是否开启pk功能，是否有pk弹窗显示，是否启动了pk界面）
 ```seq
 note right of client: 主播进入直播房间
 client->>server: linkcallpk_singer_comein_room_rq
@@ -667,7 +666,7 @@ message linkcallpk_singer_comein_room_rs
       3 如果主播还开着pk功能，需要查看当前是否正在pk，有，需要下拉当前双方送礼列表（5个
 ```
 
-###12、主播关闭直播房间
+###12、主播关闭直播房间（这个是由服务器发送主播离场事件触发）
 ```seq
 note right of mq: 主播离开触发事件
 mq->>server: p_user_real_leave_channel_event
@@ -677,5 +676,5 @@ note right of server: 如果主播有申请（申请过的人）都要发nt（st
 note right of server: 删除该服务器在线主播列表当中的该主播
 note right of server: 删除该主播的申请列表
 note right of server: 删除该主播的请求列表
-server->>主播:linkcallpk_singer_apply_nt
+server->>主播:linkcallpk_singer_state_nt
 ```

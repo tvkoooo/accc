@@ -1,0 +1,794 @@
+<?php
+
+class UserAttributeModel extends ModelBase
+{
+
+    public $experienceList = array(
+        0, // 1級
+        7500,
+        17000,
+        33500,
+        56500,
+        90500,
+        136500,
+        196500,
+        274000,
+        370500, // 10級
+        490500,
+        615500,
+        745500,
+        890500,
+        1050500,
+        1215500,
+        1390500,
+        1565500,
+        1765500,
+        1995500, // 20級
+        2290500,
+        2665500,
+        3135500,
+        3715500,
+        4415500,
+        5255500,
+        6255500,
+        7355500,
+        8730500,
+        10235500, // 30級
+        12080500,
+        14310500,
+        17085500,
+        20480500,
+        24570500,
+        28825500,
+        33235500,
+        37790500,
+        42480500,
+        47295500, // 40級
+        53720500,
+        61480500,
+        70955500,
+        82305500,
+        95755500,
+        111455500,
+        129605500,
+        150405500,
+        174105500,
+        200955500, // 50級
+        230355500,
+        260555500,
+        291455500,
+        323055500,
+        355305500,
+        388155500,
+        421555500,
+        455455500,
+        489805500,
+        524555500, // 60級
+        596205500,
+        634405500,
+        674255500,
+        715805500,
+        759055500,
+        804105500,
+        850955500,
+        899655500,
+        950255500,
+        1002805500, // 70級
+        1057355500,
+        1113955500,
+        1172655500,
+        1233505500,
+        1296505500,
+        1361755500,
+        1429305500,
+        1499205500,
+        1571455500,
+        1646155500, // 80級
+        1723355500,
+        1803105500,
+        1885405500,
+        1970355500,
+        2058005500,
+        2148405500,
+        2241605500,
+        2337655500,
+        2436605500,
+        2538555500, // 90級
+        2643505500,
+        2751555500,
+        2862705500,
+        2977055500,
+        3094655500,
+        3215555500,
+        3339805500,
+        3467505500,
+        3598655500, // 100級
+        3733355500
+    );
+
+    public $weekGiftConsumeList = array(
+        20000,
+        50000,
+        100000,
+        200000,
+        500000,
+        1000000,
+        5000000
+    );
+
+    public $vipList = array(
+        array(
+            'vipTitle' => '',
+            'vip' => 0,
+            'vipPrice' => 0,
+            'giftDiscount' => 0,
+            'speakerPrice' => 50
+        ),
+        array(
+            'vipTitle' => 'VIP1',
+            'vip' => 1,
+            'vipPrice' => 10000,
+            'giftDiscount' => 0.9,
+            'speakerPrice' => 20
+        ),
+        array(
+            'vipTitle' => 'VIP2',
+            'vip' => 2,
+            'vipPrice' => 20000,
+            'giftDiscount' => 0.9,
+            'speakerPrice' => 10
+        ),
+        array(
+            'vipTitle' => 'VIP3',
+            'vip' => 3,
+            'vipPrice' => 30000,
+            'giftDiscount' => 0.9,
+            'speakerPrice' => 0
+        ),
+        array(
+            'vipTitle' => 'VIP4',
+            'vip' => 4,
+            'vipPrice' => 40000,
+            'giftDiscount' => 0.9,
+            'speakerPrice' => 0
+        ),
+        array(
+            'vipTitle' => 'VIP5',
+            'vip' => 5,
+            'vipPrice' => 50000,
+            'giftDiscount' => 0.9,
+            'speakerPrice' => 0
+        ),
+        array(
+            'vipTitle' => 'VIP6',
+            'vip' => 6,
+            'vipPrice' => 60000,
+            'giftDiscount' => 0.9,
+            'speakerPrice' => 0
+        )
+    );
+
+    public $giftConsumeList = array(
+        array(
+            'amount' => 0,
+            'title' => '平民'
+        ),
+        array(
+            'amount' => 1000,
+            'title' => '1富'
+        ),
+        array(
+            'amount' => 5000,
+            'title' => '2富'
+        ),
+        array(
+            'amount' => 15000,
+            'title' => '3富'
+        ),
+        array(
+            'amount' => 30000,
+            'title' => '4富'
+        ),
+        array(
+            'amount' => 50000,
+            'title' => '5富'
+        ),
+        array(
+            'amount' => 100000,
+            'title' => '6富'
+        ),
+        array(
+            'amount' => 200000,
+            'title' => '7富'
+        ),
+        array(
+            'amount' => 400000,
+            'title' => '8富'
+        ),
+        array(
+            'amount' => 650000,
+            'title' => '9富'
+        ),
+        array(
+            'amount' => 1000000,
+            'title' => '10富'
+        ),
+        array(
+            'amount' => 1500000,
+            'title' => '男爵'
+        ),
+        array(
+            'amount' => 2000000,
+            'title' => '子爵'
+        ),
+        array(
+            'amount' => 2500000,
+            'title' => '伯爵'
+        ),
+        array(
+            'amount' => 3500000,
+            'title' => '侯爵'
+        ),
+        array(
+            'amount' => 5000000,
+            'title' => '公爵'
+        ),
+        array(
+            'amount' => 8000000,
+            'title' => '郡公'
+        ),
+        array(
+            'amount' => 12000000,
+            'title' => '國公'
+        ),
+        array(
+            'amount' => 17000000,
+            'title' => '王爵'
+        ),
+        array(
+            'amount' => 23000000,
+            'title' => '潘王'
+        ),
+        array(
+            'amount' => 30000000,
+            'title' => '郡王'
+        ),
+        array(
+            'amount' => 38000000,
+            'title' => '親王'
+        ),
+        array(
+            'amount' => 47000000,
+            'title' => '國王'
+        ),
+        array(
+            'amount' => 57000000,
+            'title' => '皇帝'
+        ),
+        array(
+            'amount' => 68000000,
+            'title' => '聖帝'
+        ),
+        array(
+            'amount' => 128000000,
+            'title' => '神'
+        ),
+        array(
+            'amount' => 256000000,
+            'title' => '宙斯'
+        )
+    );
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function getAttrByUid($uid, $field = '')
+    {
+        $key = 'user_attribute:' . $uid;
+        $query = "select * from user_attribute where uid = $uid";
+        $rows = $this->read($key, $query, 0, 'dbMain', false);
+        if (count($rows) == 1) {
+            $data = $rows[0];
+        } else {
+            $insert = "INSERT INTO `user_attribute` (`uid`) VALUES ($uid)";
+            $this->getDbMain()->query($insert, false);
+            $data = array(
+                'uid' => $uid,
+                'charm' => '0',
+                'heart' => '0',
+                'experience' => '0',
+                'coin_balance' => '0',
+                'point_balance' => '0',
+                'default_image' => '0',
+                'fb_url' => '',
+                'vip' => 0,
+                'vip_expiration' => 0,
+                'gift_consume' => 0,
+                'diamond' => 0,
+                'auth' => 0,
+                'game_point' => 0
+            );
+        }
+        if (!empty($field) && isset($data[$field])) {
+            return $data[$field];
+        } else {
+            return $data;
+        }
+    }
+
+    public function getUserInfo($uid, $ttl = 300)
+    {
+        $key = 'user_info:' . $uid;
+        $value = $this->getRedisSlave()->get($key);
+        if ($value !== false) {
+            return json_decode($value, true);
+        } else {
+            $value = $this->getRedisMaster()->get($key);
+            if ($value !== false) {
+                return json_decode($value, true);
+            } else {
+                $data = array();
+                $userAttr = $this->getAttrByUid($uid);
+                $data['uid'] = $uid;
+                $data['nick'] = $this->userInfoModel->getNickName($uid);
+                $vipInfo = $this->getVipInfo($userAttr);
+                $data['vip'] = $vipInfo['vip'];
+                $richManInfo = $this->getRichManLevel($uid, $userAttr['gift_consume'], $userAttr['consume_level']);
+                $data += $richManInfo;
+                $singerInfo = $this->getExperienceLevel($userAttr['experience']);
+                $data += $singerInfo;
+                $data['vipLevel'] = $vipInfo['vip'];
+                $this->getRedisMaster()->setex($key, $ttl, json_encode($data));
+				        
+                return $data;
+            }
+        }
+    }
+
+    public function getVipInfo($userAttr)
+    {
+        $vip = 0;
+        if (time() < $userAttr['vip_expiration']) {
+            // 如果vip沒有過期
+            $vip = $userAttr['vip'];
+        }
+        return $this->vipList[$vip];
+    }
+
+    public function openVip($uid, $vip)
+    {
+        $userAttr = $this->getAttrByUid($uid);
+        $vipInfo = $this->getVipInfo($userAttr);
+        if ($vipInfo['vip'] == $vip && $userAttr['vip_expiration'] > time()) {
+            $vipExpiration = $userAttr['vip_expiration'] + 30 * 24 * 3600;
+        } else {
+            $vipExpiration = time() + 30 * 24 * 3600;
+        }
+        $query = "update user_attribute set vip = $vip , vip_expiration = $vipExpiration where uid = $uid ";
+        $rs = $this->getDbMain()->query($query);
+        if ($rs) {
+            $this->cleanCache($uid);
+        }
+        return array(
+            'vip' => $vip,
+            'vipExpiration' => date('Y-m-d H:i:s', $vipExpiration)
+        );
+    }
+
+    public function getFlower($uid)
+    {
+        $ttl = 3600;
+        $key = 'user_flower:' . $uid;
+        $query = "select flower from receive_flower where uid = $uid ";
+        $rows = $this->read($key, $query, $ttl, 'dbFlower');
+        if ($rows && count($rows) == 1) {
+            return $rows[0]['flower'];
+        } else {
+            return 0;
+        }
+    }
+
+    public function getStatusByUid($uid, $field)
+    {
+        $key = 'user_status:' . $uid;
+        return $this->getRedisMaster()->hGet($key, $field);
+    }
+
+    public function delStatusByUid($uid, $field)
+    {
+        $key = 'user_status:' . $uid;
+        return $this->getRedisMaster()->hDel($key, $field);
+    }
+
+    public function setStatusByUid($uid, $field, $value)
+    {
+        $key = 'user_status:' . $uid;
+        $this->getRedisMaster()->hSet($key, $field, $value);
+    }
+
+    public function statusIncrease($uid, $field, $value = 1)
+    {
+        $key = 'user_status:' . $uid;
+        $value = intval($value);
+        return $this->getRedisMaster()->hIncrBy($key, $field, $value);
+    }
+
+    public function addHeartByUid($uid, $qty)
+    {
+        $query = "update user_attribute set heart = heart + $qty where uid = $uid ";
+        $rs = $this->getDbMain()->query($query);
+        if ($rs) {
+            // $this->statusIncrease($uid, 'num_heart_convert', $qty);
+            $this->cleanCache($uid);
+        }
+        return $rs;
+    }
+
+    public function addExperienceByUid($uid, $qty)
+    {
+        $query = "update user_attribute set experience = experience + $qty where uid = $uid ";
+        $rs = $this->getDbMain()->query($query);
+        if ($rs) {
+            $this->cleanCache($uid);
+        }
+        return $rs;
+    }
+
+    public function cleanCache($uid)
+    {
+        $key = 'user_attribute:' . $uid;
+        $this->clean($key);
+    }
+
+    public function getActivity($userAttr)
+    {
+        $activityModel = new ActivityModel();
+        if($activityModel->isActivityOpen()){
+            return empty($userAttr['game_point'])?0:floor($userAttr['game_point']/50);
+        }else{
+            return false;
+        }
+    }
+
+    public function getSingerTitle($level = 1)
+    {
+        $data = array();
+        if ($level >= 60) {
+            $data[0] = 6;
+            $data[1] = '秀場史詩';
+        } elseif ($level >= 50) {
+            $data[0] = 5;
+            $data[1] = '秀場傳奇';
+        } elseif ($level >= 40) {
+            $data[0] = 4;
+            $data[1] = '秀場巨星';
+        } elseif ($level >= 30) {
+            $data[0] = 3;
+            $data[1] = '秀場明星';
+        } elseif ($level >= 20) {
+            $data[0] = 2;
+            $data[1] = '秀場偶像';
+        } elseif ($level >= 10) {
+            $data[0] = 1;
+            $data[1] = '秀場新秀';
+        } else {
+            $data[0] = 0;
+            $data[1] = '秀場新人';
+        }
+        return $data;
+    }
+
+    public function getExperienceChange($currentExpe, $newExpe)
+    {
+        $currentExpeInfo = $this->getExperienceLevel($currentExpe);
+        $newExpeInfo = $this->getExperienceLevel($newExpe);
+        if ($newExpeInfo['singerLevel'] > $currentExpeInfo['singerLevel']) {
+            return $newExpeInfo;
+        } else {
+            return false;
+        }
+    }
+
+    public function getExperienceLevel($experience)
+    {
+        $result = array();
+        $result['experience'] = $experience; // 經驗
+        for ($i = count($this->experienceList) - 2; $i >= 0; $i--) {
+            if ($experience >= $this->experienceList[$i]) {
+                $level = $i + 1;
+                $result['singerLevel'] = $level; // 等級
+                $result['currentLevelExperience'] = $this->experienceList[$i]; // 當前等級的經驗
+                $result['experienceLevelUp'] = $this->experienceList[$level] - $experience; // 升級經驗
+                $titleData = $this->getSingerTitle($level); // 稱號和稱號等級
+                $result['titleLevel'] = $titleData[0];
+                $result['singerTitle'] = $titleData[1];
+                break;
+            }
+        }
+        return $result;
+    }
+
+    public function getRichManLevel($uid, $giftConsume)
+    {
+        $richManInfo = array();
+        $richManInfo['richManValue'] = $giftConsume;
+        for ($i = count($this->giftConsumeList) - 1; $i >= 0; $i--) {
+            if ($giftConsume >= $this->giftConsumeList[$i]['amount']) {
+                $richManInfo['richManLevel'] = $i;
+                $richManInfo['richManTitle'] = $this->giftConsumeList[$i]['title'];
+                $richManInfo['currentRichLevelValue'] = $this->giftConsumeList[$i]['amount'];
+                $richManInfo['richManLevelUp'] = $this->giftConsumeList[$i + 1]['amount'] - $giftConsume;
+                break;
+            }
+        }
+        $richManInfo['richManStart'] = 0;
+        $weekGiftConsume = $this->getStatusByUid($uid, 'week_gift_consume');
+        if ($weekGiftConsume) {
+            for ($j = count($this->weekGiftConsumeList) - 1; $j >= 0; $j--) {
+                if ($weekGiftConsume >= $this->weekGiftConsumeList[$j]) {
+                    $richManInfo['richManStart'] = $j + 1;
+                    break;
+                }
+            }
+        }
+        return $richManInfo;
+    }
+
+    public function getResponseInfo($userAttr, $isSinger = false)
+    {
+	//$userAttr = $this->getAttrByUid($userAttr['uid']);//add by lixu
+        $uid = $userAttr['uid'];
+        foreach (array(
+                     'uid' => 'uid',
+                     'charm' => 'charm'
+                 ) as $key => $val) {
+            $result[$val] = $userAttr[$key];
+        }
+        if ($isSinger) {
+            $result['background'] = $this->userAttrModel->getStatusByUid($uid, 'background');
+            if (!$this->toolSubsModel->hasTool($uid, $result['background'])) {
+                $this->userAttrModel->setStatusByUid($uid, 'background', '');
+                $result['background'] = '';
+            }
+            $result['effect'] = $this->userAttrModel->getStatusByUid($uid, 'effect');
+            $result['receivedCoins'] = $this->userAttrModel->getStatusByUid($uid, 'received_coins');
+            $result['fansNum'] = $this->userAttrModel->getFansNumber($uid);
+            // 秀場活動，主播的排名信息
+            $activityModel = new ActivityModel();
+            $result += $activityModel->getSingerRank($userAttr);
+        } else {
+            $result['coinBalance'] = $userAttr['coin_balance'];//1000
+            $result['pointBalance'] = $userAttr['point_balance'];
+            $result['heart'] = $userAttr['heart'];
+            $heartConvertRecordModel = new HeartConvertRecordModel();
+            $result['hour'] = $heartConvertRecordModel->convertInterval($uid);
+            $activityModel = new ActivityModel();
+            $result['dailyPacketStatus'] = $activityModel->getDailyPacketStatus($uid);
+            $result['follows'] = $this->userAttrModel->getFollows($uid);
+        }
+        // 用户上麦头像
+        $result['images'] = array();
+        if (!empty($userAttr['default_image'])) {
+            // 表示用戶有頭像
+            $onmicImageUrl = $this->settingsModel->getValue('ONMIC_IMAGE_URL');
+            $images = $this->userImageModel->getImagesByUid($uid);
+            if (count($images) > 0) {
+                foreach ($images as $image) {
+                    if ($image['size'] == UserImageModel::SIZE_STANDARD) {
+                        $result['images'][] = $onmicImageUrl . $image['image_id'] . '&t=' . $image['last_modified'];
+                    }
+                }
+            }
+        }
+        $result['faceBookUrl'] = $userAttr['fb_url'];
+        $result['homePageUrl'] = 'http://www.raidcall.com.tw/rcec/index.php?cmd=showPersonalHome';
+        $result['silver'] = $this->userInfoModel->getSilver($uid);
+        $result['flower'] = $this->getFlower($uid);
+        $result += $this->getExperienceLevel($userAttr['experience']);
+        $result += $this->getRichManLevel($uid, $userAttr['gift_consume'], $userAttr['consume_level']);
+        // 獲取蛋蛋信息
+        $eggs = $this->getStatusByUid($uid, 'eggs');
+        if (empty($eggs)) {
+            $luckyDrawModel = new LuckyDrawModel();
+            $eggs = $luckyDrawModel->refreshEgg($uid);
+        } else {
+            $eggs = explode(',', $eggs);
+        }
+        $result['eggs'] = $eggs;
+         //活動，如沒有活動請註釋下面一行
+         $result['luckyShakeCount'] = $this->getActivity($userAttr);
+
+        // VIP信息
+        $vipInfo = $this->getVipInfo($userAttr);
+        $result['vip'] = $userAttr['vip'];
+        $result['auth'] = $userAttr['auth'];
+        $result['isNew'] = ($userAttr['gift_consume'] > 0) ? 0 : 1;
+        // 讀公告的最後時間
+        $result['lastTimeReadNotice'] = $this->userAttrModel->getStatusByUid($uid, 'last_time_read_notice');
+        return $result;
+    }
+
+    public function deductCoin($uid, $coin)
+    {
+        $uid = (int)$uid;
+        $coin = (int)$coin;
+        if ($coin <= 0) {
+            return false;
+        }
+        $query = "update user_attribute set coin_balance = coin_balance - $coin where uid = $uid and coin_balance >= $coin ";
+        $rs = $this->getDbMain()->query($query);
+        if ($rs == true && $this->getDbMain()->affected_rows > 0) {
+            $this->cleanCache($uid);
+            return true;
+        }
+        return false;
+    }
+
+    public function addCoin($uid,$coin,$recordParam = array()){
+        $uid = (int)$uid;
+        $coin = (int)$coin;
+        if ($coin <= 0) {
+            return false;
+        }
+        $query = "update user_attribute set coin_balance = coin_balance + $coin where uid = $uid ";
+        $rs = $this->getDbMain()->query($query);
+        if ($rs == true && $this->getDbMain()->affected_rows > 0) {
+            if(!empty($recordParam)){
+                $recordParam['uid'] = $uid;
+                $recordParam['record_time'] = time();
+                $keyString = '(';
+                $valueString = '(';
+                foreach($recordParam as $key=>$value){
+                    $keyString = $keyString . $key . ',';
+                    $valueString = $valueString . $value . ',';
+                }
+                $keyString = substr($keyString,0,-1) . ')';
+                $valueString = substr($valueString,0,-1) . ')';
+                $query = "insert into show_coin_account_record {$keyString} values {$valueString}";
+                $this->pushToMessageQueue('rcec_record',$query);
+            }
+            $this->cleanCache($uid);
+            return true;
+        }
+        return false;
+    }
+
+    public function addPoint($uid, $point)
+    {
+        $uid = (int)$uid;
+        $coin = (int)$point;
+        if ($point <= 0) {
+            return false;
+        }
+        $query = "update user_attribute set point_balance = point_balance + $point where uid = $uid";
+        $rs = $this->getDbMain()->query($query);
+        if ($rs == true && $this->getDbMain()->affected_rows > 0) {
+            $this->cleanCache($uid);
+            return true;
+        }
+        return false;
+    }
+
+    public function updateMonthPoint($userPoint, $singerUid)
+    {
+        // 累積計算月度秀點
+        if ($userPoint > 0) {
+            $month = date('Ym', time() - 32400);
+            $this->getRedisMaster()->zIncrBy('receiver_points_' . $month, $userPoint, $singerUid);
+        }
+    }
+
+    public function follow($uid, $singerUid)
+    {
+        $this->getRedisMaster()->sAdd('i_follow:' . $uid, $singerUid);
+        $this->getRedisMaster()->sAdd('follow_me:' . $singerUid, $uid);
+        $this->updateFansRank($singerUid);
+    }
+
+    public function getFollowNumber($uid)
+    {
+        return $this->getRedisMaster()->sSize('i_follow:' . $uid);
+    }
+
+    public function getFollows($uid)
+    {
+        return $this->getRedisMaster()->sMembers('i_follow:' . $uid);
+    }
+
+    public function isFollow($uid, $singerUid)
+    {
+        return $this->getRedisMaster()->sIsMember('i_follow:' . $uid, $singerUid);
+    }
+
+    public function unfollow($uid, $singerUid)
+    {
+        $this->getRedisMaster()->sRemove('i_follow:' . $uid, $singerUid);
+        $this->getRedisMaster()->sRemove('follow_me:' . $singerUid, $uid);
+        $this->updateFansRank($singerUid);
+    }
+
+    public function getFans($uid)
+    {
+        return $this->getRedisMaster()->sMembers('follow_me:' . $uid);
+    }
+
+    public function getFansNumber($uid)
+    {
+        return $this->getRedisMaster()->sSize('follow_me:' . $uid);
+    }
+
+    public function canCallFans($uid)
+    {
+        $lastTime = $this->getStatusByUid($uid, 'last_time_call_fans');
+        if (date('ymd') == date('ymd', $lastTime)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public function updateFansRank($singerUid)
+    {
+        $userAttr = $this->userAttrModel->getAttrByUid($singerUid);
+        if (!empty($userAttr) and $userAttr['auth'] == 1) {
+            $num = $this->getRedisMaster()->sCard('follow_me:' . $singerUid);
+            $this->getRedisMaster()->zAdd('rank_singer_fans', $num, $singerUid);
+        }
+    }
+
+    public function logActiveUser($uid, $version = '')
+    {
+        $lastTime = $this->getStatusByUid($uid, 'last_time_init_show');
+        if (date('ymd') != date('ymd', $lastTime)) {
+            $now = time();
+            $this->setStatusByUid($uid, 'last_time_init_show', $now);
+            $query = "INSERT INTO `active_user_record` (`record_time`, `uid`, `version`) VALUES ($now, $uid, '$version') ";
+            $this->pushToMessageQueue('rcec_record', $query);
+        }
+    }
+
+    public function addGamePoint($uid, $point, $game, $type, $coin = 0)
+    {
+        $uid = (int)$uid;
+        $point = (int)$point;
+        if (empty($coin)) {
+            $query = "update user_attribute set game_point = game_point + $point where uid = $uid";
+        } else {
+            $query = "update user_attribute set game_point = game_point + $point,coin_balance = coin_balance - $coin
+                where uid = $uid and coin_balance >= $coin";
+        }
+        $rs = $this->getDbMain()->query($query);
+        if ($rs == true && $this->getDbMain()->affected_rows > 0) {
+            $now = time();
+            $logQuery = "insert into game_point_record (uid,record_time,type,game,num) values ($uid,$now,$type,$game,$point)";
+            $this->pushToMessageQueue('rcec_record', $logQuery);
+            $this->cleanCache($uid);
+            return true;
+        }
+        return false;
+    }
+
+    public function deductGamePoint($uid, $point, $type, $game)
+    {
+        $uid = (int)$uid;
+        $point = (int)$point;
+        if ($point <= 0) {
+            return false;
+        }
+        $query = "update user_attribute set game_point = game_point - $point where uid = $uid and game_point >= $point ";
+        $rs = $this->getDbMain()->query($query);
+        if ($rs == true && $this->getDbMain()->affected_rows > 0) {
+            $now = time();
+            $cost = -$point;
+            $logQuery = "insert into game_point_record (uid,record_time,type,game,num) values ($uid,$now,$type,$game,$cost)";
+            $this->pushToMessageQueue('rcec_record', $logQuery);
+            $this->cleanCache($uid);
+            return true;
+        }
+        return false;
+    }
+}
+
+?>

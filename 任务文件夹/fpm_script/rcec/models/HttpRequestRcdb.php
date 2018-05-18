@@ -1,0 +1,317 @@
+<?php
+define("INTERFACE_LOG_PATH", dirname(__FILE__) . "/../tmp");
+$path=dirname(__FILE__);
+//require "$path/../../GlobalConfig.php";
+class HttpRequestRcdb
+{
+
+    public function call($method, $params)
+    {
+        $dbapi_host = "http://dbapi." . GlobalConfig::GetDomainURL(); //zzzz
+        $url = $dbapi_host . "/$method.php?api_user=rcshow&api_password=show-drawefoihowefwoi&";
+        foreach ($params as $name => $value) {
+            $url .= urlencode($name) . "=" . urlencode($value) . "&";
+        }
+        $timeStart = microtime(true);
+        $data = $this->curl_request($url);
+        $timeCost = round((microtime(true) - $timeStart) * 1000, 2);
+        if ($timeCost > 30) {
+            $this->log_msg($timeCost . "\t" . $method . "\t" . $url, "timeout");
+        }
+        if ($data) {
+            return json_decode($data);
+        } else {
+            $this->log_msg($method . "\t" . $url, "call_error");
+            return false;
+        }
+    }
+
+    public function curl_request($url = '')
+    {
+        if (empty($url)) {
+            return '';
+        }
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return $data;
+    }
+
+    public function get_uid_by_account($account)
+    {
+        $ret_obj = $this->call('user/getuid', array(
+            'account' => $account
+        ));
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return $ret_obj->uid;
+            }
+            $log = json_encode($ret_obj);
+            $this->log_msg($account . "\t" . $log, "user_get_uid");
+        }
+        return false;
+    }
+
+    public function check_user_exists($account)
+    {
+        $ret_obj = $this->call('user/check_exist', array(
+            'account' => $account
+        ));
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return true;
+            }
+            $log = json_encode($ret_obj);
+            $this->log_msg($account . "\t" . $log, "user_check_exist");
+        }
+        return false;
+    }
+
+    public function check_passport($passport)
+    {
+        $ret_obj = $this->call('user/verified_mail', array(
+            'passport' => $passport
+        ));
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return true;
+            }
+            $log = json_encode($ret_obj);
+            $this->log_msg($passport . "\t" . $log, "user_verified_mail");
+        }
+        return false;
+    }
+
+    public function register($array)
+    {
+        $ret_obj = $this->call('user/register', $array);
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return $ret_obj->uid;
+            }
+            $log = json_encode($array) . "\t" . json_encode($ret_obj);
+            $this->log_msg($log, "user_register");
+        }
+        return false;
+    }
+
+    public function update_uinfo($array) //zzzzz
+    {
+        $ret_obj = $this->call('user/update', $array);
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return $ret_obj->uid;
+            }
+            $log = json_encode($array) . "\t" . json_encode($ret_obj);
+            $this->log_msg($log, "user_update");
+        }
+        // record log
+        return false;
+    }
+
+    public function update_user_passwd($uid, $psw)
+    {
+        $array = array(
+            'uid' => $uid,
+            'passwd' => $psw,
+            'style' => 'text'
+        );
+        $ret_obj = $this->call('user/update_passwd', $array);
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return $ret_obj->uid;
+            }
+            $log = json_encode($array) . "\t" . json_encode($ret_obj);
+            $this->log_msg($log, "user_update_passwd");
+        }
+        return false;
+    }
+
+    public function get_uinfo($uid)
+    {
+        $array = array(
+            'uid' => $uid
+        );
+        $ret_obj = $this->call('user/getuinfo', $array);
+        if(false == $ret_obj){
+        	return false;
+        }
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return (array)$ret_obj;
+            }
+            //$log = json_encode($ret_obj);
+            //$this->log_msg($uid . "\t" . $log, "user_getuinfo");
+        }
+        return false;
+    }
+
+    public function check_passwd($account, $pass, $style = 'text')
+    {
+        $array = array(
+            'account' => $account,
+            'passwd' => $pass,
+            'style' => $style
+        );
+        $ret_obj = $this->call('user/check_passwd', $array);
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return $ret_obj->uid;
+            }
+            $log = json_encode($array) . "\t" . json_encode($ret_obj);
+            $this->log_msg($log, "user_check_passwd");
+        }
+        return false;
+    }
+
+    public function change_silver($uid, $silver)
+    {
+        $array = array(
+            'uid' => $uid,
+            'silver' => $silver
+        );
+        $ret_obj = $this->call('user/change_silver', $array);
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return true;
+            }
+            $log = json_encode($array) . "\t" . json_encode($ret_obj);
+            $this->log_msg($log, "user_change_silver");
+        }
+        return false;
+    }
+
+    public function get_uid_by_fb_uid($fb_uid, $type = 'single')
+    {
+        $array = array(
+            'fbids' => $fb_uid
+        );
+        $ret_obj = $this->call('facebook/get_uid_by_facebookid', $array);
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                if (count($ret_obj->result) > 0) {
+                    if ($type == 'muti') {
+                        return $ret_obj->result;
+                    } else {
+                        foreach ($ret_obj->result as $key => $uid) {
+                            return $uid;
+                        }
+                    }
+                }
+                // return
+            }
+            $log = json_encode($ret_obj);
+            $this->log_msg($fb_uid . "\t" . $log, "fb_get_uid_by_facebookid");
+        }
+        return false;
+    }
+
+    public function update_uinfo_fb($fb_uid, $uid, $token)
+    {
+        $array = array(
+            'uid' => $uid,
+            'fb_uid' => $fb_uid,
+            'token' => $token
+        );
+        $ret_obj = $this->call('facebook/bind', $array);
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return true;
+            }
+            if ($ret_obj->rescode == 412) {
+                return 412;
+            }
+            $log = json_encode($array) . "\t" . json_encode($ret_obj);
+            $this->log_msg($log, "facebook_bind");
+        }
+        return false;
+    }
+
+    public function check_bind($uid)
+    {
+        $array = array(
+            'uid' => $uid
+        );
+        $ret_obj = $this->call('facebook/check_bind', $array);
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return true;
+            }
+            $log = json_encode($array) . "\t" . json_encode($ret_obj);
+            $this->log_msg($log, "facebook_check_bind");
+        }
+        return false;
+    }
+
+    public function get_uinfo_addit($account)
+    {
+        $array = array(
+            'account' => $account
+        );
+        $ret_obj = $this->call('user/get_uinfo_addit', $array);
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return (array)$ret_obj->info;
+            }
+            $log = json_encode($array) . "\t" . json_encode($ret_obj);
+            $this->log_msg($log, "user_get_uinfo_addit");
+        }
+        return false;
+    }
+
+    public function get_fb_bind_total()
+    {
+        $ret_obj = $this->call('facebook/get_bind_total', array());
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return $ret_obj->total;
+            }
+            $log = json_encode($ret_obj);
+            $this->log_msg($log, "fb_get_bind_total");
+        }
+        return false;
+    }
+
+    public function get_badge($uid)
+    {
+        $array = array(
+            'uid' => $uid
+        );
+        $ret_obj = $this->call('user/medals', $array);
+        if ($ret_obj) {
+            if ($ret_obj->rescode == 200) {
+                return (array)$ret_obj->effects;
+            }
+            $log = json_encode($array) . "\t" . json_encode($ret_obj);
+            $this->log_msg($log, "user_medals");
+        }
+        return false;
+    }
+
+    public function log_msg($message, $func = '')
+    {
+        if (empty($func))
+            $dir = rtrim(INTERFACE_LOG_PATH, '/');
+        else
+            $dir = rtrim(INTERFACE_LOG_PATH, '/') . '/' . $func;
+        if (!is_dir($dir)) {
+            @mkdir($dir, 755, true);
+        }
+        $file = $dir . '/' . date('Ymd') . '.log';
+        $message = date('H:i:s') . " $message\n";
+        $fp = @fopen($file, 'ab+');
+        if (!$fp) {
+            die("Open file failed");
+        }
+        fwrite($fp, $message);
+        if ($fp) {
+            @fclose($fp);
+        }
+    }
+}
+
+?>

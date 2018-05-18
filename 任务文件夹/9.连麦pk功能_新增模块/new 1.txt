@@ -1,0 +1,85 @@
+    //linkcall_pk_model 常量：     
+    public static $LINKCALL_PK_SET_CONTROL                   = 1;//连麦pk功能控制阀门
+ 
+    public static $LINKCALL_PK_EXP_TIME                      = 259200;//默认连麦redis无操作最大缓存时长（3天）
+    public static $LINKCALL_PK_EXP_60S_TIME                  = 60;    //默认连麦  小键    生命期  60s
+    public static $LINKCALL_PK_EXP_POPUP_TIME                = 30;    //客户端最大弹窗生命时间 30s
+
+    public static $LINKCALL_PK_SINGER_OFFLINE                =0;    //主播下线
+    public static $LINKCALL_PK_SINGER_APPLY                  =1;    //申请连麦pk
+    public static $LINKCALL_PK_SINGER_LINK                   =2;    //连线连麦pk
+    public static $LINKCALL_PK_SINGER_PKING                  =3;    //主播正在pk
+    public static $LINKCALL_PK_SINGER_GAMING                 =4;    //主播正在游戏
+    public static $LINKCALL_PK_SINGER_SAWING                 =5;    //主播正在电锯
+    public static $LINKCALL_PK_SINGER_POPUP                  =6;    //主播收到一个连线弹窗，未处理
+    public static $LINKCALL_PK_SINGER_NO                     =7;    //拒绝连线
+    public static $LINKCALL_PK_SINGER_YES                    =8;    //同意连线
+    public static $LINKCALL_PK_SINGER_START                  =9;    //开始pk  
+    public static $LINKCALL_PK_SINGER_COUNT                  =10;    //结算pk（这个是时间到用尽结算，暂未退出pk）
+    public static $LINKCALL_PK_SINGER_ADDTIME                =11;   //延长pk
+    public static $LINKCALL_PK_SINGER_OVER                   =12;   //结束pk（这个有可能是提前结算，并退出pk）
+    
+    public static $LINKCALL_PK_SINGER_STATE_APPLY            =1;    //主播申请列表状态：申请
+    public static $LINKCALL_PK_SINGER_STATE_APPLYING         =2;    //主播申请列表状态：正在申请
+    public static $LINKCALL_PK_SINGER_STATE_LINK             =3;    //主播申请列表状态：连线
+    public static $LINKCALL_PK_SINGER_STATE_LINKING          =4;    //主播申请列表状态：连线请求中  
+     
+    public static $LINKCALL_PK_PKINFO_NOPK                   =0;    //这个pkid 没有在pk
+    public static $LINKCALL_PK_PKINFO_READY                  =1;    //这个pkid 建立pk界面
+    public static $LINKCALL_PK_PKINFO_PKING                  =2;    //这个pkid 当前正在pk，未结束
+    public static $LINKCALL_PK_PKINFO_BEYOND                 =3;    //这个pkid 超出了pk时间
+    public static $LINKCALL_PK_PKINFO_ACCOUNT                =4;    //这个pkid pk结束，进行结算
+	
+    public static $LINKCALL_PK_SCENE_PK                      =1;    //pk   场景
+    public static $LINKCALL_PK_SCENE_HOST                    =2;    //pk   主场主播场景
+    public static $LINKCALL_PK_SCENE_GUEST                   =3;    //pk   客场主播场景
+    
+    public static $LINKCALL_PK_PAGE_NUMBER                   = 10;//显示主播列表分页记录条数
+    public static $LINKCALL_PK_GIFT_PAGE_NUMBER              = 10;//显示送礼排行榜分页记录调试
+    public static $LINKCALL_PK_GIFT_FIRST5LIST               = 5; //显示送礼排行榜最前的5个送礼列表
+
+    //linkcall_pk_model 配置文件：  select id,parm1,parm2,parm3 from card.parameters_info where id =292 ||id =293 ||id =297;
+    public static $LINKCALL_PK_SINGER_STAR    =  292;   //申请pk主播的最低星级
+    public static $LINKCALL_PK_LINK_PKTIME    =  293;   //连麦正常pk总时间
+    public static $LINKCALL_PK_LINK_ADDTIME   =  297;   //连麦pk 延长时间
+    public static $LINKCALL_PK_LINK_POPUPTIME =  298;   //连麦pk 弹窗时间
+	
+$pk_scene = linkcall_pk_model::$LINKCALL_PK_SCENE_PK ;	
+$get_pk_process = linkcall_pk_model::$LINKCALL_PK_PKINFO_NOPK;//初始化	
+	
+linkcallpk_pk_info_process_by_pkid(&$error,$pkid,&$pk_process,&$pk_info)
+redis_set_pk_info_process(&$error,$pkid,$pk_process)
+
+
+$pk_info["starttime"] = 0;
+$pk_info["pkalltime"] = 0;
+$pk_info["host_id"] = $host_id;
+$pk_info["host_sid"] = $host_sid;
+$pk_info["guest_id"] = $guest_id;
+$pk_info["guest_sid"] = $guest_sid;
+$pk_info["host_gift"] = 0;
+$pk_info["guest_gift"] = 0;
+
+$m->redis_set_pk_info_use_array(&$error,$pkid,&$pk_info);
+if (0 != $error['code'])
+{
+	//出现了一些逻辑错误
+	break;
+}
+$get_pk_info = array();//备注本次取出的pk_info 没有什么用，只用于函数参数签名
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
