@@ -11,33 +11,37 @@
     public static $LINKCALL_PK_SET_CONTROL                   = 1;//连麦pk功能控制阀门
  
     public static $LINKCALL_PK_EXP_TIME                      = 259200;//默认连麦redis无操作最大缓存时长（3天）
-    public static $LINKCALL_PK_EXP_60S_TIME                  = 60;    //默认连麦  小键    生命期  60s
+    public static $LINKCALL_PK_EXP_60S_TIME                  = 300;    //默认连麦  小键    生命期  60s * 5
     public static $LINKCALL_PK_EXP_POPUP_TIME                = 30;    //客户端最大弹窗生命时间 30s
 
     public static $LINKCALL_PK_SINGER_OFFLINE                =0;    //主播下线
-    public static $LINKCALL_PK_SINGER_APPLY                  =1;    //申请连麦pk
-    public static $LINKCALL_PK_SINGER_LINK                   =2;    //连线连麦pk
-    public static $LINKCALL_PK_SINGER_PKING                  =3;    //主播正在pk
-    public static $LINKCALL_PK_SINGER_GAMING                 =4;    //主播正在游戏
-    public static $LINKCALL_PK_SINGER_SAWING                 =5;    //主播正在电锯
-    public static $LINKCALL_PK_SINGER_POPUP                  =6;    //主播收到一个连线弹窗，未处理
-    public static $LINKCALL_PK_SINGER_NO                     =7;    //拒绝连线
-    public static $LINKCALL_PK_SINGER_YES                    =8;    //同意连线
-    public static $LINKCALL_PK_SINGER_START                  =9;    //开始pk  
-    public static $LINKCALL_PK_SINGER_COUNT                  =10;    //结算pk（这个是时间到用尽结算，暂未退出pk）
-    public static $LINKCALL_PK_SINGER_ADDTIME                =11;   //延长pk
-    public static $LINKCALL_PK_SINGER_OVER                   =12;   //结束pk（这个有可能是提前结算，并退出pk）
-    
-    public static $LINKCALL_PK_SINGER_STATE_APPLY            =1;    //主播申请列表状态：申请
-    public static $LINKCALL_PK_SINGER_STATE_APPLYING         =2;    //主播申请列表状态：正在申请
-    public static $LINKCALL_PK_SINGER_STATE_LINK             =3;    //主播申请列表状态：连线
-    public static $LINKCALL_PK_SINGER_STATE_LINKING          =4;    //主播申请列表状态：连线请求中  
+    public static $LINKCALL_PK_SINGER_APPLY                  =1;    //申请         连麦pk
+    public static $LINKCALL_PK_SINGER_APPLYING               =2;    //已申请    连麦pk    
+    public static $LINKCALL_PK_SINGER_LINK                   =3;    //连线         连麦pk
+    public static $LINKCALL_PK_SINGER_LINKING                =4;    //已连线    连麦pk
+    public static $LINKCALL_PK_SINGER_PKING                  =5;    //主播正在pk
+    public static $LINKCALL_PK_SINGER_GAMING                 =6;    //主播正在游戏
+    public static $LINKCALL_PK_SINGER_SAWING                 =7;    //主播正在电锯
+    public static $LINKCALL_PK_SINGER_POPUP                  =8;    //主播收到一个连线弹窗，未处理
+    public static $LINKCALL_PK_SINGER_NO                     =9;    //拒绝连线
+    public static $LINKCALL_PK_SINGER_YES                    =10;    //同意连线
+    public static $LINKCALL_PK_SINGER_START                  =11;    //开始pk  
+    public static $LINKCALL_PK_SINGER_COUNT                  =12;    //结算pk（这个是时间到用尽结算，暂未退出pk）
+    public static $LINKCALL_PK_SINGER_ADDTIME                =13;   //延长pk
+    public static $LINKCALL_PK_SINGER_OVER                   =14;   //结束pk（这个有可能是提前结算，并退出pk）    
+
      
     public static $LINKCALL_PK_PKINFO_NOPK                   =0;    //这个pkid 没有在pk
     public static $LINKCALL_PK_PKINFO_READY                  =1;    //这个pkid 建立pk界面
     public static $LINKCALL_PK_PKINFO_PKING                  =2;    //这个pkid 当前正在pk，未结束
     public static $LINKCALL_PK_PKINFO_BEYOND                 =3;    //这个pkid 超出了pk时间
     public static $LINKCALL_PK_PKINFO_ACCOUNT                =4;    //这个pkid pk结束，进行结算
+    
+    public static $LINKCALL_PK_SCENE_PK                      =0;    //pk   场景
+    public static $LINKCALL_PK_SCENE_HOST                    =1;    //pk   主场主播场景
+    public static $LINKCALL_PK_SCENE_GUEST                   =2;    //pk   客场主播场景
+
+    
     
     public static $LINKCALL_PK_PAGE_NUMBER                   = 10;//显示主播列表分页记录条数
     public static $LINKCALL_PK_GIFT_PAGE_NUMBER              = 10;//显示送礼排行榜分页记录调试
@@ -104,10 +108,16 @@
     {
         return "linkcallpk:gift:list:zset:$singer_id";
     }
-    // 8 redis 连麦pk期间主播对应pk号 缓存
+    // 8.1 redis 连麦pk期间主播对应pk号 缓存
     public static function linkcallpk_singer_pkid_zset_key()
     {
         return "linkcallpk:singer:pkid:zset";
+    }
+    
+    // 8.2 redis 连麦pk期间主播对应场景 scene 缓存
+    public static function linkcallpk_singer_scene_zset_key()
+    {
+        return "linkcallpk:singer:scene:zset";
     }
     
      // 9 redis 服务器所有正在连麦pk的主播id 及礼物金额
@@ -408,7 +418,7 @@
     {
         $error['code'] = -1;
         $error['desc'] = '未知错误';
-        $start_number = $page_num * (linkcall_pk_model::$LINKCALL_PK_PAGE_NUMBER - 1);
+        $start_number = $page_num * (linkcall_pk_model::$LINKCALL_PK_PAGE_NUMBER);
         $stop_number = $page_num * (linkcall_pk_model::$LINKCALL_PK_PAGE_NUMBER) - 1;
         do
         {
@@ -719,7 +729,7 @@
     {
         $error['code'] = -1;
         $error['desc'] = '未知错误';
-        $start_number = $page_num * (linkcall_pk_model::$LINKCALL_PK_PAGE_NUMBER - 1);
+        $start_number = $page_num * (linkcall_pk_model::$LINKCALL_PK_PAGE_NUMBER);
         $stop_number = $page_num * (linkcall_pk_model::$LINKCALL_PK_PAGE_NUMBER) - 1;
         do
         {
@@ -1212,7 +1222,7 @@
     {
         $error['code'] = -1;
         $error['desc'] = '未知错误';
-        $start_number = $page_num * (linkcall_pk_model::$LINKCALL_PK_GIFT_PAGE_NUMBER - 1);
+        $start_number = $page_num * (linkcall_pk_model::$LINKCALL_PK_GIFT_PAGE_NUMBER);
         $stop_number = $page_num * (linkcall_pk_model::$LINKCALL_PK_GIFT_PAGE_NUMBER) - 1;
         do
         {
@@ -1357,6 +1367,40 @@
             LogApi::logProcess("linkcall_pk_model.redis_del_user_gift_list.singer_id:$singer_id error:".json_encode($error));
         }
     }
+    
+    //7.5   redis 读出     连麦pk期间的其中一个送礼用户的金额  的倒叙排名
+    public function redis_ranking_user_gift(&$error,$singer_id,$user_id)
+    {
+        $error['code'] = -1;
+        $error['desc'] = '未知错误';
+        $ranking = 0;
+        do
+        {
+            $redis = $this->getRedisMaster();
+            if(null == $redis)
+            {
+                // 403400011(011)网络数据库断开连接
+                $error['code'] = 403400011;
+                $error['desc'] = '网络数据库断开连接';
+                break;
+            }
+            $key = linkcall_pk_model::linkcallpk_gift_list_zset_key($singer_id);
+            $v = $redis->zRevRank($key,$user_id);
+            if(is_null($v))
+            {
+                //如果取出无数据，因为是倒叙，没有值说明排名很后面，给个很大值给他
+                $v = 999;
+            }
+            $ranking =$v;
+            $error['code'] = 0;
+            $error['desc'] = '';
+        }while(0);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("linkcall_pk_model.redis_ranking_user_gift.singer_id:$singer_id user_id:$user_id error:".json_encode($error));
+        }
+        return $ranking;
+    }
 
     //8.1   redis 写入     服务器所有正在连麦pk 的pkid 号
     public function redis_set_singer_pkid(&$error,$pkid,$singer_id)
@@ -1496,6 +1540,104 @@
         }
     }
     
+    //8.5   redis 设置  服务器所有正在连麦pk 的   中某个主播的场景状态
+    public function redis_set_singer_scene(&$error,$pk_scene,$singer_id)
+    {
+        $error['code'] = -1;
+        $error['desc'] = '未知错误';
+    
+        do
+        {
+            $redis = $this->getRedisMaster();
+            if(null == $redis)
+            {
+                // 403400011(011)网络数据库断开连接
+                $error['code'] = 403400011;
+                $error['desc'] = '网络数据库断开连接';
+                break;
+            }
+            $exp_time =linkcall_pk_model::$LINKCALL_PK_EXP_TIME;
+            $key = linkcall_pk_model::linkcallpk_singer_scene_zset_key(); 
+            $redis->zAdd($key, $pk_scene, $singer_id);
+            $redis->expire($key,$exp_time);
+    
+            $error['code'] = 0;
+            $error['desc'] = '';
+        }while(0);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("linkcall_pk_model.redis_set_singer_scene. singer_id:$singer_id pk_scene:$pk_scene error:".json_encode($error));
+        }
+    }
+    
+    //8.6   redis 读出    服务器所有正在连麦pk 中某个主播的场景状态
+    public function redis_get_singer_scene(&$error,$singer_id)
+    {
+        $error['code'] = -1;
+        $error['desc'] = '未知错误';
+        $pk_scene = 0;
+        do
+        {
+            $redis = $this->getRedisMaster();
+            if(null == $redis)
+            {
+                // 403400011(011)网络数据库断开连接
+                $error['code'] = 403400011;
+                $error['desc'] = '网络数据库断开连接';
+                break;
+            }
+            $key = linkcall_pk_model::linkcallpk_singer_scene_zset_key();
+            //取出$pkid
+            $get_key = $redis->zScore($key,$singer_id);
+            if(true == empty($get_key))
+            {
+                //如果无数据，默认是pk 界面
+                $get_key = linkcall_pk_model::$LINKCALL_PK_SCENE_PK ;
+            }
+            $pk_scene = $get_key;
+            //
+            $error['code'] = 0;
+            $error['desc'] = '';
+        }while(0);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("linkcall_pk_model.redis_get_singer_scene.singer_id:$singer_id error:".json_encode($error));
+        }
+        return $pk_scene;
+    }
+    
+    //8.7   redis 移除     服务器所有正在连麦pk 的   中某个主播的场景状态
+    public function redis_rem_singer_scene(&$error,$singer_id)
+    {
+        $error['code'] = -1;
+        $error['desc'] = '未知错误';
+        do
+        {
+            $redis = $this->getRedisMaster();
+            if(null == $redis)
+            {
+                // 403400011(011)网络数据库断开连接
+                $error['code'] = 403400011;
+                $error['desc'] = '网络数据库断开连接';
+                break;
+            }
+            $key = linkcall_pk_model::linkcallpk_singer_scene_zset_key();
+            $rem_key = $redis->zRem($key,$singer_id);
+            if(true == empty($rem_key))
+            {
+                //如果无数据，说明该用户不在 pk当中,忽略错误
+            }
+    
+            $error['code'] = 0;
+            $error['desc'] = '';
+        }while(0);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("linkcall_pk_model.redis_rem_singer_scene.singer_id:$singer_id error:".json_encode($error));
+        }
+    }    
+
+    
     //9.1   redis 写入    服务器所有正在连麦pk的主播id 及礼物金额
     public function redis_set_pking_info_singer_gift(&$error,$singer_id,$gift)
     {
@@ -1520,7 +1662,7 @@
                 // 403400015(015)礼物金额登记是0,忽略错误';
             }
             $redis->expire($key,$exp_time);
-
+            
             $error['code'] = 0;
             $error['desc'] = '';
         }while(0);
@@ -1736,83 +1878,9 @@
     
     
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //功能模块
-    //A.1 根据主播id，拼装主播信息
-    public function linkcallpk_singer_apply_info_by_singerid(&$error,$singer_id,$objsinger,&$singer_info)
-    {
-        $error['code'] = -1;
-        $error['desc'] = '未知错误';
-        $singer_state = 0;
-        do
-        {
-            $singer_cache = array ();
-            //1 查看$objsinger 是否在  $singer_id 已经申请列表里面
-            $singer_state = $this->redis_get_singer_state(&$error,$singer_id,$objsinger);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-            
-            //2 用$singer_id 去获取主播基础信息
-            $this->redis_get_singer_info(&$error,$singer_id,&$singer_cache);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-            //拼装主播 data
-            $singer_info[]= $singer_cache;
-            $singer_info['state'] = (int)$singer_state;
-    
-            $error['code'] = 0;
-            $error['desc'] = '';
-        }while(0);
-        if (0 !=$error['code'])
-        {
-            LogApi::logProcess("linkcall_pk_model.linkcallpk_singer_info_by_singerid error:".json_encode($error));
-        }
-    }
-    
-    //A.2 根据主播id，拼装主播信息
-    public function linkcallpk_singer_link_info_by_singerid(&$error,$singer_id,$objsinger,&$singer_info)
-    {
-        $error['code'] = -1;
-        $error['desc'] = '未知错误';
-        $singer_state = 0;
-        do
-        {
-            $singer_cache = array ();
-            //1 用$objsinger 和$singer_id  去获取主播状态
-            $singer_state = $this->redis_get_singer_state(&$error,$singer_id,$objsinger);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-    
-            //2 用$singer_id 去获取主播基础信息
-            $this->redis_get_singer_info(&$error,$singer_id,&$singer_cache);
-            if (0 != $error['code'])
-            {
-                //出现了一些逻辑错误
-                break;
-            }
-            //拼装主播 data
-            $singer_info[]= $singer_cache;
-            $singer_info['state'] = (int)$singer_state;
-            
-            $error['code'] = 0;
-            $error['desc'] = '';
-    
-        }while(0);
-        if (0 !=$error['code'])
-        {
-            LogApi::logProcess("linkcall_pk_model.linkcallpk_singer_info_by_singerid error:".json_encode($error));
-        }
-    }
+    //功能模块    
   
-    //B 在连麦pk情况下，这个用户的数据 通过用户id，拼装用户信息
+    //A 在连麦pk情况下，这个用户的数据 通过用户id，拼装用户信息
     public function linkcallpk_user_info_by_userid(&$error,$singer_id,$user_id,&$user_info)
     {
         $error['code'] = -1;
@@ -1821,6 +1889,24 @@
         do
         {
             $user_cache = array ();
+            //0 用$user_id 去获取用户送礼 总金额 在列表的位置（如果超出规定位数，就不需要推送用户数据了）
+            $ranking = $this->redis_ranking_user_gift(&$error,$singer_id,$user_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            LogApi::logProcess("linkcall_pk_model.linkcallpk_user_info_by_userid singer_id:$singer_id user_id:$user_id ranking:$ranking");
+            if ($ranking > linkcall_pk_model::$LINKCALL_PK_GIFT_FIRST5LIST) 
+            {
+                //不在规定范围里面，不需要推送数据变更
+                $error['code'] = 0;
+                $error['desc'] = '';
+                break;
+                
+            }
+            
+            
             //1 用$user_id 去获取用户送礼 总金额 $user_gift
             $user_gift = $this->redis_get_user_gift(&$error, $singer_id ,$user_id);
             if (0 != $error['code'])
@@ -1838,7 +1924,7 @@
             }
             //拼装用户 data
             $user_cache['user_gift'] = (int)$user_gift;
-            $user_info []= $user_cache;
+            $user_info = $user_cache;
             
             
             $error['code'] = 0;
@@ -1848,6 +1934,46 @@
         if (0 !=$error['code'])
         {
             LogApi::logProcess("linkcall_pk_model.linkcallpk_user_info_by_userid error:".json_encode($error));
+        }
+    }
+    
+    //B 在连麦pk情况下，这个用户的数据 通过用户id，拼装用户信息（不对前五做过滤）
+    public function linkcallpk_user_info_by_userid_all(&$error,$singer_id,$user_id,&$user_info)
+    {
+        $error['code'] = -1;
+        $error['desc'] = '未知错误';
+        $user_gift = 0;
+        do
+        {
+            $user_cache = array ();    
+    
+            //1 用$user_id 去获取用户送礼 总金额 $user_gift
+            $user_gift = $this->redis_get_user_gift(&$error, $singer_id ,$user_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+    
+            //2 用$user_id 去获取用户基础信息
+            $this->redis_get_user_info(&$error,$user_id,&$user_cache);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            //拼装用户 data
+            $user_cache['user_gift'] = (int)$user_gift;
+            $user_info = $user_cache;
+    
+    
+            $error['code'] = 0;
+            $error['desc'] = '';
+    
+        }while(0);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("linkcall_pk_model.linkcallpk_user_info_by_userid_all error:".json_encode($error));
         }
     }
     
@@ -1979,11 +2105,11 @@
                 //如果取出的申请时间是0，说明$objsinger并未在 $singer_id 申请列表里面,申请状态是未申请，否则是已经申请
                 if ($get_apply_time == 0)
                 {
-                    $objsinger_state = linkcall_pk_model::$LINKCALL_PK_SINGER_STATE_APPLY;
+                    $objsinger_state = linkcall_pk_model::$LINKCALL_PK_SINGER_APPLY;
                 }
                 else 
                 {
-                    $objsinger_state = linkcall_pk_model::$LINKCALL_PK_SINGER_STATE_APPLYING;
+                    $objsinger_state = linkcall_pk_model::$LINKCALL_PK_SINGER_APPLYING;
                 }
                 //2.3 取出该主播的缓存信息
                 $this->redis_get_singer_info(&$error,$objsinger,&$singer_cache);
@@ -1992,7 +2118,7 @@
                     //出现了一些逻辑错误
                     break;
                 }
-                $singer_cache["state"] = $objsinger_state;
+                $singer_cache["pk_state"] = $objsinger_state;
                 $singer_datas[] = $singer_cache;
             }
             
@@ -2046,11 +2172,11 @@
                 $time_now = time();
                 if ($time_now - $get_popup_time > linkcall_pk_model::$LINKCALL_PK_EXP_POPUP_TIME)
                 {
-                    $objsinger_state = linkcall_pk_model::$LINKCALL_PK_SINGER_STATE_LINK;
+                    $objsinger_state = linkcall_pk_model::$LINKCALL_PK_SINGER_LINK;
                 }
                 else
                 {
-                    $objsinger_state = linkcall_pk_model::$LINKCALL_PK_SINGER_STATE_LINKING;
+                    $objsinger_state = linkcall_pk_model::$LINKCALL_PK_SINGER_LINKING;
                 }
                 //2.2 取出该主播的缓存信息
                 $this->redis_get_singer_info(&$error,$objsinger,&$singer_cache);
@@ -2059,7 +2185,7 @@
                     //出现了一些逻辑错误
                     break;
                 }
-                $singer_cache["state"] = $objsinger_state;
+                $singer_cache["pk_state"] = $objsinger_state;
                 $singer_datas[] = $singer_cache;
             }
             
@@ -2115,7 +2241,7 @@
         }
     }
     
-    //G 根据主播房间sid号，多播通知nt给房间(包括主客场主播id和sid，送礼的用户id和收礼主播id)
+    //G1 根据主播房间sid号，多播通知nt给房间(包括主客场主播id和sid，送礼的用户id和收礼主播id)
     //备注：如果此时推送pkid是0，则没有pk信息，如果user_id是0，则没有礼物变化信息。
     public function linkcallpk_room_nt_pk_info(&$error,$pkid,$user_id,$singer_id)
     {
@@ -2168,6 +2294,7 @@
         $nt['cmd'] = 'linkcallpk_room_pk_info_nt';
         $nt['time_now'] = $time_now;
         $nt['pkid'] = (int)$pkid;
+        $nt['singer_id'] = (int)$singer_id;
         $nt['pk'] = $pk_info;
         $nt['user'] = $user_info;
 
@@ -2180,7 +2307,107 @@
             LogApi::logProcess("linkcall_pk_model.linkcallpk_room_pk_info_nt host_sid:$host_sid guest_sid:".$guest_sid." nt:".json_encode($nt));
         }      
         
-    }   
+    }  
+    
+    //G2 根据主播房间sid号，广播nt 给房间
+    public function linkcallpk_room_pk_scene_nt(&$error,$pkid,$singer_id,$singer_sid)
+    {
+        $error['code'] = -1;
+        $error['desc'] = '未知错误';
+    
+        $host_sid = 0;
+        $guest_sid = 0;
+        $pk_scene = linkcall_pk_model::$LINKCALL_PK_SCENE_PK;
+        do
+        {
+            //1 取出服务器时间
+            $time_now = time();
+            
+            //2 取出该主播的场景状态
+            $pk_scene = $this->redis_get_singer_scene(&$error,$singer_id);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+
+    
+        }while(0);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("linkcall_pk_model.linkcallpk_room_pk_scene_nt error:".json_encode($error));
+        }
+        //拼装nt包///////////////////////////////////////////////////////////////////////////////////////////
+        $nt=array();
+        $nt['cmd'] = 'linkcallpk_room_pk_scene_nt';
+        $nt['singer_id'] = (int)$singer_id;
+        $nt['singer_sid'] = (int)$singer_sid;
+        $nt['time_now'] = $time_now;
+        $nt['pk_scene'] = (int)$pk_scene;
+        $nt['pkid'] = (int)$pkid;
+
+
+    
+        //涉及两个房间推送，采用房间之间的广播
+        if ($singer_sid !=0 )
+        {
+            $m = new cback_channel_model();
+            $m->broadcast($singer_sid, $nt);
+            LogApi::logProcess("linkcall_pk_model.linkcallpk_room_pk_info_nt singer_sid:$singer_sid nt:".json_encode($nt));
+        }
+    
+    }
+    
+    //G.3 根据主播id，拼装主播信息，推送给两个房间
+    public function linkcallpk_room_pk_singer_info_nt(&$error,$host_id,$host_sid,$guest_id,$guest_sid)
+    {
+        $error['code'] = -1;
+        $error['desc'] = '未知错误';
+    
+        do
+        {
+            $h_singer_cache = array ();
+            $g_singer_cache = array ();
+    
+            //1 用$host_id 去获取主播基础信息
+            $this->redis_get_singer_info(&$error,$host_id,&$h_singer_cache);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+
+            //2 用$guest_id 去获取主播基础信息
+            $this->redis_get_singer_info(&$error,$guest_id,&$g_singer_cache);
+            if (0 != $error['code'])
+            {
+                //出现了一些逻辑错误
+                break;
+            }
+            
+    
+            $error['code'] = 0;
+            $error['desc'] = '';
+        }while(0);
+        if (0 !=$error['code'])
+        {
+            LogApi::logProcess("linkcall_pk_model.linkcallpk_singer_apply_info_by_singerid error:".json_encode($error));
+        }
+        //拼装nt
+        $nt=array();
+        $nt['cmd'] = 'linkcallpk_room_pk_singer_info_nt';
+        $nt['h_singer'] = $h_singer_cache;
+        $nt['g_singer'] = $g_singer_cache;
+        
+        //涉及两个房间推送，采用房间之间的广播
+        if ($host_sid !=0 || $guest_sid )
+        {
+            $m = new cback_channel_model();
+            $m->broadcast($host_sid, $nt);
+            $m->broadcast($guest_sid, $nt);
+            LogApi::logProcess("linkcall_pk_model.linkcallpk_room_pk_singer_info_nt host_sid:$host_sid guest_sid:".$guest_sid." nt:".json_encode($nt));
+        }
+    }
     
     //H 根据pkid判断这个pkid的pk是否已经结束
     public function linkcallpk_pk_info_process_by_pkid(&$error,$pkid,&$pk_process,&$pk_info)

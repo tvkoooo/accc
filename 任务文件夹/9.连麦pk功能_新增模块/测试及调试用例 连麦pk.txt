@@ -16,44 +16,45 @@ http://60.205.151.85:18081/index.php   "svid":1
 
 1.2 主播查询当前在线满足条件主播申请列表
 {"user_data":{"cmd":"linkcallpk_singer_seek_online_list_rq","singer_id":10005020,"singer_sid":"102603","page_num":"0"},"server_data":{"svid":1}}
-{"user_data":{"cmd":"linkcallpk_singer_seek_online_list_rq","singer_id":10005130,"singer_sid":"102692","page_num":"0"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_singer_seek_online_list_rq","singer_id":10000010,"singer_sid":"102692","page_num":"0"},"server_data":{"svid":1}}
 
 2 主播客场申请连线
 {"user_data":{"cmd":"linkcallpk_apply_rq","guest_id":10005020,"guest_sid":"102603","host_id":10005130,"host_sid":"102692"},"server_data":{"svid":1}}
-
+{"user_data":{"cmd":"linkcallpk_apply_rq","guest_id":10000010,"guest_sid":"100010","host_id":10005130,"host_sid":"102692"},"server_data":{"svid":1}}
 
 3.1 主播主场连线pk
 {"user_data":{"cmd":"linkcallpk_link_rq","host_id":10005130,"host_sid":"102692","guest_id":10005020,"guest_sid":"102603"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_link_rq","host_id":10005130,"host_sid":"102692","guest_id":10000010,"guest_sid":"100010"},"server_data":{"svid":1}}
 
 
 3.2 客场主播确认pk
-{"user_data":{"cmd":"linkcallpk_confirm_rq","guest_id":10005020,"guest_sid":"102603","host_id":10005130,"host_sid":"102692","code":"2"},"server_data":{"svid":1}}
-{"user_data":{"cmd":"linkcallpk_confirm_rq","guest_id":10005020,"guest_sid":"102603","host_id":10005130,"host_sid":"102692","code":"1"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_confirm_rq","guest_id":10000010,"guest_sid":"100010","host_id":10005130,"host_sid":"102692","code":"2"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_confirm_rq","guest_id":10000010,"guest_sid":"100010","host_id":10005130,"host_sid":"102692","code":"1"},"server_data":{"svid":1}}
 
 
 4 主场主播启动连麦pk
-{"user_data":{"cmd":"linkcallpk_start_rq","host_id":10005130,"host_sid":"102692","guest_id":10005020,"guest_sid":"102603"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_start_rq","host_id":10005130,"host_sid":"102692","guest_id":10000010,"guest_sid":"100010"},"server_data":{"svid":1}}
 
 
 5.1 主播结算pk
-{"user_data":{"cmd":"linkcallpk_count_rq","host_id":10005130,"host_sid":"102692","guest_id":10005020,"guest_sid":"102603"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_count_rq","host_id":10005130,"host_sid":"102692","guest_id":10000010,"guest_sid":"100010"},"server_data":{"svid":1}}
 
 
 
 5.2 主播延长连麦pk
-{"user_data":{"cmd":"linkcallpk_addtime_rq","host_id":10005130,"host_sid":"102692","guest_id":10005020,"guest_sid":"102603"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_addtime_rq","host_id":10005130,"host_sid":"102692","guest_id":10000010,"guest_sid":"100010"},"server_data":{"svid":1}}
 
 
 5.3 主播结束连麦pk
-{"user_data":{"cmd":"linkcallpk_close_rq","host_id":10005130,"host_sid":"102692","guest_id":10005020,"guest_sid":"102603"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_close_rq","host_id":10005130,"host_sid":"102692","guest_id":10000010,"guest_sid":"100010"},"server_data":{"svid":1}}
 
 
 6、用户查询连麦pk主播信息
-{"user_data":{"cmd":"linkcallpk_user_seek_pk_rq","singer_id":10005020,"singer_sid":"102603"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_user_seek_pk_rq","singer_id":10000010,"singer_sid":"100010"},"server_data":{"svid":1}}
 
 
 7、用户查询连麦pk用户送礼信息
-{"user_data":{"cmd":"linkcallpk_user_seek_gift_rq","singer_id":10005020,"singer_sid":"102603","pkid":"35"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_user_seek_gift_rq","singer_id":10000010,"singer_sid":"100010"},"server_data":{"svid":1}}
 
 
 8 主播查询客场其他主播给自己的连麦pk列表申请的请求列表
@@ -72,14 +73,14 @@ http://60.205.151.85:18081/index.php   "svid":1
 
 
 10、测试主播离场
-{"user_data":{"cmd":"linkcallpk_singer_leave_event","singer_id":10005020,"singer_sid":"102603"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_singer_leave_event","singer_id":10000010,"singer_sid":"100010"},"server_data":{"svid":1}}
 
 
 11、送礼测试
 {"user_data":{"cmd":"PSendGift","cid":1,"receiver":"Mr Q","sender":"帮主01","sid":"102692","uid":"10000026","uid_onmic":"10005130","usercount":1,"buy":"1","type":"17","flag":"1","id":"409","num":"1","videoOpen":"1","sendTime":"1520391631044","serialNum":4},"server_data":{"svid":1}}
 {"user_data":{"cmd":"PSendGift","cid":1,"receiver":"Mr Q","sender":"帮主01","sid":"102692","uid":"10000045","uid_onmic":"10005130","usercount":1,"buy":"1","type":"17","flag":"1","id":"409","num":"1","videoOpen":"1","sendTime":"1520391631044","serialNum":4},"server_data":{"svid":1}}
-{"user_data":{"cmd":"PSendGift","cid":1,"receiver":"Mr Q","sender":"帮主01","sid":"102603","uid":"10000026","uid_onmic":"10005020","usercount":1,"buy":"1","type":"17","flag":"1","id":"409","num":"1","videoOpen":"1","sendTime":"1520391631044","serialNum":4},"server_data":{"svid":1}}
-{"user_data":{"cmd":"PSendGift","cid":1,"receiver":"Mr Q","sender":"帮主01","sid":"102603","uid":"10000045","uid_onmic":"10005020","usercount":1,"buy":"1","type":"17","flag":"1","id":"409","num":"1","videoOpen":"1","sendTime":"1520391631044","serialNum":4},"server_data":{"svid":1}}
+{"user_data":{"cmd":"PSendGift","cid":1,"receiver":"Mr Q","sender":"帮主01","sid":"102603","uid":"10000026","uid_onmic":"10000010","usercount":1,"buy":"1","type":"17","flag":"1","id":"409","num":"1","videoOpen":"1","sendTime":"1520391631044","serialNum":4},"server_data":{"svid":1}}
+{"user_data":{"cmd":"PSendGift","cid":1,"receiver":"Mr Q","sender":"帮主01","sid":"102603","uid":"10000045","uid_onmic":"10000010","usercount":1,"buy":"1","type":"17","flag":"1","id":"409","num":"1","videoOpen":"1","sendTime":"1520391631044","serialNum":4},"server_data":{"svid":1}}
 
 账号
 singer 10005020 10005130 10000010
@@ -90,11 +91,11 @@ hgetall linkcallpk:mysql:config:info:hash                              redis 连
 hgetall linkcallpk:singer:info:hash                                    redis 主播基础数据缓存
 hgetall linkcallpk:user:info:hash                                      redis 送礼用户基础数据缓存
 ZRANGE linkcallpk:singer:onlinelist:zset 0 -1 WITHSCORES               redis 服务器在线连麦可pk主播列表缓存
-ZRANGE linkcallpk:singer:guestlist:zset:10005020 0 -1 WITHSCORES       redis 主播客场申请pk列表（singer_id）缓存
+ZRANGE linkcallpk:singer:guestlist:zset:10000010 0 -1 WITHSCORES       redis 主播客场申请pk列表（singer_id）缓存
 ZRANGE linkcallpk:singer:hostlist:zset:10005020 0 -1 WITHSCORES        redis 主播主场连线pk列表（singer_id）缓存:
 hgetall linkcallpk:pk:info:hash:82                                     redis 连麦pk信息缓存
 ZRANGE linkcallpk:pk:popup:zset 0 -1 WITHSCORES                        redis 连麦pk 主播弹窗时间
-ZRANGE linkcallpk:gift:list:zset:10005020 0 -1 WITHSCORES              redis 连麦pk期间的送礼用户列表
+ZRANGE linkcallpk:gift:list:zset:10000010 0 -1 WITHSCORES              redis 连麦pk期间的送礼用户列表
 ZRANGE linkcallpk:singer:pkid:zset 0 -1 WITHSCORES                     redis 连麦pk期间主播对应pk号 缓存
 ZRANGE linkcallpk:singer:scene:zset 0 -1 WITHSCORES                    redis 连麦pk期间主播对应scene号 缓存
 ZRANGE linkcallpk:pking:singer:gift:zset 0 -1 WITHSCORES               redis 服务器所有正在连麦pk的主播id 及礼物金额
@@ -110,3 +111,9 @@ del linkcallpk:singer:info:hash linkcallpk:user:info:hash linkcallpk:singer:onli
 
 tail -f php.log | grep -E "RSendGift|linkcall_pk"
 
+
+
+pk_state_info
+
+pk_state
+singer_state
