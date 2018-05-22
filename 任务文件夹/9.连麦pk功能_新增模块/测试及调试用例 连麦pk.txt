@@ -16,7 +16,8 @@ http://60.205.151.85:18081/index.php   "svid":1
 
 1.2 主播查询当前在线满足条件主播申请列表
 {"user_data":{"cmd":"linkcallpk_singer_seek_online_list_rq","singer_id":10005020,"singer_sid":"102603","page_num":"0"},"server_data":{"svid":1}}
-{"user_data":{"cmd":"linkcallpk_singer_seek_online_list_rq","singer_id":10000010,"singer_sid":"102692","page_num":"0"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_singer_seek_online_list_rq","singer_id":10000010,"singer_sid":"100010","page_num":"0"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_singer_seek_online_list_rq","singer_id":10005130,"singer_sid":"102692","page_num":"0"},"server_data":{"svid":1}}
 
 2 主播客场申请连线
 {"user_data":{"cmd":"linkcallpk_apply_rq","guest_id":10005020,"guest_sid":"102603","host_id":10005130,"host_sid":"102692"},"server_data":{"svid":1}}
@@ -70,7 +71,7 @@ http://60.205.151.85:18081/index.php   "svid":1
 
 9、主播进入直播房间
 {"user_data":{"cmd":"linkcallpk_singer_comein_room_rq","singer_id":10005130,"singer_sid":"102692"},"server_data":{"svid":1}}
-
+{"user_data":{"cmd":"linkcallpk_singer_comein_room_rq","singer_id":10000010,"singer_sid":"100010"},"server_data":{"svid":1}}
 
 10、测试主播离场
 {"user_data":{"cmd":"linkcallpk_singer_leave_event","singer_id":10000010,"singer_sid":"100010"},"server_data":{"svid":1}}
@@ -81,6 +82,10 @@ http://60.205.151.85:18081/index.php   "svid":1
 {"user_data":{"cmd":"PSendGift","cid":1,"receiver":"Mr Q","sender":"帮主01","sid":"102692","uid":"10000045","uid_onmic":"10005130","usercount":1,"buy":"1","type":"17","flag":"1","id":"409","num":"1","videoOpen":"1","sendTime":"1520391631044","serialNum":4},"server_data":{"svid":1}}
 {"user_data":{"cmd":"PSendGift","cid":1,"receiver":"Mr Q","sender":"帮主01","sid":"102603","uid":"10000026","uid_onmic":"10000010","usercount":1,"buy":"1","type":"17","flag":"1","id":"409","num":"1","videoOpen":"1","sendTime":"1520391631044","serialNum":4},"server_data":{"svid":1}}
 {"user_data":{"cmd":"PSendGift","cid":1,"receiver":"Mr Q","sender":"帮主01","sid":"102603","uid":"10000045","uid_onmic":"10000010","usercount":1,"buy":"1","type":"17","flag":"1","id":"409","num":"1","videoOpen":"1","sendTime":"1520391631044","serialNum":4},"server_data":{"svid":1}}
+
+{"user_data":{"cmd":"PSendGift","cid":1,"receiver":"Mr Q","sender":"帮主01","sid":"102603","uid":"10005020","uid_onmic":"10000010","usercount":1,"buy":"1","type":"17","flag":"1","id":"409","num":"1","videoOpen":"1","sendTime":"1520391631044","serialNum":4},"server_data":{"svid":1}}
+
+
 
 账号
 singer 10005020 10005130 10000010
