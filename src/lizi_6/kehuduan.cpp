@@ -6,8 +6,8 @@
 #include <iostream>
 static void* __static_kehuduan_wait_thread(void* arg)
 {
-	struct lj_lizhi6::kehuduan* p = (struct lj_lizhi6::kehuduan*)(arg);
-	lj_lizhi6::kehuduan_wait(p);
+	struct kehuduan* p = (struct kehuduan*)(arg);
+	kehuduan_wait(p);
 	return NULL;
 }
 
@@ -21,7 +21,7 @@ static void fan_tcp_back_broken(void* obj)
 
 }
 
-static void lj_lizhi6::_static_kehuduan_login_send(struct kehuduan* p)
+static void _static_kehuduan_login_send(struct kehuduan* p)
 {
 
 	mm_net_tcp_lock(&p->fw_net_1);
@@ -66,7 +66,7 @@ static void lj_lizhi6::_static_kehuduan_login_send(struct kehuduan* p)
 	pthread_mutex_unlock(&p->t_data);
 }
 
-static void lj_lizhi6::_static_kehuduan_seek_send(struct kehuduan* p)
+static void _static_kehuduan_seek_send(struct kehuduan* p)
 {
 	mm_net_tcp_lock(&p->fw_net_1);
 	mm_net_tcp_check(&p->fw_net_1);
@@ -109,7 +109,7 @@ static void lj_lizhi6::_static_kehuduan_seek_send(struct kehuduan* p)
 	pthread_mutex_unlock(&p->t_data);
 }
 
-static void lj_lizhi6::_static_kehuduan_talk_send(struct kehuduan* p)
+static void _static_kehuduan_talk_send(struct kehuduan* p)
 {
 	mm_net_tcp_lock(&p->fw_net_1);
 	mm_net_tcp_check(&p->fw_net_1);
@@ -160,7 +160,7 @@ static void lj_lizhi6::_static_kehuduan_talk_send(struct kehuduan* p)
 	pthread_mutex_unlock(&p->t_data);
 }
 
-void lj_lizhi6::kehuduan_init(struct kehuduan* p)
+void kehuduan_init(struct kehuduan* p)
 {
 	p->system_state=0;
 	p->uid=0;
@@ -176,7 +176,7 @@ void lj_lizhi6::kehuduan_init(struct kehuduan* p)
 	p->state = ts_closed;
 
 }
-void lj_lizhi6::kehuduan_destroy(struct kehuduan* p)
+void kehuduan_destroy(struct kehuduan* p)
 {
 	p->system_state=0;
 	p->uid=0;
@@ -193,7 +193,7 @@ void lj_lizhi6::kehuduan_destroy(struct kehuduan* p)
 
 }
 ///////////////////////////////////////////////////
-void lj_lizhi6::kehuduan_fuzhi(struct kehuduan* p)
+void kehuduan_fuzhi(struct kehuduan* p)
 {
 	struct mm_net_tcp_callback net_tcp_callback;
 	mm_net_tcp_callback_init(&net_tcp_callback);
@@ -214,14 +214,14 @@ void lj_lizhi6::kehuduan_fuzhi(struct kehuduan* p)
 	mm_net_tcp_callback_destroy(&net_tcp_callback);
 }
 
-void lj_lizhi6::kehuduan_start(struct kehuduan* p)
+void kehuduan_start(struct kehuduan* p)
 {	
 	mm_net_tcp_start(&p->fw_net_1);
 	p->state = ts_finish == p->state ? ts_closed : ts_motion;
 	pthread_create(&p->poll_thread, NULL, &__static_kehuduan_wait_thread, p);
 }
 
-void lj_lizhi6::kehuduan_wait(struct kehuduan* p)
+void kehuduan_wait(struct kehuduan* p)
 {
 
 	while( ts_motion == p->state )
@@ -232,32 +232,32 @@ void lj_lizhi6::kehuduan_wait(struct kehuduan* p)
 		pthread_mutex_unlock(&p->t_data);
 		if (logic_chose<10)
 		{	
-			lj_lizhi6::_static_kehuduan_login_send(p);
+			_static_kehuduan_login_send(p);
 		}
 		if (91==logic_chose||21==logic_chose||22==logic_chose)
 		{	
-			lj_lizhi6::_static_kehuduan_seek_send(p);
+			_static_kehuduan_seek_send(p);
 		}
 		if (92==logic_chose||100==logic_chose||101==logic_chose)
 		{	
-			lj_lizhi6::_static_kehuduan_talk_send(p);
+			_static_kehuduan_talk_send(p);
 		}
 	}
 }
 
-void lj_lizhi6::kehuduan_interrupt(struct kehuduan* p)
+void kehuduan_interrupt(struct kehuduan* p)
 {
 	mm_net_tcp_interrupt(&p->fw_net_1);
 
 	p->state = ts_closed;
 }
-void lj_lizhi6::kehuduan_shutdown(struct kehuduan* p)
+void kehuduan_shutdown(struct kehuduan* p)
 {
 	mm_net_tcp_shutdown(&p->fw_net_1);
 
 	p->state = ts_finish;
 }
-void lj_lizhi6::kehuduan_join(struct kehuduan* p)
+void kehuduan_join(struct kehuduan* p)
 {
 	mm_net_tcp_join(&p->fw_net_1);
 
@@ -268,7 +268,7 @@ void lj_lizhi6::kehuduan_join(struct kehuduan* p)
 
 
 
-void lj_lizhi6::kehuduan_huidiaoti_dialogue_login(void* obj, void* u, struct mm_packet* rs_pack)
+void kehuduan_huidiaoti_dialogue_login(void* obj, void* u, struct mm_packet* rs_pack)
 {
 	struct kehuduan* khd = (struct kehuduan*)u;
 	struct mm_tcp* tcp = (mm_tcp*)obj;
@@ -291,7 +291,7 @@ void lj_lizhi6::kehuduan_huidiaoti_dialogue_login(void* obj, void* u, struct mm_
 	pthread_mutex_unlock(&khd->t_data);
 }
 
-void lj_lizhi6::kehuduan_huidiaoti_dialogue_seek(void* obj, void* u, struct mm_packet* rs_pack)
+void kehuduan_huidiaoti_dialogue_seek(void* obj, void* u, struct mm_packet* rs_pack)
 {
 	struct kehuduan* khd = (struct kehuduan*)u;
 	struct mm_tcp* tcp = (mm_tcp*)obj;
@@ -316,7 +316,7 @@ void lj_lizhi6::kehuduan_huidiaoti_dialogue_seek(void* obj, void* u, struct mm_p
 
 }
 
-void lj_lizhi6::kehuduan_huidiaoti_dialogue_talk_nt(void* obj, void* u, struct mm_packet* rs_pack)
+void kehuduan_huidiaoti_dialogue_talk_nt(void* obj, void* u, struct mm_packet* rs_pack)
 {
 	mm_msleep(100);
 	struct kehuduan* khd = (struct kehuduan*)u;
@@ -340,7 +340,7 @@ void lj_lizhi6::kehuduan_huidiaoti_dialogue_talk_nt(void* obj, void* u, struct m
 
 }
 
-void lj_lizhi6::kehuduan_huidiaoti_dialogue_talk_rs(void* obj, void* u, struct mm_packet* rs_pack)
+void kehuduan_huidiaoti_dialogue_talk_rs(void* obj, void* u, struct mm_packet* rs_pack)
 {
 	struct kehuduan* khd = (struct kehuduan*)u;
 	struct mm_tcp* tcp = (mm_tcp*)obj;

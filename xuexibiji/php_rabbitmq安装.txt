@@ -1,0 +1,75 @@
+参考资料：
+	https://www.cnblogs.com/chunguang/p/5634342.html
+	https://blog.csdn.net/Super_RD/article/details/70574782?locationNum=10&fps=1
+	
+
+生成aqmp动态库流程：
+1.依赖环境安装(以下如果已经安装了就不需要再安装了)
+	apt-get install libtool autoconf
+	apt-get install php5
+	apt-get install php5-fpm
+	apt-get install php5-dev
+
+2.编译rabbitmq-c
+	wget "https://github.com/alanxz/rabbitmq-c/releases/download/v0.5.0/rabbitmq-c-0.5.0.tar.gz"
+	tar -zxvf rabbitmq-c-0.5.0.tar.gz
+	cd rabbitmq-c-0.5.0
+	mkdir build
+	cd build/
+	cmake ..
+	make
+	make install
+	
+	生成的rabbitmq-c-0.5.0/build/librabbitmq/librabbitmq.so.1复制到/usr/lib/php5/20090626中
+
+
+3.编译aqmp
+	wget "http://pecl.php.net/get/amqp-1.6.1.tgz"
+	tar zxvf amqp-1.6.1.tgz
+	cd amqp-1.6.1
+	phpize
+	./configure --with-amqp
+	make
+	make install
+	
+4.添加到配制文件
+	extension=/usr/lib/php5/20090626/amqp.so
+	
+
+	
+	
+public static function rabbitmq_publish($host, $port, $login, $password, $vhost, $exchange_name, $route_key, $msg)
+{
+	$conn_args = array(
+		'host' => $host,
+		'port' => $port,
+		'login' => $login,
+		'password' => $password,
+		'vhost'=> $vhost
+	);
+
+	$conn = new AMQPConnection($conn_args);
+	if (!$conn->connect()) {
+		LogApi::logProcess('rabbitmq_pub AMQPConnection failed!');
+		return;
+	}
+	LogApi::logProcess('rabbitmq_pub AMQPConnection success!');
+
+	$channel = new AMQPChannel($conn);
+
+	$ex = new AMQPExchange($channel);
+	$ex->setName($exchange_name);
+	$ex->setType(AMQP_EX_TYPE_FANOUT);
+	$ex->setFlags(AMQP_DURABLE);
+	$ex->declareExchange();
+	$ex->bind($exchange_name, $route_key);
+	$ex->publish($msg, $route_key);
+
+	$conn->disconnect();
+
+	LogApi::logProcess('rabbitmq_pub publish success!');
+}
+	
+rabbitmq_publish('47.93.118.164', '5672', 'test', 'test', 'call', 'xcbb.exchange.battle', "xcbb.routingkey.battle.event", "test");	
+	
+	
