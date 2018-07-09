@@ -1,0 +1,269 @@
+OFF   FATAL   ERROR  WARN  INFO  DEBUG  TRACE   ALL
+登录系统，返回的宝箱信息：
+
+
+
+logs::addLog("INFO::taskinfo::getGangManTaskAwards:: 帮会成员个人任务进度打点  finish_once uid:$uid num:$num Str_key:$key task_id:".$data['id'], $logfile);
+logs::addLog("INFO::taskinfo::getGangManTaskAwards:: 帮会成员个人任务完成打点  finish_task uid:$uid Str_key:$key task_id:".$data['id'], $logfile);
+
+
+logs::addLog("WARN::taskinfo::getSingerTreasureAwards::empty(fields) 没有挖宝任务******uid:$uid, Has_key:$h_key", $logfile);
+logs::addLog("WARN::taskinfo::getSingerTreasureAwards::任务有Str_key没有value  uid:$uid Has_key:$h_key Str_key:$key", $logfile);
+logs::addLog("WARN::taskinfo::getSingerTreasureAwards::uid:$uid Str_key:$key extra_param:$extra_param != 缓存t_attach_param:".$data['t_attach_param'], $logfile);
+
+
+
+
+logs::addLog("INFO::taskinfo::getDayRandomTask:: 用户每日随机任务进度打点  finish_once uid:$uid num:$num Str_key:$key task_id:".$data['id'], $logfile);
+//任务埋点进度缓存修正
+$task_id = $data['id'];
+$m_key = "maidian:taskid:$task_id" ;
+$this->redis->hIncrBy($m_key, "t_finish_progress",$num);
+
+
+logs::addLog("INFO::taskinfo::getDayRandomTask:: 用户每日随机任务完成打点  finish_task uid:$uid Str_key:$key task_id:".$data['id'], $logfile);
+//任务埋点状态登记缓存修正
+$t_total_progress = $data['t_total_progress'];
+$this->redis->hset($m_key, "tasklog",3);//1产生；2开始；3完成；4领奖；5刷新；6放弃
+$this->redis->hset($m_key, "t_finish_progress",$t_total_progress); 
+
+
+logs::addLog("INFO::taskinfo::initFollowerCatch uid:$uid task_id:$id  缓存初始化: 任务大类Has_key:$h_key 具体任务详情Str_key:$key 埋点m_key:$m_key", $logfile);
+
+
+else
+{
+	logs::addLog("WARN::taskinfo::initSingerTasks***uid:$uid**:: flag:$flag, sql:$sql", $logfile);
+}
+
+
+
+
+
+周星积分调试
+
+.json_encode($retparams) 可以用来打出数组信息
+
+
+datacenter   echo，解析器日志
+tail -f /data/vnc_log/supervisor/vnc_datacenter/vnc_datacenter_1.log
+tail -f /data/vnc_log/supervisor/vnc_datacenter/vnc_datacenter_2.log
+cd /data/vnc_log/supervisor/vnc_datacenter
+tail -f vnc_datacenter_2.log
+tail -f vnc_datacenter_1.log
+
+
+datacenter   php脚本日志（业务logfile）
+tail -f /data/vnc_release/bin/vnc_datacenter/logs/phpscripts/`date +"%Y-%m-%d"`/datacenter_php.log | grep -E "taskinfo|CEventHandleTask|rabbitmq_pub"
+cd /data/vnc_release/bin/vnc_datacenter/logs/phpscripts/
+tail -f datacenter_php.log | grep -E "taskinfo|CEventHandleTask|rabbitmq_pub"
+tail -f datacenter_php.log | grep --line-buffered "taskinfo" | grep --line-buffered "10005259"
+
+datacenter   本身日志（程序启动，失败，rq，rs）
+cd /data/vnc_log/vnc/
+
+datacenter位置
+cd /data/vnc_release/bin/vnc_datacenter/dc_script/include/redis
+
+埋点消息队列处理
+cd /data/vnc_log/vnc/vnc_BuriedPointSvr_1
+grep -E "taskModule_gangCommon_event" BuriedPointSvr.INFO
+grep -E "transterDoorCreate" BuriedPointSvr.INFO
+
+
+老版本业务日志
+cd /data/xcbb_projects/xcbb_project/server.kr.2/server/datacenter/logs/phpscripts
+
+老版业务日志错误日志
+cd /data/raidcall/log/phplog
+
+datacenter位置
+cd /data/vnc_release/bin/vnc_datacenter/dc_script/include/redis
+
+开发服日志位置
+/data/tag/server.kr.2/server/datacenter/logs/
+
+
+
+日志测试
+tail -f datacenter.log |grep -E "singer_weekrecord"
+
+
+
+logs::addLog("ljljlj initSingerTasks  *uid:$uid", $logfile);
+
+
+
+
+主播 主播任务key
+singeruid:90000147:2018-06-15:7
+
+set singeruid:90000147:2018-06-15:tid:1162934 "{\"id\":1162934,\"uid\":\"90000147\",\"target_type\":7,\"t_total_progress\":250,\"t_finish_progress\":0,\"status\":2,\"t_attach_param\":410,\"open_type\":0,\"tool_id\":null,\"tool_num\":null}"
+
+
+set singeruid:90000147:2018-06-15:tid:1162935 "{\"id\":1162935,\"uid\":\"90000147\",\"target_type\":7,\"t_total_progress\":250,\"t_finish_progress\":0,\"status\":2,\"t_attach_param\":418,\"open_type\":0,\"tool_id\":null,\"tool_num\":null}"
+
+主播任务当前任务
+taskstart::uid:90000147:2018-06-15
+需要删掉主播当前任务才可以继续主播任务
+
+
+
+
+
+
+
+
+
+
+
+
+
+logs::addLog("singer_weekrecord 周星积分：任务模块开始   周星礼物 weekTool:$weekTool", $logfile);
+
+logs::addLog("singer_weekrecord task_id:$task_id t_id:$t_id  t_id_type:$t_id_type  ", $logfile);
+
+logs::addLog("singer_weekrecord singer_id:$uid singer_sid:$singer_sid info:".json_encode($info), $logfile);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+主播任务
+
+singeruid:10005130:2018-06-15
+
+
+
+singeruid:10005130:2018-06-15:7
+
+
+
+hgetall singeruid:10003986:2018-06-15:7
+
+
+
+hgetall singeruid:10005130:2018-06-15:7
+
+
+
+主播清空主播任务缓存
+del singeruid:10003986:2018-06-15
+清掉数据库相关任务（主播任务3条）
+
+
+
+
+//<2018-6-26新增> 如果是主播，主播没有每日跑环任务
+$is_singer = $this->isSinger($uid);
+if ($is_singer) {
+	return false;
+}
+
+
+
+
+"DEBUG::taskinfo::droptask::
+
+user_attribute:10005259
+userleaf_uid:10005259
+
+
+task
+logs::addLog("INFO::taskinfo::droptask::主播放弃任务  params:$params ", $logfile);
+
+logs::addLog("WARN::taskinfo::droptask::主播放弃任务  params lost uid ", $logfile);
+
+//
+$uid = (int)$jparams->uid;
+$task_id = (int)$jparams->tid;
+
+
+logs::addLog("INFO::taskinfo::getganggifttasklist::帮会礼物任务  uid:$uid  empty(gangid) return data=>:".json_encode($retparams), $logfile);
+
+logs::addLog("INFO::taskinfo::droptask::uid:$uid task_id:$task_id "."**主播放弃任务**key:$key, data:".json_encode($data), $logfile);
+
+logs::addLog("INFO::taskinfo::getgangcontesttasklist::帮会擂台任务 uid:$uid gangid:$gangid retparams:".json_encode($retparams), $logfile);
+
+logs::addLog("WARN::taskinfo::getgangcontesttasklist::帮会擂台任务 uid:$uid gangid:$gangid sql fail  query:$query ", $logfile);
+
+else {
+	logs::addLog("WARN::taskinfo::getreward::任务领奖 uid:$uid task_id:$task_id SQL_FAIL=>query_2:$query_2 ", $logfile);
+}
+
+
+
+
+gangid:$gangid
+
+//如果缓存无数据，有可能缓存异常(用户登陆后再加入帮会这段时间)，从数据库取值
+if(empty($gangid))
+
+
+//如果数据库也没有数据说明用户没有帮会
+
+
+
+
+
+
+
+
+try {
+echo 1/$num;
+
+} catch (Exception $e){
+echo $e->getMessage();
+}
+
+
+
+
+
+$sql_commit = microtime(true);
+$sql_usetime = $sql_commit-$sql_begin;
+
+
+
+
+
+
+
+
+帮会集体任务
+select * from card.task_info  where uid = 10136 order by id desc limit 0,100;
+
+任务详情
+gang:10136:2018-07-02:tid:$tid
+
+帮会宝箱钥匙
+union:key:unionid:10136
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+1    监控并筛选 某个关键字
+redis-cli -h 10.172.186.58 -p 6379 -a xcRed.,0505 monitor | grep "faction:flag:*"
+
+
+2.1    多条件或者
+tail -f php.log | grep -E "BSendGift|linkcall_pk"
+
+2.2    多条件且与或的运用(一定要用--line-buffered  刷新缓存， 采用这种方式后或的关系需要添加一个转义字符 \ )
+tail -f php.log | grep --line-buffered "BSendGift\|linkcall_pk" | grep --line-buffered "10005130"
+tail -f php.log | grep --line-buffered "linkcall_pk" | grep --line-buffered "10005130"
+
+2.3    带日期路径的寻找方法
+tail -f /data/vnc_release/bin/vnc_datacenter/logs/phpscripts/`date +"%Y-%m-%d"`/datacenter_php.log | grep -E "taskinfo|CEventHandleTask|rabbitmq_pub"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,16 @@
+只读账户
+47.93.140.11 
+
+用户名：readonly
+密码：Vnc_ReadOnly_2018
+
+
+
+http://git.xiaocao-inc.com/users/sign_in 
+
+
+
+
+内测 jenkins新地址为http://39.105.103.125:8028/jenkins/ 
+
+ 大家记录一下 

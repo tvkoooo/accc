@@ -1,0 +1,65 @@
+# 正式服任务查询
+---
+标签 ： 正式服 task_info 任务 
+---
+---
+## 正式服任务 *task_info* 任务初始化
+日志地址
+```
+cd /data/tag/server.kr.2/server/datacenter/logs/phpscripts/task_info/`date +"%Y-%m-%d"`
+```
+
+主播界面任务
+```
+初始化主播挖宝任务
+grep "initSingerTreasureTask:: flag" task_info.log_0 | grep -E "20204790"
+
+初始化主播开启任务
+grep "singer task:: flag" task_info.log_0 | grep -E "20140435"
+
+初始化主播每日任务
+grep "initSingerDayTasks" task_info.log_0 | grep -E "20182600"
+```
+用户界面任务
+```
+初始化用户挖宝任务
+grep "initUserTreasureTask:: flag" task_info.log_0 | grep -E "20194507"
+
+初始化用户跑环任务
+grep "initDayLoopTask:: flag" task_info.log_0 | grep -E "20223816"
+
+初始化用户帮会成员个人任务
+grep "task_type in(12, 13, 14)" task_info.log_0 | grep -E "20184945"
+
+初始化帮会任务
+grep "task_type in(7, 8) and face_object = 4" task_info.log_0 | grep -E "20052"
+
+初始化帮会星级任务（大部分情况下在每月1号左右初始化）
+grep "initGangStartTasks::gangid" task_info.log_0 | grep -E "20038"
+```
+其他任务
+```
+初始化粉丝团任务 （该任务sql后面是带有主播id的）
+grep "FROM card.task_conf WHERE open_object = 0 and task_type = 10" task_info.log_0 | grep -E "20062260"
+
+初始化师徒任务
+grep "FROM card.task_conf WHERE open_object = 0 and task_type = 17" task_info.log_0 | grep -E "20228558"
+```
+---
+
+
+
+
+跑环打点信息，tid是具体的跑环tid
+grep "getDayLoopTaskAwards end! uid:20153082, data:" task_info.log_3 |grep "25142004"
+
+帮会个人活跃任务，跑环计算器
+grep "getDayLoopTaskAwards end! uid:20153082, data:" task_info.log |grep t_id -c
+
+
+
+
+
+
+
+

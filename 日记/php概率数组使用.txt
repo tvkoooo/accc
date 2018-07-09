@@ -1,0 +1,85 @@
+这是一个很经典的概率算法函数：
+
+复制代码
+function get_rand($proArr) { 
+    $result = ''; 
+    //概率数组的总概率精度 
+    $proSum = array_sum($proArr); 
+    //概率数组循环 
+    foreach ($proArr as $key => $proCur) { 
+        $randNum = mt_rand(1, $proSum);             //抽取随机数
+        if ($randNum <= $proCur) { 
+            $result = $key;                         //得出结果
+            break; 
+        } else { 
+            $proSum -= $proCur;                     
+        } 
+    } 
+    unset ($proArr); 
+    return $result; 
+}
+复制代码
+假设：我们有这样一个数组：a奖概率20%，b奖概率30%，c奖概率50%
+
+$prize_arr =array('a'=>20,'b'=>30,'c'=>50);
+模拟函数执行过程：
+
+总概率精度为20+30+50=100
+
+第一次数组循环，$procur=20
+
+假设抽取的随机数rand(1,100)，假设抽到$randNum=55
+
+if判断-------
+
+如果$randNum<=20,则result=a
+
+否则进入下一循环，总概率精度变为100-20=80
+
+ 
+
+
+第二次数组循环，$procur=30
+
+假设抽取的随机数rand(1,80)，假设抽到$randNum=33
+
+if判断---------
+
+如果$randNum<=30,则result=b
+
+否则进入下一循环，总概率精度变为80-30=50
+
+
+第三次数组循环，$prosur=50;
+
+假设抽取的随机数rand(1,50)，不管怎么抽，随机数都会<或=50，
+
+那么得出result=c;
+
+ 因为样本没有改变，虽然可能抽取的随机数不止一个，但是概率是不变的。
+
+ 
+
+ 
+
+或者也可以这样：
+
+复制代码
+    function get_rand($arr)
+    {
+        $pro_sum=array_sum($arr);
+        $rand_num=mt_rand(1,$pro_sum);
+        $tmp_num=0;
+        foreach($arr as $k=>$val)
+        {    
+            if($rand_num<=$val+$tmp_num)
+            {
+                $n=$k;
+                break;
+            }else
+            {
+                $tmp_num+=$val;
+            }
+        }
+        return $n;
+    }
