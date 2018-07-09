@@ -1,0 +1,21 @@
+文件地址
+cd /data/vnc_release/bin/vnc_fpm_script/rcec
+
+
+日志地址
+cd /data/vnc_log/vnc/vnc_fpm_script/
+
+
+tail -f php.log |grep -E "Zuoqi_model|zuoqiid|UserApi::enterChannel"
+
+
+
+
+
+
+
+
+
+
+
+

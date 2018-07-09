@@ -9,6 +9,7 @@ abuabu2017
 huolong-2010@163.com
 
 github
+Repository: <https://github.com:443> GitHub
 tvkoooo
 abuabu2017
 
@@ -46,13 +47,16 @@ quit;
 cd /data/raidcall/log/sessiond_d/
 
 
+wiki
+user	:307062817@qq.com
+passwd	:123456
 
 
 
 
-
-
-
+https://123.57.93.77/svn/PRPUB/小草播播移动端/Beta3.0
+Username: longjia
+Password: jiA@122013
 
 
 
