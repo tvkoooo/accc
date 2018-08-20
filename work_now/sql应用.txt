@@ -1,0 +1,45 @@
+sql知道表名，查询表的具体信息
+SELECT * FROM INFORMATION_SCHEMA.TABLES where TABLE_NAME="tool" limit 300;
+
+
+
+sql查看进程id
+SELECT * FROM information_schema.PROCESSLIST limit 300;
+
+
+
+sql倒叙查询
+select * from card.task_info where uid=10005259 order by id desc limit 30;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

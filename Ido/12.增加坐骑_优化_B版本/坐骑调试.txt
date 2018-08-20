@@ -1,4 +1,4 @@
-文件地址
+﻿文件地址
 cd /data/vnc_release/bin/vnc_fpm_script/rcec
 
 
@@ -6,9 +6,54 @@ cd /data/vnc_release/bin/vnc_fpm_script/rcec
 cd /data/vnc_log/vnc/vnc_fpm_script/
 
 
+USER:HORSE:S:$user_id:$zuoqi_id
+USER:HORSE:S:10005063:149 
+
 tail -f php.log |grep -E "Zuoqi_model|zuoqiid|UserApi::enterChannel"
 
 
+
+
+
+
+set USER:HORSE:S:80080470:149 149
+
+set USER:HORSE:S:80072393:147 147
+
+
+
+
+
+
+set USER:HORSE:S:20136674:149 149
+EXPIRE USER:HORSE:S:20136674:149 86400
+
+
+
+
+set USER:HORSE:S:20064018:149 149
+EXPIRE USER:HORSE:S:20064018:149 86400
+
+
+
+
+
+set USER:HORSE:S:90480530:149 149
+EXPIRE USER:HORSE:S:90480530:149 86400
+
+
+
+set USER:HORSE:S:80072502:147 147
+EXPIRE USER:HORSE:S:80072502:147 86400
+
+
+
+set USER:HORSE:S:80072393:147 147
+EXPIRE USER:HORSE:S:80072393:147 86400
+
+
+set USER:HORSE:S:80072397:147 147
+EXPIRE USER:HORSE:S:80072397:147 86400
 
 
 

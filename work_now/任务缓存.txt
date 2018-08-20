@@ -1,0 +1,211 @@
+
+任务redis
+
+1.帮会钥匙缓存   (目测没用)
+$key = "union:key:unionid:$gangid"
+$this->redis->incrBy($key, $key_num)
+---查看缓存示例------------------------------
+get union:key:unionid:10136
+
+
+
+2.主播房间内每日最大阳光值
+$key = "singer_day_sun_task:$date:$singerid"
+$v = $this->redis->get($key)
+---查看缓存示例------------------------------
+get singer_day_sun_task:2018-07-09:10005130
+
+
+3.帮会星级任务    大类（初始化时间    gangstart:$gangid:$beginDate）（备注$beginDate   Y-m-01格式）
+$key = "gangstart:$gangid:$date:$targetType"
+$fields = $this->redis->hkeys($h_key)
+Remarks:  $targetType = (23, 24, 25)
+---查看缓存示例------------------------------
+hgetall gangstart:10136:2018-07-01:23
+
+
+
+4.帮会星级任务具体详情
+$key = gangstart:$gangid:$date::tid:$tid
+$value = $this->redis->get($key)
+---查看缓存示例------------------------------
+get gangstart:10136:2018-07-01:tid:10518490
+
+
+5.帮会星级任务完成缓存
+$tmp_key = "gangstar_task_tmp_gangid:$gangid:tid:".$data['id'];
+$tmp_value = $this->redis->incrBy($tmp_key, 1);
+Remarks:  $data['id'] = $task_id
+
+
+
+6.师徒任务    大类
+$key = "master_apprentice:$uid:$targetType"
+$fields = $this->redis->hkeys($h_key)
+Remarks:  $targetType = (27,46,47,48,49,50,51,52)
+
+
+
+7.师徒任务开启时间 可以获得师傅id
+$key = "disciple:count:down:$uid";
+$this->redis->get($key);
+
+
+8.帮会个人任务   大类（初始化时间     gangman:$uid:$date）
+$key = "gangman:$uid:$date:$targetType"
+$fields = $this->redis->hkeys($h_key);
+Remarks:  $targetType = (2,18,27,29,34,41,57)
+---查看缓存示例------------------------------
+hgetall gangman:10005259:2018-07-09:2
+
+
+9.帮会个人任务具体详情
+$key = "gangman:$uid:$date:tid:$tid"
+$fields = $this->redis->get($h_key);
+---查看缓存示例------------------------------
+get gangman:10005259:2018-07-09:tid:10519472
+
+
+10.帮会集体任务   大类（初始化时间   gang:$gangid:$date）
+$key = "gang:$gangid:$date:$targetType"
+$fields = $this->redis->hkeys($h_key)
+Remarks:  $targetType = (6,36,37,39,40,38)
+---查看缓存示例------------------------------
+hgetall gang:10136:2018-07-09:6
+
+
+
+11.帮会集体任务具体详情
+$key = "gang:$gangid:$date:tid:$tid"
+$fields = $this->redis->get($h_key);
+---查看缓存示例------------------------------
+get gang:10136:2018-07-09:tid:10519491
+
+
+12.用户跑环任务当前环数
+$l_key = "loop_num:uid:$uid:$date";
+$l_datatmp = $this->redis->get($l_key);
+---查看缓存示例------------------------------
+get loop_num:uid:10005259:2018-07-09
+
+
+
+13.用户跑环任务当天类型任务合集（完成的未完成的）（初始化时间    looptask:uid:$uid:$date）
+$key = "looptask:uid:$uid:$date:$targetType”
+$fields = $this->redis->hkeys($key);
+Remarks:  $targetType = (2,6,8,17,29,33,35,42,44,53,54,56)
+
+
+14.用户跑环任务当天任务详情
+$key = "looptask:uid:$uid:$date:tid:$tid"
+$fields = $this->redis->get($key);
+---查看缓存示例------------------------------
+get looptask:uid:10005259:2018-06-21:tid:10516229
+
+
+15.主播挖宝任务   大类(主播挖宝任务比普通用户多个阳光)（初始化时间    singertreasure_task:uid:$uid:$date）
+$key = "singertreasure_task:uid:$uid:$date:$targetType"
+$fields = $this->redis->hkeys($key);
+Remarks:  $targetType = (15)
+---查看缓存示例------------------------------
+hgetall singertreasure_task:uid:10005130:2018-07-09:15
+
+
+16.主播挖宝任务详情
+$key = "singertreasure_task:uid:$uid:$date:tid:$tid"
+$fields = $this->redis->get($key);
+---查看缓存示例------------------------------
+get singertreasure_task:uid:10005130:2018-07-09:tid:10519454
+
+
+
+17.用户挖宝任务   大类(主播挖宝任务比普通用户多个阳光)（初始化时间     usertreasure_task:uid:$uid:$date）
+$key = "usertreasure_task:uid:$uid:$date:$targetType"
+$fields = $this->redis->hkeys($key);
+Remarks:  $targetType = (15)
+---查看缓存示例------------------------------
+hgetall usertreasure_task:uid:10005259:2018-07-09:15
+
+
+18.用户挖宝任务详情
+$key = "usertreasure_task:uid:$uid:$date:tid:$tid"
+$fields = $this->redis->get($key);
+---查看缓存示例------------------------------
+get usertreasure_task:uid:10005259:2018-07-09:tid:10519456
+
+
+
+19.主播终极任务   大类(主播做完每日任务才会出来)（初始化时间    init_singerlast:uid:$uid:$date）
+$key = "singerlast_task:uid:$uid:$date:$targetType"
+$fields = $this->redis->hkeys($key);
+Remarks:  $targetType = (7,43)
+---查看缓存示例------------------------------
+hgetall singerlast_task:uid:10005130:2018-07-09:7
+
+
+20.主播终极任务详情
+$key = "singerlast_task:uid:$uid:$date:tid:$tid"
+$fields = $this->redis->get($key);
+
+
+
+21.主播任务   大类(初始化时间        singeruid:$uid:$date)
+$key = "singeruid:$uid:$date:$targetType"
+$fields = $this->redis->hkeys($key);
+Remarks:  $targetType = (7,43)
+---查看缓存示例------------------------------
+hgetall singeruid:10005130:2018-07-10:7
+
+22.主播任务详情
+$key = "singeruid:uid:$uid:$date:tid:$tid"
+$fields = $this->redis->get($key);
+---查看缓存示例------------------------------
+get singeruid:10005130:2018-07-10:tid:10519580
+
+
+
+23.主播每日任务   大类(初始化时间 singer_day_uid:$uid:$date)
+$key = "singer_day_uid:$uid:$date:$targetType"
+$fields = $this->redis->hkeys($key);
+Remarks:  $targetType = (没有规律)
+
+
+24.主播每日任务详情
+$key = "singer_day_uid:$uid:$date:tid:$tid"
+$fields = $this->redis->get($key);
+
+
+
+
+
+
+
+
+
+
+下面的任务不确定什么用
+
+
+每日随机任务（初始化时间    randomtask:uid:$uid:$date）
+randomtask:uid:$uid:$date:$targetType
+
+
+粉丝团任务 -hash
+follower:uid:$uid:singerid:$singerid:$date:$target_type（初始化时间    follower:uid:$uid:singerid:$singerid:$date）
+
+
+主线任务
+uid:$uid:main:$targetType
+
+
+师徒任务 -hash   （初始化时间    master_apprentice:$uid:$date）
+follower:uid:$uid:singerid:$singerid:$date:$targetType
+师徒任务详情  -string
+follower:uid:$uid:$date:tid:$id
+师徒任务总任务缓存（所有师徒任务的任务，下面分别代表师傅和徒弟id）
+masterid:$masterUid:discipleid:$apprenticeUid
+
+
+主播阳光任务
+singer_day_sun_task:$date:$singerid
+

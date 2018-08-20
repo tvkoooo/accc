@@ -1,0 +1,37 @@
+/////////////////////////////////////////////////////////////////////////////////////
+备注：linux环境下静态库和动态库不需要（ __declspec ）
+/////////////////////////////////////////////////////////////////////////////////////
+1、生成动态库（源文件是test）命令如下：
+gcc -fpic -c test.c
+			gcc编译源文件test.c，生成test.o
+gcc -shared -fpic -o libtest.so test.o
+			利用test.o 生成动态库文件libtest.so（最好用默认命名规则libXXX.so）
+gcc -fpic -shared test.c -o libtest.so
+			以上两部也可以合成一步搞定
+
+
+////////////////////////////////////////////////////////////////////////////////////
+2、使用动态库，命令如下：
+			备注：程序会去/usr/lib或/lib中找动态库，因此如果不指名路径，程序会报错：
+			 error while loading shared libraries: libtiger.so: cannot open shared object file: No such file or direct 即没有找到动态链接库。
+gcc -o app app.c -L. -ltest
+			gcc链接源文件app.c    依赖库ltest（test的库libtest.so），生成可执行程序app
+
+			可以分步进行			
+cc -c app.c
+cc -o app app.o -L. -ltest			
+			gcc链接文件app.o 依赖库ltest（test的库libtest.so），生成可执行程序app
+			备注：后面-ltest（-l代表对test进行外层封装库，此处封装为: libtest.so  ）;也可以直接用文件名: cc -o app app.o -L. libtest.so
+
+
+////////////////////////////////////////////////////////////////////////////////////
+3、linux 不使用静态库进行链接命令如下：
+gcc -o app app.o
+			gcc链接文件app.o ，生成可执行程序app
+
+
+
+////////////////////////////////////////////////////////////////////////////////////
+4、linux 执行程序
+./app
+			linux 执行程序app（程序在当前目录里面）

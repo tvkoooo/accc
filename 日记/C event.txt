@@ -1,0 +1,17 @@
+xcopy $(LIB_HOME)\\build\\pthread\\proj_windows\\bin\\Debug\pthread_d.dll                          bin\\Debug\* /s /e /h /d /y
+
+
+
+
+xcopy D:\work_git\depend_project\depend\build\lua\proj_windows\bin\Release\liblua.dll                     bin\\Release\* /s /e /h /d /y
+
+
+
+
+
+
+
+
+
+
+

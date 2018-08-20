@@ -1,4 +1,7 @@
 
+cd /data/vnc_log/vnc/vnc_live_1
+cd /data/vnc_log/vnc/vnc_live_2
+
 fenbu  日志
 cd /data/vnc_log/vnc/vnc_fpm_script 
 多条件或者
@@ -80,7 +83,7 @@ http://60.205.151.85:18081/index.php   "svid":1
 {"user_data":{"cmd":"linkcallpk_pking_switch_scene_rq","singer_id":10005130,"singer_sid":"102692"},"server_data":{"svid":1}}
 
 9、用户进入房间
-{"user_data":{"cmd":"linkcallpk_user_comein_room_rq","singer_id":10005130,"singer_sid":"100029"},"server_data":{"svid":1}}
+{"user_data":{"cmd":"linkcallpk_user_comein_room_rq","singer_id":10005130,"singer_sid":"102692"},"server_data":{"svid":1}}
 
 
 9、主播进入直播房间
@@ -115,6 +118,7 @@ get linkcallpk:pkid:create:string                                      redis 连
 hgetall linkcallpk:mysql:config:info:hash                              redis 连麦pk 的mysql 配置信息缓存
 hgetall linkcallpk:singer:info:hash                                    redis 主播基础数据缓存
 hgetall linkcallpk:user:info:hash                                      redis 送礼用户基础数据缓存
+
 ZRANGE linkcallpk:singer:onlinelist:zset 0 -1 WITHSCORES               redis 服务器在线连麦可pk主播列表缓存                     *
 ZRANGE linkcallpk:singer:guestlist:zset:10002485 0 -1 WITHSCORES       redis 主播客场申请pk列表（singer_id）缓存                **
 ZRANGE linkcallpk:singer:hostlist:zset:10005130 0 -1 WITHSCORES        redis 主播主场连线pk列表（singer_id）缓存:               **
@@ -126,7 +130,7 @@ ZRANGE linkcallpk:singer:scene:zset 0 -1 WITHSCORES                    redis 连
 ZRANGE linkcallpk:pking:singer:gift:zset 0 -1 WITHSCORES               redis 服务器所有正在连麦pk的主播id 及礼物金额            **
 hgetall linkcallpk:guest:popup:from:host:hash                          redis 服务器记录当前所有还有弹窗的双方信息               **
 
-linkcallpk:singer:guestlist:zset:$singer_id
+
 
 
 一定要删除的测试key,否则可能会干扰其他主播测试连麦pk（如果是采用客户端进行测试无此要求）    del linkcallpk:singer:onlinelist:zset
