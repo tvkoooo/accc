@@ -51,7 +51,7 @@ static void lj_lizhi3::_static_kehuduan_login_send(struct kehuduan* p)
 	rq_pack.phead.uid=p->uid;
 	pthread_mutex_unlock(&p->t_data);
 	mm_net_tcp_lock(&p->fw_net_1);
-	int error_login_send=mm_protobuf_cxx_q_tcp_append_rq(&p->fw_net_1,rq_pack.phead.uid,rq_pack.phead.mid,&login_rq,&rq_pack);
+	//int error_login_send=mm_protobuf_cxx_q_tcp_append_rq(&p->fw_net_1,rq_pack.phead.uid,rq_pack.phead.mid,&login_rq,&rq_pack);
 	mm_net_tcp_unlock(&p->fw_net_1);
 	if (error_login_send)
 	{
@@ -95,7 +95,7 @@ static void lj_lizhi3::_static_kehuduan_seek_send(struct kehuduan* p)
 	rq_pack.hbuff.length=MM_MSG_COMM_HEAD_SIZE;
 	rq_pack.bbuff.length=seek_rq.ByteSizeLong();
 	mm_net_tcp_lock(&p->fw_net_1);
-	int error_login_send=mm_protobuf_cxx_q_tcp_append_rq(&p->fw_net_1,rq_pack.phead.uid,rq_pack.phead.mid,&seek_rq,&rq_pack);
+	//int error_login_send=mm_protobuf_cxx_q_tcp_append_rq(&p->fw_net_1,rq_pack.phead.uid,rq_pack.phead.mid,&seek_rq,&rq_pack);
 	mm_net_tcp_unlock(&p->fw_net_1);
 	if (error_login_send)
 	{
@@ -145,7 +145,7 @@ static void lj_lizhi3::_static_kehuduan_talk_send(struct kehuduan* p)
 	rq_pack.hbuff.length=MM_MSG_COMM_HEAD_SIZE;
 	rq_pack.bbuff.length=talk_rq.ByteSizeLong();
 	mm_net_tcp_lock(&p->fw_net_1);
-	int error_login_send=mm_protobuf_cxx_q_tcp_append_rq(&p->fw_net_1,rq_pack.phead.uid,rq_pack.phead.mid,&talk_rq,&rq_pack);
+	//int error_login_send=mm_protobuf_cxx_q_tcp_append_rq(&p->fw_net_1,rq_pack.phead.uid,rq_pack.phead.mid,&talk_rq,&rq_pack);
 	mm_net_tcp_unlock(&p->fw_net_1);
 	if (error_login_send)
 	{

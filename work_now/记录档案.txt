@@ -1,4 +1,4 @@
-只读账户
+﻿只读账户
 47.93.140.11 
 
 用户名：readonly
@@ -14,3 +14,53 @@ http://git.xiaocao-inc.com/users/sign_in
 内测 jenkins新地址为http://39.105.103.125:8028/jenkins/ 
 
  大家记录一下 
+
+ 
+ 
+ 
+ 
+ 作业部落
+tvkoooo
+abuabu2017
+huolong-2010@163.com
+
+
+wiki
+user	:307062817@qq.com
+passwd	:123456
+
+
+
+
+https://123.57.93.77/svn/PRPUB/小草播播移动端/Beta3.0
+Username: longjia
+Password: jiA@122013
+
+https://bitbucket.org
+tvkoo00oo
+abuabu2017
+huolong-2010@163.com
+
+github
+Repository: <https://github.com:443> GitHub
+tvkoooo
+abuabu2017
+
+http://192.168.111.222/showdoc/index.php?s=/5&page_id=224
+http://git.xiaocao-inc.com/
+longjia
+abuabu2017
+
+https://exmail.qq.com/cgi-bin/loginpage?t=dm_loginpage&s=logout&param=longjia@xcbobo.com
+longjia@xcbobo.com   密码   Abuabu2017  
+
+
+
+
+
+
+压测读写分离中间件账密信息
+ip: 172.16.39.208 / 47.95.215.124
+port: 6036
+user: proxysql
+password: VNC_YtLCesHt123

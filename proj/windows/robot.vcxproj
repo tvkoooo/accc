@@ -19,24 +19,33 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_1\application.cpp" />
-    <ClCompile Include="..\..\src\lizi_1\mm_uuu.cpp" />
-    <ClCompile Include="..\..\src\lizi_1\pthread_1.c" />
-    <ClCompile Include="..\..\src\lizi_1\pthread_2.c" />
-    <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.c" />
+    <ClCompile Include="..\..\src\robot\application.cpp" />
+    <ClCompile Include="..\..\src\robot\dataslot.cpp" />
+    <ClCompile Include="..\..\src\robot\fileopr.cpp" />
+    <ClCompile Include="..\..\src\robot\llog.c" />
+    <ClCompile Include="..\..\src\robot\lmaths.cpp" />
+    <ClCompile Include="..\..\src\robot\lprotobuff.cpp" />
+    <ClCompile Include="..\..\src\robot\ltcp.cpp" />
+    <ClCompile Include="..\..\src\robot\robotapp.cpp" />
+    <ClCompile Include="..\..\src\robot\transformation.c" />
+    <ClCompile Include="..\..\src\robot\typechange.cpp" />
     <ClCompile Include="windows\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\lizi_1\application.h" />
-    <ClInclude Include="..\..\src\lizi_1\lizhi1_all.h" />
-    <ClInclude Include="..\..\src\lizi_1\mm_uuu.h" />
-    <ClInclude Include="..\..\src\lizi_1\pthread_1.h" />
-    <ClInclude Include="..\..\src\lizi_1\pthread_2.h" />
-    <ClInclude Include="..\..\src\lizi_1\pthread_huidiao.h" />
+    <ClInclude Include="..\..\src\robot\application.h" />
+    <ClInclude Include="..\..\src\robot\dataslot.h" />
+    <ClInclude Include="..\..\src\robot\fileopr.h" />
+    <ClInclude Include="..\..\src\robot\llog.h" />
+    <ClInclude Include="..\..\src\robot\lmaths.h" />
+    <ClInclude Include="..\..\src\robot\lprotobuff.h" />
+    <ClInclude Include="..\..\src\robot\ltcp.h" />
+    <ClInclude Include="..\..\src\robot\robotapp.h" />
+    <ClInclude Include="..\..\src\robot\transformation.h" />
+    <ClInclude Include="..\..\src\robot\typechange.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{97786438-5602-4851-998C-962EF031ED05}</ProjectGuid>
-    <RootNamespace>mm_lizi_1</RootNamespace>
+    <ProjectGuid>{F01C370D-192B-477B-A011-92DDE41CBE9C}</ProjectGuid>
+    <RootNamespace>robot</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -111,7 +120,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIB_STATIC_COMMON;_LJ_LITTLEENDIAN_MACHINE_;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -122,7 +131,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <CompileAs>Default</CompileAs>
-      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_2;../../src/lizi_1;./windows;#$(LIB_HOME)/src/pthread;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../src/robot;$(VLD_HOME)/include;../../src;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/include;../../src/common;../../src/common/windows</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
@@ -134,8 +143,8 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>ws2_32.lib;vld.lib;pthreadVC2.lib;mm_lizi_2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;#$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration);D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/lib/x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;vld.lib;pthreadVC2.lib;mm_lizi_2_d.lib;common_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/lib/x86</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>xcopy D:\\lj\\pthreads-w32-2-9-1-release\\Pre-built.2\\dll\\x86\pthreadVC2.dll                         bin\\Debug\* /s /e /h /d /y
@@ -171,7 +180,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MinSpace</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIB_STATIC_COMMON;_LJ_LITTLEENDIAN_MACHINE_;LIB_STATIC_COMMON;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -182,7 +191,7 @@
       <DebugInformationFormat>
       </DebugInformationFormat>
       <CompileAs>Default</CompileAs>
-      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_2;../../src/lizi_1;./windows;#$(LIB_HOME)/src/pthread;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../src/robot;$(VLD_HOME)/include;../../src;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/include;../../src/common;../../src/common/windows</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
@@ -198,7 +207,7 @@
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
       <AdditionalDependencies>ws2_32.lib;vld.lib;pthreadVC2.lib;mm_lizi_2.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;#$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration);D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/lib/x86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/lib/x86</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>

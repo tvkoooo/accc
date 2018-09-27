@@ -3,23 +3,7 @@ http://idea.youbbs.org
 生产者：提供事件的挂载点
 生成生产者的实例。有义务实现该生产者实例的消费者实现过程。
 
-https://bitbucket.org
-tvkoo00oo
-abuabu2017
-huolong-2010@163.com
 
-github
-Repository: <https://github.com:443> GitHub
-tvkoooo
-abuabu2017
-
-http://192.168.111.222/showdoc/index.php?s=/5&page_id=224
-http://git.xiaocao-inc.com/
-longjia
-abuabu2017
-
-https://exmail.qq.com/cgi-bin/loginpage?t=dm_loginpage&s=logout&param=longjia@xcbobo.com
-longjia@xcbobo.com   密码VNCxckj20160818   abuabu2017
 
  运行目录
  查询方法： ps -fe | grep datacen
@@ -47,16 +31,7 @@ quit;
 cd /data/raidcall/log/sessiond_d/
 
 
-wiki
-user	:307062817@qq.com
-passwd	:123456
 
-
-
-
-https://123.57.93.77/svn/PRPUB/小草播播移动端/Beta3.0
-Username: longjia
-Password: jiA@122013
 
 
 

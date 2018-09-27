@@ -1,0 +1,215 @@
+
+Go 获取文件基本信息方法
+2017年10月10日 20:11:30 阅读数：2015 标签： go golang file  更多
+个人分类： go
+版权声明：本文为博主原创文章，未经博主允许不得转载。	https://blog.csdn.net/phachon/article/details/78196874
+Go 获取文件信息方法
+
+go
+file
+最近一直在写 go 语言，总结下go获取文件信息的方法
+
+1.文件修改时间
+
+fileInfo, _ := os.Stat("test.log")
+//修改时间
+modTime := fileInfo.ModTime()
+fmt.Println(modTime)
+1
+2
+3
+4
+2.文件是否存在
+
+_, err := os.Stat("test.log")
+if(os.IsNotExist(err)) {
+    fmt.Println("file not exist!")
+}
+1
+2
+3
+4
+3.文件是否是目录
+
+fileInfo, _ := os.Stat("test.log")
+//是否是目录
+isDir := fileInfo.IsDir()
+fmt.Println(isDir)
+1
+2
+3
+4
+4.文件权限
+
+fileInfo, _ := os.Stat("test.log")
+//权限
+mode := fileInfo.Mode()
+fmt.Println(mode)
+1
+2
+3
+4
+5.文件名
+
+fileInfo, _ := os.Stat("test.log")
+//文件名
+filename:= fileInfo.Name()
+fmt.Println(filename)
+1
+2
+3
+4
+6.文件大小
+
+fileInfo, _ := os.Stat("test.log")
+//文件大小
+filesize:= fileInfo.Size()
+fmt.Println(filesize)//返回的是字节
+1
+2
+3
+4
+7.文件创建时间
+
+文件的创建时间并没有直接的方法返回，翻看源代码才知道如何获取
+
+fileInfo, _ := os.Stat("test.log")
+fileSys := fileInfo.Sys().(*syscall.Win32FileAttributeData)
+nanoseconds := fileSys.CreationTime.Nanoseconds() // 返回的是纳秒
+createTime := nanoseconds/1e9 //秒
+fmt.Println(createTime)
+1
+2
+3
+4
+5
+8.文件最后写入时间
+
+fileInfo, _ := os.Stat("test.log")
+fileSys := fileInfo.Sys().(*syscall.Win32FileAttributeData)
+nanoseconds := fileSys.LastWriteTime.Nanoseconds() // 返回的是纳秒
+lastWriteTime := nanoseconds/1e9 //秒
+fmt.Println(lastWriteTime)
+1
+2
+3
+4
+5
+9.文件最后访问时间
+
+fileInfo, _ := os.Stat("test.log")
+fileSys := fileInfo.Sys().(*syscall.Win32FileAttributeData)
+nanoseconds := fileSys.LastAccessTime.Nanoseconds() // 返回的是纳秒
+lastAccessTime:= nanoseconds/1e9 //秒
+fmt.Println(lastAccessTime)
+1
+2
+3
+4
+5
+10.文件属性
+
+fileInfo, _ := os.Stat("test.log")
+fileSys := fileInfo.Sys().(*syscall.Win32FileAttributeData)
+fileAttributes:= fileSys.FileAttributes
+fmt.Println(fileAttributes)
+1
+2
+3
+4
+介绍一个我用 go 写的日志管理包，地址： https://github.com/phachon/go-logger
+
+package main
+ 
+import (
+    "fmt"
+    "path"
+    "strings"
+)
+ 
+func main() {
+    fullFilename := "/Users/itfanr/Documents/test.txt"
+    fmt.Println("fullFilename =", fullFilename)
+    var filenameWithSuffix string
+    filenameWithSuffix = path.Base(fullFilename) //获取文件名带后缀
+    fmt.Println("filenameWithSuffix =", filenameWithSuffix)
+    var fileSuffix string
+    fileSuffix = path.Ext(filenameWithSuffix) //获取文件后缀
+    fmt.Println("fileSuffix =", fileSuffix)
+ 
+    var filenameOnly string
+    filenameOnly = strings.TrimSuffix(filenameWithSuffix, fileSuffix)//获取文件名
+    fmt.Println("filenameOnly =", filenameOnly)
+}
+
+
+
+golang获取调用者的方法名及所在源码行数
+
+博客分类： go
+log4j用多了,最近在用go写东东,log package又封装的很简陋
+ 
+随即打算山寨个log4go
+ 
+大体架构好说(- -!山寨嘛,哈哈)
+ 
+就是不太清楚怎么获取调用log.Debug的函数名和代码所在的行数
+ 
+研究了一下,直接贴代码吧,呵呵
+ 
+C代码  收藏代码
+package main  
+  
+import "runtime"  
+import "log"  
+  
+func main() {  
+    test()  
+}  
+  
+func test() {  
+    test2()  
+}  
+  
+func test2(){  
+    pc,file,line,ok := runtime.Caller(2)  
+    log.Println(pc)  
+    log.Println(file)  
+    log.Println(line)  
+    log.Println(ok)  
+    f := runtime.FuncForPC(pc)  
+    log.Println(f.Name())  
+      
+    pc,file,line,ok = runtime.Caller(0)  
+    log.Println(pc)  
+    log.Println(file)  
+    log.Println(line)  
+    log.Println(ok)  
+    f = runtime.FuncForPC(pc)  
+    log.Println(f.Name())  
+      
+    pc,file,line,ok = runtime.Caller(1)  
+    log.Println(pc)  
+    log.Println(file)  
+    log.Println(line)  
+    log.Println(ok)  
+    f = runtime.FuncForPC(pc)  
+    log.Println(f.Name())  
+}  
+ 
+output:
+2011/12/30 22:55:17 8216
+2011/12/30 22:55:17 /Users/jarcher/workspace/go/test/src/linetest.go
+2011/12/30 22:55:17 7
+2011/12/30 22:55:17 true
+2011/12/30 22:55:17 main.main
+2011/12/30 22:55:17 9065
+2011/12/30 22:55:17 /Users/jarcher/workspace/go/test/src/linetest.go
+2011/12/30 22:55:17 23
+2011/12/30 22:55:17 true
+2011/12/30 22:55:17 main.test2
+2011/12/30 22:55:17 8241
+2011/12/30 22:55:17 /Users/jarcher/workspace/go/test/src/linetest.go
+2011/12/30 22:55:17 11
+2011/12/30 22:55:17 true
+2011/12/30 22:55:17 main.test

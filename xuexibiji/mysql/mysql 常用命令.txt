@@ -40,3 +40,10 @@ windows的mysql配置文件位置
 D:\ProgramData\MySQL\MySQL Server 5.6\my.ini
 
 mysql -h 47.95.34.149 -u dble -p 8066
+
+
+在表中插入字段
+alter table step_order add `order_id` int(11) NOT NULL COMMENT '订单ID' after `user_id`;
+在表中删除字段
+ALTER TABLE buried_point.tj_task_loop_log
+DROP COLUMN dtest;

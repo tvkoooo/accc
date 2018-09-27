@@ -116,7 +116,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <CompileAs>Default</CompileAs>
-      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_2;./windows;$(LIB_HOME)/src/pthread</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VLD_HOME)/include;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/include;../../src;../../src/lizi_2;./windows;#$(LIB_HOME)/src/pthread</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
@@ -129,11 +129,11 @@
       <EntryPointSymbol>
       </EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>ws2_32.lib;vld.lib;pthread_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;vld.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/lib/x86;#$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(LIB_HOME)\\build\\pthread\\proj_windows\\bin\\Debug\pthread_d.dll                          bin\\Debug\* /s /e /h /d /y
+      <Command>xcopy D:\\lj\\pthreads-w32-2-9-1-release\\Pre-built.2\\dll\\x86\pthreadVC2.dll                          bin\\Debug\* /s /e /h /d /y
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -177,7 +177,7 @@
       <DebugInformationFormat>
       </DebugInformationFormat>
       <CompileAs>Default</CompileAs>
-      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_1;./windows;$(LIB_HOME)/src/pthread</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VLD_HOME)/include;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/include;../../src;../../src/lizi_1;./windows;#$(LIB_HOME)/src/pthread</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
@@ -193,12 +193,12 @@
       <EntryPointSymbol>
       </EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>ws2_32.lib;vld.lib;pthread.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;vld.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/lib/x86;#$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy $(LIB_HOME)\\build\\pthread\\proj_windows\\bin\\Release\pthread.dll                          bin\\Release\* /s /e /h /d /y</Command>
+      <Command>xcopy D:\\lj\\pthreads-w32-2-9-1-release\\Pre-built.2\\dll\\x86\pthreadVC2.dll                         bin\\Release\* /s /e /h /d /y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

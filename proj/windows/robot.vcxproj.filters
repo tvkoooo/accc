@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{8beab597-1d24-4876-8516-e5b61390d06c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="windows">
+      <UniqueIdentifier>{6af82d37-23df-4d96-ad8d-b731656b82bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\robot">
+      <UniqueIdentifier>{f97dee18-2f45-498e-92c3-66af956432e9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="windows\main.cpp">
+      <Filter>windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\robot\application.cpp">
+      <Filter>src\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\robot\lmaths.cpp">
+      <Filter>src\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\robot\fileopr.cpp">
+      <Filter>src\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\robot\typechange.cpp">
+      <Filter>src\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\robot\dataslot.cpp">
+      <Filter>src\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\robot\ltcp.cpp">
+      <Filter>src\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\robot\llog.c">
+      <Filter>src\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\robot\transformation.c">
+      <Filter>src\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\robot\robotapp.cpp">
+      <Filter>src\robot</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\robot\lprotobuff.cpp">
+      <Filter>src\robot</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\robot\application.h">
+      <Filter>src\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\robot\llog.h">
+      <Filter>src\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\robot\lmaths.h">
+      <Filter>src\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\robot\fileopr.h">
+      <Filter>src\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\robot\typechange.h">
+      <Filter>src\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\robot\dataslot.h">
+      <Filter>src\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\robot\ltcp.h">
+      <Filter>src\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\robot\transformation.h">
+      <Filter>src\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\robot\robotapp.h">
+      <Filter>src\robot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\robot\lprotobuff.h">
+      <Filter>src\robot</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,15 @@
+﻿fpm 日志
+cd /data/vnc_log/vnc/vnc_fpm_script/
+
+fpm 错误日志
+cd /vnc/log/php5-fpm
+
+dc 日志
+cd /data/vnc_release/bin/vnc_datacenter/logs/phpscripts/
+
+dc 错误日志
+cd /vnc/log/dc_phplog
+
+机器人日志
+cd /data/vnc_log/vnc/vnc_robot_1
+sudo cp -f /home/longjia/C/xcbb_project.git/RCSvr/robot/trunk/rc_robot_d /data/vnc_release/bin/vnc_robot/rc_robot_d

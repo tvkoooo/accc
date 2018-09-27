@@ -1,0 +1,8 @@
+cd /data/services/zookeeper-3.4.10/bin
+zk客户端
+bash zkCli.sh
+进去后 connect ip:port          connect 172.16.39.199:2181                          connect 172.16.39.170:2181
+ls /
+
+
+

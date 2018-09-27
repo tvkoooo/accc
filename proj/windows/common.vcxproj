@@ -19,29 +19,27 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\lizi_1\application.cpp" />
-    <ClCompile Include="..\..\src\lizi_1\mm_uuu.cpp" />
-    <ClCompile Include="..\..\src\lizi_1\pthread_1.c" />
-    <ClCompile Include="..\..\src\lizi_1\pthread_2.c" />
-    <ClCompile Include="..\..\src\lizi_1\pthread_huidiao.c" />
-    <ClCompile Include="windows\main.cpp" />
+    <ClInclude Include="..\..\src\common\c_end.h" />
+    <ClInclude Include="..\..\src\common\c_start.h" />
+    <ClInclude Include="..\..\src\common\error_desc.h" />
+    <ClInclude Include="..\..\src\common\library_export_common.h" />
+    <ClInclude Include="..\..\src\common\lj_byteswap.h" />
+    <ClInclude Include="..\..\src\common\pthread_state.h" />
+    <ClInclude Include="..\..\src\common\socket_context.h" />
+    <ClInclude Include="..\..\src\common\windows\platform_config.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\lizi_1\application.h" />
-    <ClInclude Include="..\..\src\lizi_1\lizhi1_all.h" />
-    <ClInclude Include="..\..\src\lizi_1\mm_uuu.h" />
-    <ClInclude Include="..\..\src\lizi_1\pthread_1.h" />
-    <ClInclude Include="..\..\src\lizi_1\pthread_2.h" />
-    <ClInclude Include="..\..\src\lizi_1\pthread_huidiao.h" />
+    <ClCompile Include="..\..\src\common\error_desc.c" />
+    <ClCompile Include="..\..\src\common\socket_context.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{97786438-5602-4851-998C-962EF031ED05}</ProjectGuid>
-    <RootNamespace>mm_lizi_1</RootNamespace>
+    <ProjectGuid>{81C789EA-62A0-489D-BDB9-08CF7BD7BBE6}</ProjectGuid>
+    <RootNamespace>common</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
@@ -53,7 +51,7 @@
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
@@ -84,8 +82,8 @@
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)_d</TargetName>
-    <TargetExt>.exe</TargetExt>
     <LinkIncremental>true</LinkIncremental>
+    <TargetExt>.lib</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>..\bin\debug\</OutDir>
@@ -98,7 +96,7 @@
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)</TargetName>
-    <TargetExt>.exe</TargetExt>
+    <TargetExt>.lib</TargetExt>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -111,7 +109,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIB_STATIC_COMMON;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -122,7 +120,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
       <CompileAs>Default</CompileAs>
-      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_2;../../src/lizi_1;./windows;#$(LIB_HOME)/src/pthread;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VLD_HOME)/include;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/include;../../src;../../src/common;./windows;../../src/common/windows</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
     </ClCompile>
     <ResourceCompile>
@@ -132,13 +130,14 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>ws2_32.lib;vld.lib;pthreadVC2.lib;mm_lizi_2_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;#$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration);D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/lib/x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;vld.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/lib/x86;#$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy D:\\lj\\pthreads-w32-2-9-1-release\\Pre-built.2\\dll\\x86\pthreadVC2.dll                         bin\\Debug\* /s /e /h /d /y
+      <Command>xcopy D:\\lj\\pthreads-w32-2-9-1-release\\Pre-built.2\\dll\\x86\pthreadVC2.dll                          bin\\Debug\* /s /e /h /d /y
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -171,7 +170,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MinSpace</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;LIB_STATIC_COMMON;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -182,7 +181,7 @@
       <DebugInformationFormat>
       </DebugInformationFormat>
       <CompileAs>Default</CompileAs>
-      <AdditionalIncludeDirectories>$(VLD_HOME)/include;../../src;../../src/lizi_2;../../src/lizi_1;./windows;#$(LIB_HOME)/src/pthread;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(VLD_HOME)/include;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/include;../../src;../../src/common;./windows;../../src/common/windows</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4251;4819;4800</DisableSpecificWarnings>
       <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
     </ClCompile>
@@ -195,10 +194,11 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
       <TargetMachine>MachineX86</TargetMachine>
-      <AdditionalDependencies>ws2_32.lib;vld.lib;pthreadVC2.lib;mm_lizi_2.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;#$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration);D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/lib/x86</AdditionalLibraryDirectories>
+      <AdditionalDependencies>ws2_32.lib;vld.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(OutDir);$(VLD_HOME)/lib/Win32;D:/lj/pthreads-w32-2-9-1-release/Pre-built.2/lib/x86;#$(LIB_HOME)/build/pthread/proj_windows/bin/$(Configuration)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>

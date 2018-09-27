@@ -1,6 +1,7 @@
 ﻿#include "xuhanshu.h"
 
 
+
 static void lizhi_3_xuhanshu_fun1(lizhi3_cl_A & aaaa);
 static void lizhi_3_xuhanshu_fun2(lizhi3_lc_B & bbbb);
 static void lizhi_3_xuhanshu_fun3(lizhi3_cl_A * aaaa);
@@ -18,9 +19,9 @@ void lizhi_3_xuhanshu()
 	b.printf_lizhi3_ppppp();
 
 	lizhi_3_xuhanshu_fun1(a);
-	lizhi_3_xuhanshu_fun1(b);
+	lizhi_3_xuhanshu_fun2(b);
 	lizhi_3_xuhanshu_fun3(&a);
-	lizhi_3_xuhanshu_fun3(&b);
+	lizhi_3_xuhanshu_fun4(&b);
 	//lizhi_3_xuhanshu_fun4(&a);
 	//lizhi_3_xuhanshu_fun4(&b);
 }

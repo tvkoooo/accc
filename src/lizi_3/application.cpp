@@ -5,7 +5,7 @@
 
 void application_init(struct application* p)
 {
-	lizhi_3_xuhanshu();
+	//lizhi_3_xuhanshu();
 	return;
 
 	struct mm_os_context* g_os_context = mm_os_context_instance();
