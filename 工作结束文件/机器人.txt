@@ -1,0 +1,102 @@
+﻿
+正式服机器人（fuz2）日志
+cd /data/raidcall/log/robot_d
+grep "RobotMgr::readRobotFile read count:9724" robot_d.log
+
+
+
+
+
+
+开发服机器人日志
+cd /data/vnc_log/vnc/vnc_robot_2
+
+
+10000099  机器人
+
+
+进入机器人
+sudo supervisorctl
+密码
+start  开启
+stop   停止
+status 查看
+
+
+
+机器人入场   （    (32 << 8) | 2    ）
+struct PRealJoinChannel : public sox::Marshallable {
+	enum {uri = (32 << 8 | protocol::SESSION_SVID)};
+	uint32_t uid;
+	uint32_t sid;
+	uint32_t ssid;
+	uint32_t version;
+	std::string sha1Pass;
+	std::string ssPass;
+	
+	virtual void marshal(sox::Pack &p) const {
+		p << uid << sha1Pass << sid << ssid << ssPass << version;
+	}
+	virtual void unmarshal(const sox::Unpack &p) {
+		p >> uid >> sha1Pass >> sid >> ssid >> ssPass >> version;
+	}
+};
+
+
+
+
+
+机器人心跳    （    (12 << 8) | 4    ）
+struct PPlus: public sox::Voidmable{
+	PPlus(){
+		uid = 0;
+		sid = 0;
+		stampc = 0;
+		stamps = 0;
+	}
+	enum{uri = (12 << 8 | protocol::LINKD_SVID)};
+	uint32_t uid;
+	uint32_t sid;
+	uint32_t stampc;
+	uint32_t stamps;
+	virtual void marshal(sox::Pack &pk) const {
+		pk << uid << sid <<stampc << stamps;
+	}
+	virtual void unmarshal(const sox::Unpack &up) {
+		up >> uid >> sid >> stampc >> stamps;
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

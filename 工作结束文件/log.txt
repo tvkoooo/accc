@@ -1,0 +1,843 @@
+2018-09-1216: 53: 37linkcall_pk_api.on_linkcallpk_user_comein_room_rqrq: {
+    "svid": 3,
+    "plugin_type": 6,
+    "uid": 90482912,
+    "cid": 1,
+    "sid": 900166,
+    "usercount": 54,
+    "roler": 25,
+    "uid_onmic": 90000173,
+    "receiver": "\u7528\u623790000173",
+    "sender": "\u7528\u623790482947",
+    "cmd": "linkcallpk_user_comein_room_rq",
+    "singer_id": "90000173",
+    "singer_sid": 900166
+}2018-09-1217: 52: 18linkcall_pk_api.on_linkcallpk_user_comein_room_rqrq: {
+    "svid": 3,
+    "plugin_type": 6,
+    "uid": 90482912,
+    "cid": 1,
+    "sid": 900166,
+    "usercount": 2,
+    "roler": 25,
+    "uid_onmic": 90000173,
+    "receiver": "",
+    "sender": "\u7528\u6237\u2714",
+    "cmd": "linkcallpk_user_comein_room_rq",
+    "singer_id": "90000173",
+    "singer_sid": 900166
+}2018-09-1218: 03: 13linkcall_pk_api.on_linkcallpk_user_comein_room_rqrq: {
+    "svid": 3,
+    "plugin_type": 6,
+    "uid": 90482912,
+    "cid": 1,
+    "sid": 900082,
+    "usercount": 3,
+    "roler": 25,
+    "uid_onmic": 90000089,
+    "receiver": "\u6e05\u51cc",
+    "sender": "\u7528\u6237\u2714",
+    "cmd": "linkcallpk_user_comein_room_rq",
+    "singer_id": 90000089,
+    "singer_sid": 900082
+}2018-09-1218: 03: 17linkcall_pk_model.sendgiftpk_singer_sid_h: 900082pk_singer_sid_g: 1315688broadcastResult: {
+    "cmd": "BSendGift",
+    "receiver": 90000089,
+    "receiverNick": "\u6e05\u51cc",
+    "list": [
+        {
+            "uid": 90482912,
+            "type": "17",
+            "id": "409",
+            "sendTime": "1536746602000",
+            "flag": 0,
+            "serialNum": 1,
+            "num": 1,
+            "giftValue": 10,
+            "charmValue": 0,
+            "isNew": 0,
+            "isGuard": 0,
+            "guardType": 0,
+            "honor": 0,
+            "vipLevel": 0,
+            "nick": "\u7528\u6237\u2714",
+            "vip": 0,
+            "richLevel": 4,
+            "richStart": 0,
+            "closeLevel": 0,
+            "myGuard": [
+                
+            ],
+            "charisma": 0,
+            "giftName": "\u68d2\u68d2\u7cd6",
+            "imgUrl": "\/3e53a293-b6ad-477c-8519-33e07345a1c0.png",
+            "singerChannelPoint": "0",
+            "identity": 1,
+            "photo": "55587996-b20d-49c0-92ab-40ac962ff54f",
+            "effect_id": 0,
+            "show_time": 0,
+            "group_effect": 0
+        }
+    ],
+    "pkid": 27
+}2018-09-1218: 03: 17linkcall_pk_api.on_linkcallpk_user_send_gift_eventpkid: 27user_id: 90482912giftall: 10singer_id: 900000892018-09-1218: 03: 17linkcall_pk_model.linkcallpk_user_info_by_useridsinger_id: 90000089user_id: 90482912ranking: 02018-09-1218: 03: 17linkcall_pk_model.linkcallpk_room_pk_info_nthost_sid: 900082guest_sid: 1315688nt: {
+    "cmd": "linkcallpk_room_pk_info_nt",
+    "time_now": 1536746597,
+    "pkid": 27,
+    "singer_id": 90000089,
+    "pk": {
+        "starttime": 1536746585,
+        "pkalltime": 183,
+        "host_id": 90000089,
+        "host_sid": 900082,
+        "guest_id": 90480533,
+        "guest_sid": 1315688,
+        "host_gift": 10,
+        "guest_gift": 0,
+        "pk_state": 11
+    },
+    "user": {
+        "user_id": 90482912,
+        "user_icon": "55587996-b20d-49c0-92ab-40ac962ff54f",
+        "user_nick": "\u7528\u6237\u2714",
+        "user_wealth": 4,
+        "user_level": 1,
+        "user_gift": 10
+    }
+}2018-09-1218: 03: 26linkcall_pk_api.on_linkcallpk_user_comein_room_rssinger_id£º90000089singer_sid: 900082rs: {
+    "cmd": "linkcallpk_user_comein_room_rs",
+    "error": {
+        "code": 0,
+        "desc": ""
+    },
+    "singer_id": 90000089,
+    "time_now": 1536746606,
+    "pkid": 27,
+    "pk": {
+        "starttime": 1536746585,
+        "pkalltime": 183,
+        "host_id": 90000089,
+        "host_sid": 900082,
+        "guest_id": 90480533,
+        "guest_sid": 1315688,
+        "host_gift": 10,
+        "guest_gift": 0,
+        "pk_state": 11
+    },
+    "h_singer": {
+        "singer_star": "5",
+        "singer_level": 20,
+        "level_name": "\u5076\u50cf",
+        "sub_level": 1,
+        "singer_icon": "900000891521530239214",
+        "singer_nick": "\u6e05\u51cc",
+        "singer_id": 90000089,
+        "singer_sid": 900082
+    },
+    "g_singer": {
+        "singer_star": "2",
+        "singer_level": 29,
+        "level_name": "\u5076\u50cf",
+        "sub_level": 10,
+        "singer_icon": "904805331534239246965",
+        "singer_nick": "wuya",
+        "singer_id": 90480533,
+        "singer_sid": 1315688
+    },
+    "h_users": [
+        {
+            "user_id": 90482912,
+            "user_icon": "55587996-b20d-49c0-92ab-40ac962ff54f",
+            "user_nick": "\u7528\u6237\u2714",
+            "user_wealth": 4,
+            "user_level": 1,
+            "user_gift": 10
+        }
+    ],
+    "g_users": [
+        
+    ]
+}2018-09-1218: 03: 26linkcall_pk_api.on_linkcallpk_user_comein_room_rssinger_id£º90000089singer_sid: 900082return: [
+    {
+        "broadcast": 0,
+        "data": {
+            "cmd": "linkcallpk_user_comein_room_rs",
+            "error": {
+                "code": 0,
+                "desc": ""
+            },
+            "singer_id": 90000089,
+            "time_now": 1536746606,
+            "pkid": 27,
+            "pk": {
+                "starttime": 1536746585,
+                "pkalltime": 183,
+                "host_id": 90000089,
+                "host_sid": 900082,
+                "guest_id": 90480533,
+                "guest_sid": 1315688,
+                "host_gift": 10,
+                "guest_gift": 0,
+                "pk_state": 11
+            },
+            "h_singer": {
+                "singer_star": "5",
+                "singer_level": 20,
+                "level_name": "\u5076\u50cf",
+                "sub_level": 1,
+                "singer_icon": "900000891521530239214",
+                "singer_nick": "\u6e05\u51cc",
+                "singer_id": 90000089,
+                "singer_sid": 900082
+            },
+            "g_singer": {
+                "singer_star": "2",
+                "singer_level": 29,
+                "level_name": "\u5076\u50cf",
+                "sub_level": 10,
+                "singer_icon": "904805331534239246965",
+                "singer_nick": "wuya",
+                "singer_id": 90480533,
+                "singer_sid": 1315688
+            },
+            "h_users": [
+                {
+                    "user_id": 90482912,
+                    "user_icon": "55587996-b20d-49c0-92ab-40ac962ff54f",
+                    "user_nick": "\u7528\u6237\u2714",
+                    "user_wealth": 4,
+                    "user_level": 1,
+                    "user_gift": 10
+                }
+            ],
+            "g_users": [
+                
+            ]
+        }
+    }
+]2018-09-1218: 03: 28linkcall_pk_api.on_linkcallpk_user_comein_room_rqrq: {
+    "svid": 3,
+    "plugin_type": 6,
+    "uid": 90482912,
+    "cid": 1,
+    "sid": 900082,
+    "usercount": 4,
+    "roler": 25,
+    "uid_onmic": 90000089,
+    "receiver": "\u6e05\u51cc",
+    "sender": "\u7528\u6237\u2714",
+    "cmd": "linkcallpk_user_comein_room_rq",
+    "singer_id": 90000089,
+    "singer_sid": 900082
+}2018-09-1218: 03: 28linkcall_pk_api.on_linkcallpk_user_comein_room_rssinger_id£º90000089singer_sid: 900082rs: {
+    "cmd": "linkcallpk_user_comein_room_rs",
+    "error": {
+        "code": 0,
+        "desc": ""
+    },
+    "singer_id": 90000089,
+    "time_now": 1536746608,
+    "pkid": 27,
+    "pk": {
+        "starttime": 1536746585,
+        "pkalltime": 183,
+        "host_id": 90000089,
+        "host_sid": 900082,
+        "guest_id": 90480533,
+        "guest_sid": 1315688,
+        "host_gift": 10,
+        "guest_gift": 0,
+        "pk_state": 11
+    },
+    "h_singer": {
+        "singer_star": "5",
+        "singer_level": 20,
+        "level_name": "\u5076\u50cf",
+        "sub_level": 1,
+        "singer_icon": "900000891521530239214",
+        "singer_nick": "\u6e05\u51cc",
+        "singer_id": 90000089,
+        "singer_sid": 900082
+    },
+    "g_singer": {
+        "singer_star": "2",
+        "singer_level": 29,
+        "level_name": "\u5076\u50cf",
+        "sub_level": 10,
+        "singer_icon": "904805331534239246965",
+        "singer_nick": "wuya",
+        "singer_id": 90480533,
+        "singer_sid": 1315688
+    },
+    "h_users": [
+        {
+            "user_id": 90482912,
+            "user_icon": "55587996-b20d-49c0-92ab-40ac962ff54f",
+            "user_nick": "\u7528\u6237\u2714",
+            "user_wealth": 4,
+            "user_level": 1,
+            "user_gift": 10
+        }
+    ],
+    "g_users": [
+        
+    ]
+}2018-09-1218: 03: 28linkcall_pk_api.on_linkcallpk_user_comein_room_rssinger_id£º90000089singer_sid: 900082return: [
+    {
+        "broadcast": 0,
+        "data": {
+            "cmd": "linkcallpk_user_comein_room_rs",
+            "error": {
+                "code": 0,
+                "desc": ""
+            },
+            "singer_id": 90000089,
+            "time_now": 1536746608,
+            "pkid": 27,
+            "pk": {
+                "starttime": 1536746585,
+                "pkalltime": 183,
+                "host_id": 90000089,
+                "host_sid": 900082,
+                "guest_id": 90480533,
+                "guest_sid": 1315688,
+                "host_gift": 10,
+                "guest_gift": 0,
+                "pk_state": 11
+            },
+            "h_singer": {
+                "singer_star": "5",
+                "singer_level": 20,
+                "level_name": "\u5076\u50cf",
+                "sub_level": 1,
+                "singer_icon": "900000891521530239214",
+                "singer_nick": "\u6e05\u51cc",
+                "singer_id": 90000089,
+                "singer_sid": 900082
+            },
+            "g_singer": {
+                "singer_star": "2",
+                "singer_level": 29,
+                "level_name": "\u5076\u50cf",
+                "sub_level": 10,
+                "singer_icon": "904805331534239246965",
+                "singer_nick": "wuya",
+                "singer_id": 90480533,
+                "singer_sid": 1315688
+            },
+            "h_users": [
+                {
+                    "user_id": 90482912,
+                    "user_icon": "55587996-b20d-49c0-92ab-40ac962ff54f",
+                    "user_nick": "\u7528\u6237\u2714",
+                    "user_wealth": 4,
+                    "user_level": 1,
+                    "user_gift": 10
+                }
+            ],
+            "g_users": [
+                
+            ]
+        }
+    }
+]2018-09-1218: 05: 27linkcall_pk_api.on_linkcallpk_user_comein_room_rqrq: {
+    "svid": 3,
+    "plugin_type": 6,
+    "uid": 90482912,
+    "cid": 1,
+    "sid": 900082,
+    "usercount": 4,
+    "roler": 25,
+    "uid_onmic": 90000089,
+    "receiver": "\u6e05\u51cc",
+    "sender": "\u7528\u6237\u2714",
+    "cmd": "linkcallpk_user_comein_room_rq",
+    "singer_id": 90000089,
+    "singer_sid": 900082
+}2018-09-1218: 05: 27linkcall_pk_api.on_linkcallpk_user_comein_room_rssinger_id£º90000089singer_sid: 900082rs: {
+    "cmd": "linkcallpk_user_comein_room_rs",
+    "error": {
+        "code": 0,
+        "desc": ""
+    },
+    "singer_id": 90000089,
+    "time_now": 1536746727,
+    "pkid": 27,
+    "pk": {
+        "starttime": 1536746585,
+        "pkalltime": 183,
+        "host_id": 90000089,
+        "host_sid": 900082,
+        "guest_id": 90480533,
+        "guest_sid": 1315688,
+        "host_gift": 10,
+        "guest_gift": 0,
+        "pk_state": 11
+    },
+    "h_singer": {
+        "singer_star": "5",
+        "singer_level": 20,
+        "level_name": "\u5076\u50cf",
+        "sub_level": 1,
+        "singer_icon": "900000891521530239214",
+        "singer_nick": "\u6e05\u51cc",
+        "singer_id": 90000089,
+        "singer_sid": 900082
+    },
+    "g_singer": {
+        "singer_star": "2",
+        "singer_level": 29,
+        "level_name": "\u5076\u50cf",
+        "sub_level": 10,
+        "singer_icon": "904805331534239246965",
+        "singer_nick": "wuya",
+        "singer_id": 90480533,
+        "singer_sid": 1315688
+    },
+    "h_users": [
+        {
+            "user_id": 90482912,
+            "user_icon": "55587996-b20d-49c0-92ab-40ac962ff54f",
+            "user_nick": "\u7528\u6237\u2714",
+            "user_wealth": 4,
+            "user_level": 1,
+            "user_gift": 10
+        }
+    ],
+    "g_users": [
+        
+    ]
+}2018-09-1218: 05: 27linkcall_pk_api.on_linkcallpk_user_comein_room_rssinger_id£º90000089singer_sid: 900082return: [
+    {
+        "broadcast": 0,
+        "data": {
+            "cmd": "linkcallpk_user_comein_room_rs",
+            "error": {
+                "code": 0,
+                "desc": ""
+            },
+            "singer_id": 90000089,
+            "time_now": 1536746727,
+            "pkid": 27,
+            "pk": {
+                "starttime": 1536746585,
+                "pkalltime": 183,
+                "host_id": 90000089,
+                "host_sid": 900082,
+                "guest_id": 90480533,
+                "guest_sid": 1315688,
+                "host_gift": 10,
+                "guest_gift": 0,
+                "pk_state": 11
+            },
+            "h_singer": {
+                "singer_star": "5",
+                "singer_level": 20,
+                "level_name": "\u5076\u50cf",
+                "sub_level": 1,
+                "singer_icon": "900000891521530239214",
+                "singer_nick": "\u6e05\u51cc",
+                "singer_id": 90000089,
+                "singer_sid": 900082
+            },
+            "g_singer": {
+                "singer_star": "2",
+                "singer_level": 29,
+                "level_name": "\u5076\u50cf",
+                "sub_level": 10,
+                "singer_icon": "904805331534239246965",
+                "singer_nick": "wuya",
+                "singer_id": 90480533,
+                "singer_sid": 1315688
+            },
+            "h_users": [
+                {
+                    "user_id": 90482912,
+                    "user_icon": "55587996-b20d-49c0-92ab-40ac962ff54f",
+                    "user_nick": "\u7528\u6237\u2714",
+                    "user_wealth": 4,
+                    "user_level": 1,
+                    "user_gift": 10
+                }
+            ],
+            "g_users": [
+                
+            ]
+        }
+    }
+]2018-09-1218: 06: 00linkcall_pk_api.on_linkcallpk_user_comein_room_rqrq: {
+    "svid": 3,
+    "plugin_type": 6,
+    "uid": 90482912,
+    "cid": 1,
+    "sid": 900082,
+    "usercount": 4,
+    "roler": 25,
+    "uid_onmic": 90000089,
+    "receiver": "\u6e05\u51cc",
+    "sender": "\u7528\u6237\u2714",
+    "cmd": "linkcallpk_user_comein_room_rq",
+    "singer_id": 90000089,
+    "singer_sid": 900082
+}2018-09-1218: 06: 00linkcall_pk_api.on_linkcallpk_user_comein_room_rssinger_id£º90000089singer_sid: 900082rs: {
+    "cmd": "linkcallpk_user_comein_room_rs",
+    "error": {
+        "code": 0,
+        "desc": ""
+    },
+    "singer_id": 90000089,
+    "time_now": 1536746760,
+    "pkid": 27,
+    "pk": {
+        "starttime": 1536746585,
+        "pkalltime": 183,
+        "host_id": 90000089,
+        "host_sid": 900082,
+        "guest_id": 90480533,
+        "guest_sid": 1315688,
+        "host_gift": 10,
+        "guest_gift": 0,
+        "pk_state": 11
+    },
+    "h_singer": {
+        "singer_star": "5",
+        "singer_level": 20,
+        "level_name": "\u5076\u50cf",
+        "sub_level": 1,
+        "singer_icon": "900000891521530239214",
+        "singer_nick": "\u6e05\u51cc",
+        "singer_id": 90000089,
+        "singer_sid": 900082
+    },
+    "g_singer": {
+        "singer_star": "2",
+        "singer_level": 29,
+        "level_name": "\u5076\u50cf",
+        "sub_level": 10,
+        "singer_icon": "904805331534239246965",
+        "singer_nick": "wuya",
+        "singer_id": 90480533,
+        "singer_sid": 1315688
+    },
+    "h_users": [
+        {
+            "user_id": 90482912,
+            "user_icon": "55587996-b20d-49c0-92ab-40ac962ff54f",
+            "user_nick": "\u7528\u6237\u2714",
+            "user_wealth": 4,
+            "user_level": 1,
+            "user_gift": 10
+        }
+    ],
+    "g_users": [
+        
+    ]
+}2018-09-1218: 06: 00linkcall_pk_api.on_linkcallpk_user_comein_room_rssinger_id£º90000089singer_sid: 900082return: [
+    {
+        "broadcast": 0,
+        "data": {
+            "cmd": "linkcallpk_user_comein_room_rs",
+            "error": {
+                "code": 0,
+                "desc": ""
+            },
+            "singer_id": 90000089,
+            "time_now": 1536746760,
+            "pkid": 27,
+            "pk": {
+                "starttime": 1536746585,
+                "pkalltime": 183,
+                "host_id": 90000089,
+                "host_sid": 900082,
+                "guest_id": 90480533,
+                "guest_sid": 1315688,
+                "host_gift": 10,
+                "guest_gift": 0,
+                "pk_state": 11
+            },
+            "h_singer": {
+                "singer_star": "5",
+                "singer_level": 20,
+                "level_name": "\u5076\u50cf",
+                "sub_level": 1,
+                "singer_icon": "900000891521530239214",
+                "singer_nick": "\u6e05\u51cc",
+                "singer_id": 90000089,
+                "singer_sid": 900082
+            },
+            "g_singer": {
+                "singer_star": "2",
+                "singer_level": 29,
+                "level_name": "\u5076\u50cf",
+                "sub_level": 10,
+                "singer_icon": "904805331534239246965",
+                "singer_nick": "wuya",
+                "singer_id": 90480533,
+                "singer_sid": 1315688
+            },
+            "h_users": [
+                {
+                    "user_id": 90482912,
+                    "user_icon": "55587996-b20d-49c0-92ab-40ac962ff54f",
+                    "user_nick": "\u7528\u6237\u2714",
+                    "user_wealth": 4,
+                    "user_level": 1,
+                    "user_gift": 10
+                }
+            ],
+            "g_users": [
+                
+            ]
+        }
+    }
+]2018-09-1218: 06: 08linkcall_pk_api.on_linkcallpk_user_comein_room_rqrq: {
+    "svid": 3,
+    "plugin_type": 6,
+    "uid": 90482912,
+    "cid": 1,
+    "sid": 900082,
+    "usercount": 4,
+    "roler": 25,
+    "uid_onmic": 90000089,
+    "receiver": "\u6e05\u51cc",
+    "sender": "\u7528\u6237\u2714",
+    "cmd": "linkcallpk_user_comein_room_rq",
+    "singer_id": 90000089,
+    "singer_sid": 900082
+}2018-09-1218: 06: 08linkcall_pk_api.on_linkcallpk_user_comein_room_rssinger_id£º90000089singer_sid: 900082rs: {
+    "cmd": "linkcallpk_user_comein_room_rs",
+    "error": {
+        "code": 0,
+        "desc": ""
+    },
+    "singer_id": 90000089,
+    "time_now": 1536746768,
+    "pkid": 27,
+    "pk": {
+        "starttime": 1536746585,
+        "pkalltime": 183,
+        "host_id": 90000089,
+        "host_sid": 900082,
+        "guest_id": 90480533,
+        "guest_sid": 1315688,
+        "host_gift": 10,
+        "guest_gift": 0,
+        "pk_state": 15
+    },
+    "h_singer": {
+        "singer_star": "5",
+        "singer_level": 20,
+        "level_name": "\u5076\u50cf",
+        "sub_level": 1,
+        "singer_icon": "900000891521530239214",
+        "singer_nick": "\u6e05\u51cc",
+        "singer_id": 90000089,
+        "singer_sid": 900082
+    },
+    "g_singer": {
+        "singer_star": "2",
+        "singer_level": 29,
+        "level_name": "\u5076\u50cf",
+        "sub_level": 10,
+        "singer_icon": "904805331534239246965",
+        "singer_nick": "wuya",
+        "singer_id": 90480533,
+        "singer_sid": 1315688
+    },
+    "h_users": [
+        {
+            "user_id": 90482912,
+            "user_icon": "55587996-b20d-49c0-92ab-40ac962ff54f",
+            "user_nick": "\u7528\u6237\u2714",
+            "user_wealth": 4,
+            "user_level": 1,
+            "user_gift": 10
+        }
+    ],
+    "g_users": [
+        
+    ]
+}2018-09-1218: 06: 08linkcall_pk_api.on_linkcallpk_user_comein_room_rssinger_id£º90000089singer_sid: 900082return: [
+    {
+        "broadcast": 0,
+        "data": {
+            "cmd": "linkcallpk_user_comein_room_rs",
+            "error": {
+                "code": 0,
+                "desc": ""
+            },
+            "singer_id": 90000089,
+            "time_now": 1536746768,
+            "pkid": 27,
+            "pk": {
+                "starttime": 1536746585,
+                "pkalltime": 183,
+                "host_id": 90000089,
+                "host_sid": 900082,
+                "guest_id": 90480533,
+                "guest_sid": 1315688,
+                "host_gift": 10,
+                "guest_gift": 0,
+                "pk_state": 15
+            },
+            "h_singer": {
+                "singer_star": "5",
+                "singer_level": 20,
+                "level_name": "\u5076\u50cf",
+                "sub_level": 1,
+                "singer_icon": "900000891521530239214",
+                "singer_nick": "\u6e05\u51cc",
+                "singer_id": 90000089,
+                "singer_sid": 900082
+            },
+            "g_singer": {
+                "singer_star": "2",
+                "singer_level": 29,
+                "level_name": "\u5076\u50cf",
+                "sub_level": 10,
+                "singer_icon": "904805331534239246965",
+                "singer_nick": "wuya",
+                "singer_id": 90480533,
+                "singer_sid": 1315688
+            },
+            "h_users": [
+                {
+                    "user_id": 90482912,
+                    "user_icon": "55587996-b20d-49c0-92ab-40ac962ff54f",
+                    "user_nick": "\u7528\u6237\u2714",
+                    "user_wealth": 4,
+                    "user_level": 1,
+                    "user_gift": 10
+                }
+            ],
+            "g_users": [
+                
+            ]
+        }
+    }
+]2018-09-1218: 07: 04linkcall_pk_api.on_linkcallpk_user_comein_room_rqrq: {
+    "svid": 3,
+    "plugin_type": 6,
+    "uid": 90482912,
+    "cid": 1,
+    "sid": 900082,
+    "usercount": 4,
+    "roler": 25,
+    "uid_onmic": 90000089,
+    "receiver": "\u6e05\u51cc",
+    "sender": "\u7528\u6237\u2714",
+    "cmd": "linkcallpk_user_comein_room_rq",
+    "singer_id": 90000089,
+    "singer_sid": 900082
+}2018-09-1218: 07: 04linkcall_pk_api.on_linkcallpk_user_comein_room_rssinger_id£º90000089singer_sid: 900082rs: {
+    "cmd": "linkcallpk_user_comein_room_rs",
+    "error": {
+        "code": 0,
+        "desc": ""
+    },
+    "singer_id": 90000089,
+    "time_now": 1536746824,
+    "pkid": 27,
+    "pk": {
+        "starttime": 1536746585,
+        "pkalltime": 183,
+        "host_id": 90000089,
+        "host_sid": 900082,
+        "guest_id": 90480533,
+        "guest_sid": 1315688,
+        "host_gift": 10,
+        "guest_gift": 0,
+        "pk_state": 12
+    },
+    "h_singer": {
+        "singer_star": "5",
+        "singer_level": 20,
+        "level_name": "\u5076\u50cf",
+        "sub_level": 1,
+        "singer_icon": "900000891521530239214",
+        "singer_nick": "\u6e05\u51cc",
+        "singer_id": 90000089,
+        "singer_sid": 900082
+    },
+    "g_singer": {
+        "singer_star": "2",
+        "singer_level": 29,
+        "level_name": "\u5076\u50cf",
+        "sub_level": 10,
+        "singer_icon": "904805331534239246965",
+        "singer_nick": "wuya",
+        "singer_id": 90480533,
+        "singer_sid": 1315688
+    },
+    "h_users": [
+        {
+            "user_id": 90482912,
+            "user_icon": "55587996-b20d-49c0-92ab-40ac962ff54f",
+            "user_nick": "\u7528\u6237\u2714",
+            "user_wealth": 4,
+            "user_level": 1,
+            "user_gift": 10
+        }
+    ],
+    "g_users": [
+        
+    ]
+}2018-09-1218: 07: 04linkcall_pk_api.on_linkcallpk_user_comein_room_rssinger_id£º90000089singer_sid: 900082return: [
+    {
+        "broadcast": 0,
+        "data": {
+            "cmd": "linkcallpk_user_comein_room_rs",
+            "error": {
+                "code": 0,
+                "desc": ""
+            },
+            "singer_id": 90000089,
+            "time_now": 1536746824,
+            "pkid": 27,
+            "pk": {
+                "starttime": 1536746585,
+                "pkalltime": 183,
+                "host_id": 90000089,
+                "host_sid": 900082,
+                "guest_id": 90480533,
+                "guest_sid": 1315688,
+                "host_gift": 10,
+                "guest_gift": 0,
+                "pk_state": 12
+            },
+            "h_singer": {
+                "singer_star": "5",
+                "singer_level": 20,
+                "level_name": "\u5076\u50cf",
+                "sub_level": 1,
+                "singer_icon": "900000891521530239214",
+                "singer_nick": "\u6e05\u51cc",
+                "singer_id": 90000089,
+                "singer_sid": 900082
+            },
+            "g_singer": {
+                "singer_star": "2",
+                "singer_level": 29,
+                "level_name": "\u5076\u50cf",
+                "sub_level": 10,
+                "singer_icon": "904805331534239246965",
+                "singer_nick": "wuya",
+                "singer_id": 90480533,
+                "singer_sid": 1315688
+            },
+            "h_users": [
+                {
+                    "user_id": 90482912,
+                    "user_icon": "55587996-b20d-49c0-92ab-40ac962ff54f",
+                    "user_nick": "\u7528\u6237\u2714",
+                    "user_wealth": 4,
+                    "user_level": 1,
+                    "user_gift": 10
+                }
+            ],
+            "g_users": [
+                
+            ]
+        }
+    }
+]

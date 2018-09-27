@@ -1,0 +1,40 @@
+i type_base
+{
+	void decode(slot)
+	void encode(slot)
+}
+
+// impl
+m type_i : type_base
+{
+	int a;
+	void decode(slot)
+	void encode(slot)
+}
+
+i factroy_base
+{
+	type_base* create();
+	void destroy(type_base*);
+}
+// 
+m factroy_i : factroy_base
+{
+	type_base* create()
+	{
+		return new type_i;
+	}
+	void destroy(type_base* v)
+	{
+		delete v;
+	}
+}
+map<int, factroy_base>
+// reg
+map[i] = new factroy_i;
+
+// 
+type_base* tb = map[i].create();
+// 实际内容 ti
+tb.decode(slot)
+map[i].destroy(tb);

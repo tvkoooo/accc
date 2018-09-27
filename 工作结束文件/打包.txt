@@ -1,0 +1,120 @@
+class steambuff
+{
+public:
+	char buffer[154];
+	int o;
+public:
+	void encode(uint32_t* v)
+	{
+		memcpy(buffer, v, 4);
+		o += 4;
+	}
+	void encode(uint64_t* v)
+	{
+		memcpy(buffer, v, 8);
+		o += 8;
+	}
+	void encode(std::string* v)
+	{
+
+	}
+public:
+};
+class msg
+{
+public:
+	msg() {}
+	virtual ~msg() {}
+public:
+	virtual void decode(steambuff* buff) = 0;
+	virtual void encode(steambuff* buff) = 0;
+};
+
+class msg_0 : public msg
+{
+public:
+	uint32_t a;
+	uint64_t b;
+	std::string c;
+public:
+	virtual void decode(steambuff* buff)
+	{
+		buff->encode(&this->a);
+		buff->encode(&this->b);
+		buff->encode(&this->c);
+	}
+	virtual void encode(steambuff* buff)
+	{
+
+	}
+};
+class conn
+{
+public:
+	int fd;
+	steambuff sb;
+public:
+	void send_msg(msg* _msg)
+	{
+		_msg->encode(&this->sb);
+		send(fd, this->sb.buffer, this->sb.o, 0);
+		this->sb.o += 1;
+	}
+};
+
+
+void func()
+{
+	conn _conn;
+
+	msg_0 m;
+	m.a = 1;
+	m.b = 2;
+	m.c = "ff";
+
+	_conn.send_msg(&m);
+}
+
+type buffer_iii
+{
+	void puti32(uint32)
+	void puti64(uint32)
+}
+
+type interface code_i
+{
+	encode(a buffer_iii)
+	decode(a buffer_iii)
+};
+func(uint32* p) encode(a buffer_iii)
+{
+	buffer_iii.puti32(p);
+}
+func(uint32* p) decode(a buffer_iii)
+{
+	buffer_iii.geti32(p);
+}
+
+func(uint64* p) encode(a buffer_iii)
+{
+	buffer_iii.puti64(p);
+}
+func(uint64* p) decode(a buffer_iii)
+{
+	buffer_iii.geti64(p);
+}
+
+type aaa_0
+[
+	uint32 i32;
+	uint32 i64;
+]
+
+func (aaa_0* p) decode(buffer_iii a)
+{
+	i32.encode(&a);
+	i64.encode(&a);
+	i64.encode(&a);
+	i64.encode(&a);
+	i64.encode(&a);
+}

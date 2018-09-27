@@ -1,0 +1,96 @@
+
+删除主播任务
+del singer_day_uid:80072460:2018-09-20 singeruid:80072460:2018-09-20 singertreasure_task:uid:80072460:2018-09-20 taskstart::uid:80072460:2018-09-20
+
+
+
+
+
+
+
+
+
+
+
+
+
+主播日常任务启动时间
+singer_day_uid:10005130:2018-08-16
+
+主播任务启动时间
+singeruid:10005130:2018-08-16
+
+主播挖宝任务启动时间
+singertreasure_task:uid:10005130:2018-08-16
+
+
+del singer_day_uid:10005130:2018-08-16 singeruid:10005130:2018-08-16 singertreasure_task:uid:10005130:2018-08-16
+
+
+
+
+
+用户跑环启动时间
+looptask:uid:10005127:2018-08-16
+跑环进度
+loop_num:uid:10005127:2018-08-16
+
+用户挖宝时间
+usertreasure_task:uid:10005127:2018-08-16
+
+帮会个人任务
+gangman:10005127:2018-08-16
+
+del looptask:uid:10005127:2018-08-16 loop_num:uid:10005127:2018-08-16 usertreasure_task:uid:10005127:2018-08-16 gangman:10005127:2018-08-16
+
+del looptask:uid:90476905:2018-08-18 loop_num:uid:90476905:2018-08-18 usertreasure_task:uid:90476905:2018-08-18 gangman:90476905:2018-08-18
+
+del looptask:uid:90000153:2018-08-20 loop_num:uid:90000153:2018-08-20 usertreasure_task:uid:90000153:2018-08-20 gangman:90000153:2018-08-20
+
+del looptask:uid:10005127:2018-08-16 loop_num:uid:10005127:2018-08-16 usertreasure_task:uid:10005127:2018-08-16 gangman:10005127:2018-08-16
+
+del looptask:uid:90476905:2018-08-19 loop_num:uid:90476905:2018-08-19 usertreasure_task:uid:90476905:2018-08-19 gangman:90476905:2018-08-19
+
+
+datacenter   echo，解析器日志
+tail -f /data/vnc_log/supervisor/vnc_datacenter/vnc_datacenter_1.log
+tail -f /data/vnc_log/supervisor/vnc_datacenter/vnc_datacenter_2.log
+cd /data/vnc_log/supervisor/vnc_datacenter
+tail -f vnc_datacenter_2.log
+tail -f vnc_datacenter_1.log
+
+
+datacenter   php脚本日志（业务logfile）
+tail -f /data/vnc_release/bin/vnc_datacenter/logs/phpscripts/`date +"%Y-%m-%d"`/datacenter_php.log | grep -E "taskinfo|CEventHandleTask|rabbitmq_pub"
+cd /data/vnc_release/bin/vnc_datacenter/logs/phpscripts/
+tail -f datacenter_php.log | grep -E "taskinfo|CEventHandleTask|rabbitmq_pub"
+tail -f datacenter_php.log | grep --line-buffered "taskinfo" | grep --line-buffered "10005259"
+
+datacenter   本身日志（程序启动，失败，rq，rs）
+cd /data/vnc_log/vnc/
+
+datacenter位置
+cd /data/vnc_release/bin/vnc_datacenter/dc_script/include/redis
+
+埋点消息队列处理
+cd /data/vnc_log/vnc/vnc_BuriedPointSvr_1
+grep -E "taskModule_gangCommon_event" BuriedPointSvr.INFO
+grep -E "transterDoorCreate" BuriedPointSvr.INFO
+
+
+老版本业务日志
+cd /data/xcbb_projects/xcbb_project/server.kr.2/server/datacenter/logs/phpscripts
+
+老版业务日志错误日志
+cd /data/raidcall/log/phplog
+
+datacenter位置
+cd /data/vnc_release/bin/vnc_datacenter/dc_script/include/redis
+
+开发服日志位置
+/data/tag/server.kr.2/server/datacenter/logs/
+
+
+
+日志测试
+tail -f datacenter.log |grep -E "singer_weekrecord"

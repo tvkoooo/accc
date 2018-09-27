@@ -1,0 +1,10 @@
+¶ÁĞ´Ëø
+var m *sync.RWMutex
+m = new(sync.RWMutex)
+m.RLock()
+m.RUnlock()
+
+»¥³âËø
+var l sync.Mutex
+l.Lock()
+l.Unlock()

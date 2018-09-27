@@ -1,0 +1,53 @@
+文平，你那边消息队列是推到这个吗
+; 任务事件 消息队列
+task_queue_para = 172.16.39.218-6379[1]     ; 节点-端口[线程数]
+task_queue_name = vnc:task:event             ; 队列名
+task_queue_auth = QIZNj4uv                ; 密码
+
+
+
+
+
+
+
+
+
+
+disciple:count:down:52221144   39991144
+
+"LPUSH" "vnc:task:event" "{\"uid\":52221144,\"target_type\":9999,\"num\":0,\"extra_param\":0}"
+
+
+
+
+task_queue_para = 172.16.39.164-6379[1]     ; 节点-端口[线程数]
+task_queue_name = vnc:task:event             ; 队列名
+task_queue_auth = xcTeRed#@0526                ; 密码
+
+
+redis-cli -h 172.16.39.164 -p 6379 -a xcTeRed#@0526 MONITOR
+
+
+
+
+
+task_queue_para = 172.16.39.218-6379[1]     ; 节点-端口[线程数]
+task_queue_name = vnc:task:event             ; 队列名
+task_queue_auth = QIZNj4uv                ; 密码
+
+redis-cli -h 172.16.39.218 -p 6379 -a QIZNj4uv MONITOR
+
+
+
+
+master_apprentice:$uid:$targetType
+master_apprentice:62254164:879
+
+hset master_apprentice:62254164:879 master_apprentice:test:1 master_apprentice:test:1
+set master_apprentice:test:1 "{\"id\":1183239,\"gangid\":80080944,\"target_type\":52,\"t_total_progress\":10,\"t_finish_progress\":3,\"t_attach_param\":0,\"open_type\":0,\"tool_id\":null,\"tool_num\":null,\"status\":0,\"t_id\":70008,\"task_type\":17}"
+
+masterid:5555888877:discipleid:62254164
+set disciple:count:down:62254164 5555888877
+
+
+"LPUSH" "vnc:task:event" "{\"uid\":62254164,\"target_type\":879,\"num\":14,\"extra_param\":0}"
