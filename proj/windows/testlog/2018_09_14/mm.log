@@ -1,0 +1,63 @@
+[2018-09-14 16:41:06][DEBUG]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:43 fun:application_init ==>> program log start!
+[2018-09-14 16:41:06][INFO]slot data:zouqi 
+[2018-09-14 16:41:06][INFO]slot data:qi 
+[2018-09-14 16:41:06][INFO]slot data:qi 
+[2018-09-14 16:41:06][INFO]slot data:qizouqi 
+[2018-09-14 16:41:06][INFO]slot data:qizouqizouqi 
+[2018-09-14 16:41:06][INFO]program log close!
+[2018-09-14 17:46:08][DEBUG]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:43 fun:application_init ==>> program log start!
+[2018-09-14 17:46:08][INFO]slot data:] 
+[2018-09-14 17:46:08][INFO]slot data:] 
+[2018-09-14 17:46:08][INFO]slot data:] 
+[2018-09-14 17:46:08][INFO]slot data:] 
+[2018-09-14 17:46:08][INFO]slot data:] 
+[2018-09-14 17:46:08][INFO]program log close!
+[2018-09-14 17:50:35][DEBUG]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:43 fun:application_init ==>> program log start!
+[2018-09-14 17:50:56][INFO]slot data:[122,111,117,113,105] 
+[2018-09-14 17:51:12][INFO]slot data:[113,105] 
+[2018-09-14 17:51:27][INFO]slot data:[113,105] 
+[2018-09-14 17:51:27][INFO]slot data:[113,105,122,111,117,113,105] 
+[2018-09-14 17:51:27][INFO]slot data:[113,105,122,111,117,113,105,122,111,117,113,105] 
+[2018-09-14 17:51:27][INFO]program log close!
+[2018-09-14 18:02:55][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:43 fun:application_init ==>> program log start!
+[2018-09-14 18:02:55][INFO]slot data:[122,111,117,113,105,] 
+[2018-09-14 18:02:55][INFO]slot data:[113,105,] 
+[2018-09-14 18:02:55][INFO]slot data:[113,105,] 
+[2018-09-14 18:02:55][INFO]slot data:[113,105,122,111,117,113,105,] 
+[2018-09-14 18:02:55][INFO]slot data:[113,105,122,111,117,113,105,122,111,117,113,105,] 
+[2018-09-14 18:02:55][INFO]program log close!
+[2018-09-14 18:05:40][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:43 fun:application_init ==>> program log start!
+[2018-09-14 18:05:40][INFO]slot data:[122,111,117,113,105,] 
+[2018-09-14 18:05:40][INFO]slot data:[113,105,] 
+[2018-09-14 18:05:40][INFO]slot data:[113,105,] 
+[2018-09-14 18:05:40][INFO]slot data:[113,105,122,111,117,113,105,] 
+[2018-09-14 18:05:40][INFO]slot data:[113,105,122,111,117,113,105,122,111,117,113,105,] 
+[2018-09-14 18:05:40][INFO]program log close!
+[2018-09-14 18:06:40][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:43 fun:application_init ==>> program log start!
+[2018-09-14 18:06:40][INFO]slot data:[122,111,117,113,105,] 
+[2018-09-14 18:06:40][INFO]slot data:[113,105,] 
+[2018-09-14 18:06:40][INFO]slot data:[113,105,] 
+[2018-09-14 18:06:40][INFO]slot data:[113,105,122,111,117,113,105,] 
+[2018-09-14 18:06:40][INFO]slot data:[113,105,122,111,117,113,105,122,111,117,113,105,] 
+[2018-09-14 18:06:40][INFO]program log close!
+[2018-09-14 18:06:56][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:43 fun:application_init ==>> program log start!
+[2018-09-14 18:06:56][INFO]slot data:[122,117,45, 
+[2018-09-14 18:06:56][INFO]slot data:[105,65, 
+[2018-09-14 18:06:56][INFO]slot data:[105,65, 
+[2018-09-14 18:06:56][INFO]slot data:[105,65, 
+[2018-09-14 18:06:56][INFO]slot data:[105,65, 
+[2018-09-14 18:06:56][INFO]program log close!
+[2018-09-14 18:07:41][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:43 fun:application_init ==>> program log start!
+[2018-09-14 18:07:41][INFO]slot data:[122,117,045,105,065,] 
+[2018-09-14 18:07:41][INFO]slot data:[105,065,] 
+[2018-09-14 18:07:41][INFO]slot data:[105,065,] 
+[2018-09-14 18:07:41][INFO]slot data:[105,065,122,117,045,105,065,] 
+[2018-09-14 18:07:41][INFO]slot data:[105,065,122,117,045,105,065,122,117,045,105,065,] 
+[2018-09-14 18:07:41][INFO]program log close!
+[2018-09-14 18:09:40][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:43 fun:application_init ==>> program log start!
+[2018-09-14 18:09:40][INFO]slot data:[122,117,045,105,065,] 
+[2018-09-14 18:09:40][INFO]slot data:[105,065,] 
+[2018-09-14 18:09:40][INFO]slot data:[105,065,] 
+[2018-09-14 18:09:40][INFO]slot data:[105,065,122,117,045,105,065,] 
+[2018-09-14 18:09:40][INFO]slot data:[105,065,122,117,045,105,065,122,117,045,105,065,] 
+[2018-09-14 18:09:40][INFO]program log close!

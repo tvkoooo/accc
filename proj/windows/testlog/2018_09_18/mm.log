@@ -1,0 +1,33 @@
+[2018-09-18 15:37:15][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:42 fun:application_init ==>> program log start!
+[2018-09-18 15:37:15][INFO]slot data:[122,117,045,105,065,] 
+[2018-09-18 15:37:15][INFO]slot data:[105,065,] 
+[2018-09-18 15:37:15][INFO]slot data:[105,065,] 
+[2018-09-18 15:37:15][INFO]slot data:[105,065,122,117,045,105,065,] 
+[2018-09-18 15:37:15][INFO]slot data:[105,065,122,117,045,105,065,122,117,045,105,065,] 
+[2018-09-18 15:37:15][WARNING]d:\github\tvkoooo\accc\src\robot\ltcp.cpp 31 ltcp_conn_init ::Get socket fd:-1 Fail 
+[2018-09-18 15:37:15][INFO]program log close!
+[2018-09-18 15:42:41][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:42 fun:application_init ==>> program log start!
+[2018-09-18 15:42:41][INFO]slot data:[122,117,045,105,065,] 
+[2018-09-18 15:42:41][INFO]slot data:[105,065,] 
+[2018-09-18 15:42:41][INFO]slot data:[105,065,] 
+[2018-09-18 15:42:41][INFO]slot data:[105,065,122,117,045,105,065,] 
+[2018-09-18 15:42:41][INFO]slot data:[105,065,122,117,045,105,065,122,117,045,105,065,] 
+[2018-09-18 15:42:41][WARNING]d:\github\tvkoooo\accc\src\robot\ltcp.cpp 31 ltcp_conn_init ::Get socket fd:-1 Fail 
+[2018-09-18 15:42:41][INFO]program log close!
+[2018-09-18 15:45:04][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:42 fun:application_init ==>> program log start!
+[2018-09-18 15:45:04][INFO]slot data:[122,117,045,105,065,] 
+[2018-09-18 15:45:04][INFO]slot data:[105,065,] 
+[2018-09-18 15:45:04][INFO]slot data:[105,065,] 
+[2018-09-18 15:45:04][INFO]slot data:[105,065,122,117,045,105,065,] 
+[2018-09-18 15:45:04][INFO]slot data:[105,065,122,117,045,105,065,122,117,045,105,065,] 
+[2018-09-18 15:45:04][INFO]Get socket fd:-1[2018-09-18 15:45:04][WARNING]d:\github\tvkoooo\accc\src\robot\ltcp.cpp 34 ltcp_conn_init ::Get socket fd:-1 Fail 
+[2018-09-18 15:45:04][INFO]program log close!
+[2018-09-18 15:48:02][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:42 fun:application_init ==>> program log start!
+[2018-09-18 15:48:02][INFO]slot data:[122,117,045,105,065,] 
+[2018-09-18 15:48:02][INFO]slot data:[105,065,] 
+[2018-09-18 15:48:02][INFO]slot data:[105,065,] 
+[2018-09-18 15:48:02][INFO]slot data:[105,065,122,117,045,105,065,] 
+[2018-09-18 15:48:02][INFO]slot data:[105,065,122,117,045,105,065,122,117,045,105,065,] 
+[2018-09-18 15:48:02][INFO]Get socket fd:-1 
+[2018-09-18 15:48:02][WARNING]d:\github\tvkoooo\accc\src\robot\ltcp.cpp 34 ltcp_conn_init ::Get socket fd:-1 Fail 
+[2018-09-18 15:48:02][INFO]program log close!

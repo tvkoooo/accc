@@ -1,0 +1,86 @@
+[2018-09-19 15:03:36][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:34 fun:application_init ==>> program log start!
+[2018-09-19 15:03:36][INFO]slot data:[122,117,045,105,065,] 
+[2018-09-19 15:03:36][INFO]slot data:[105,065,] 
+[2018-09-19 15:03:36][INFO]slot data:[105,065,] 
+[2018-09-19 15:03:36][INFO]slot data:[105,065,122,117,045,105,065,] 
+[2018-09-19 15:03:36][INFO]slot data:[105,065,122,117,045,105,065,122,117,045,105,065,] 
+[2018-09-19 15:03:36][INFO]Get socket fd:252 
+[2018-09-19 15:03:36][INFO]program log close!
+[2018-09-19 15:17:34][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:34 fun:application_init ==>> program log start!
+[2018-09-19 15:17:34][INFO]slot data:[122,117,045,105,065,] 
+[2018-09-19 15:17:34][INFO]slot data:[105,065,] 
+[2018-09-19 15:17:34][INFO]slot data:[105,065,] 
+[2018-09-19 15:17:34][INFO]slot data:[105,065,122,117,045,105,065,] 
+[2018-09-19 15:17:34][INFO]slot data:[105,065,122,117,045,105,065,122,117,045,105,065,] 
+[2018-09-19 15:17:34][DEBUG]Get socket fd:296 
+[2018-09-19 15:17:34][INFO]program log close!
+[2018-09-19 15:23:54][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:28 fun:application_init ==>> program log start!
+[2018-09-19 15:23:54][INFO]slot data:[122,117,045,105,065,] 
+[2018-09-19 15:23:54][INFO]slot data:[105,065,] 
+[2018-09-19 15:23:54][INFO]slot data:[105,065,] 
+[2018-09-19 15:23:54][INFO]slot data:[105,065,122,117,045,105,065,] 
+[2018-09-19 15:23:54][INFO]slot data:[105,065,122,117,045,105,065,122,117,045,105,065,] 
+[2018-09-19 15:23:54][DEBUG]Get socket fd:308 
+[2018-09-19 15:23:54][INFO]program log close!
+[2018-09-19 15:26:20][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:27 fun:application_init ==>> program log start!
+[2018-09-19 15:26:20][INFO]log_path:(null) 
+ log_level:0 
+ instance:(null) 
+ service_num:(null) 
+ object_net:(null) 
+ object_port:0 
+ [2018-09-19 15:26:20][INFO]slot data:[122,117,045,105,065,] 
+[2018-09-19 15:26:20][INFO]slot data:[105,065,] 
+[2018-09-19 15:26:20][INFO]slot data:[105,065,] 
+[2018-09-19 15:26:20][INFO]slot data:[105,065,122,117,045,105,065,] 
+[2018-09-19 15:26:20][INFO]slot data:[105,065,122,117,045,105,065,122,117,045,105,065,] 
+[2018-09-19 15:26:20][DEBUG]Get socket fd:272 
+[2018-09-19 15:26:20][INFO]program log close!
+[2018-09-19 15:27:37][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:27 fun:application_init ==>> program log start!
+[2018-09-19 15:27:37][INFO]slot data:[122,117,045,105,065,] 
+[2018-09-19 15:27:37][INFO]slot data:[105,065,] 
+[2018-09-19 15:27:37][INFO]slot data:[105,065,] 
+[2018-09-19 15:27:37][INFO]slot data:[105,065,122,117,045,105,065,] 
+[2018-09-19 15:27:37][INFO]slot data:[105,065,122,117,045,105,065,122,117,045,105,065,] 
+[2018-09-19 15:27:37][DEBUG]Get socket fd:284 
+[2018-09-19 15:27:37][INFO]log_path:/home/longjia/c_test/log/vnc_robot_1 
+ log_level:7 
+ instance:1 
+ service_num:1 
+ object_net:59.110.125.134 
+ object_port:30301 
+ [2018-09-19 15:27:37][INFO]program log close!
+[2018-09-19 15:29:59][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:27 fun:application_init ==>> Program log start!
+[2018-09-19 15:29:59][INFO]slot data:[122,117,045,105,065,] 
+[2018-09-19 15:29:59][INFO]slot data:[105,065,] 
+[2018-09-19 15:29:59][INFO]slot data:[105,065,] 
+[2018-09-19 15:29:59][INFO]slot data:[105,065,122,117,045,105,065,] 
+[2018-09-19 15:29:59][INFO]slot data:[105,065,122,117,045,105,065,122,117,045,105,065,] 
+[2018-09-19 15:29:59][DEBUG]Get socket fd:208 
+[2018-09-19 15:29:59][INFO]System Configuration::
+ log_path:/home/longjia/c_test/log/vnc_robot_1 
+ log_level:7 
+ instance:1 
+ service_num:1 
+ object_net:59.110.125.134 
+ object_port:30301 
+ [2018-09-19 15:29:59][INFO]program log close!
+
+
+[2018-09-19 15:30:01][INFO]file:d:\github\tvkoooo\accc\src\robot\application.cpp line:27 fun:application_init ==>> Program log start!
+[2018-09-19 15:30:01][INFO]slot data:[122,117,045,105,065,] 
+[2018-09-19 15:30:01][INFO]slot data:[105,065,] 
+[2018-09-19 15:30:01][INFO]slot data:[105,065,] 
+[2018-09-19 15:30:01][INFO]slot data:[105,065,122,117,045,105,065,] 
+[2018-09-19 15:30:01][INFO]slot data:[105,065,122,117,045,105,065,122,117,045,105,065,] 
+[2018-09-19 15:30:01][DEBUG]Get socket fd:332 
+[2018-09-19 15:30:01][INFO]System Configuration::
+ log_path:/home/longjia/c_test/log/vnc_robot_1 
+ log_level:7 
+ instance:1 
+ service_num:1 
+ object_net:59.110.125.134 
+ object_port:30301 
+ [2018-09-19 15:30:01][INFO]program log close!
+
+
