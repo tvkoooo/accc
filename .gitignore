@@ -13,8 +13,3 @@ gen/
 libs/
 log/
 protobuf/src/protodef/
-*.h
-*.h
-src/lizi_4/application.h
-src/lizi_4/application.h
-*.h

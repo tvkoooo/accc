@@ -1,0 +1,11 @@
+		和标准Makefile 的 CFLAGS 用法一致
+			-L<库的搜索路径>
+			-l<库的具体名字>
+				例子：
+				-L/usr/local/lib
+				-lpthread
+
+				(全路径全文件名可以不用加任何东西)
+				/usr/local/lib/libpthread.so 
+				
+			-I<头文件搜索路径>

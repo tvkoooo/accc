@@ -1,0 +1,154 @@
+1 mm_lib 编译成安卓版本（动态库，静态库）  
+	mm_lib\build\lua\proj_android\compile.bat
+	%ANDROID_NDK%\ndk-build.cmd all      Android NDK工具集来编译，%ANDROID_NDK% 设置路径到Android NDK主路径
+	
+	生成发布版本动态库 mm_lib\build\lua\proj_android\libs\armeabi-v7a
+	生成发布版本静态库 mm_lib\build\lua\proj_android\obj\local\armeabi-v7a
+	
+2 mm_core 编译成安卓版本（动态库，静态库） 
+	mm_core\dish\proj\android\compile.bat
+	%ANDROID_NDK%\ndk-build.cmd all      Android NDK工具集来编译，%ANDROID_NDK% 设置路径到Android NDK主路径
+	
+	生成发布版本动态库 mm_core\dish\proj\android\libs\armeabi-v7a
+	生成发布版本静态库 mm_core\dish\proj\android\obj\local\armeabi-v7a
+	编译顺序
+		mm
+		dish
+		flake
+		data
+	
+	有java代码的情况下，会多一个jar的包 
+		mm_core\mm\proj\android\bin\mm_core.jar      ( 源码位置 mm_core\mm\proj\android\src )    基础API
+		mm_core\flake\proj\android\bin\mm_flake.jar  ( 源码位置 mm_core\flake\proj\android\src ) 安卓系统输入输出系统事件API 
+		
+		
+3 自己的工程
+	1 安卓jni编译工程 KO_dog\Client\proj\android\jni\libKO_dog_shared.mk
+	在 KO_dog\Client\proj\android\jni\android 做一个自己的源文件，做一个app的事件代理 ( cpp KO_dog_android.cpp ) 模板 
+		需要更改 #include "application/KO_dog.h"
+		
+	2 编译该工程 jni (c/c++ 源码)
+	KO_dog\Client\proj\android\compile.bat
+	
+	3 打包具体的apk
+		方法一： 打开 eclipse.exe，使用自带打包工具打包
+			a. 右上角需要切换到C/C++ 工具集（前提条件，eclipse需要安卓adt工具包）
+		
+		方法二： ant工具集打包
+	
+	
+4 Android.mk	Android NDK的工程编译文件（makefile）
+	Android.mk       主要的工程文件
+	Application.mk   主要的全局配置文件
+	
+	诀窍1：在Android.mk  include别的.mk (例如 libKO_dog_shared.mk)，
+		原因：为了防止整个工程重新编译。例如修改Android.mk或者Application.mk文件，会使整个工程重新编译
+		如果 include别的.mk (例如 libKO_dog_shared.mk) 。修改 libKO_dog_shared.mk 文件，修改的部分会生效，但是不会产生重新编译
+		
+	诀窍2：使用源文件( c/cpp文件 )的搜索函数来替换手动书写所有源文件	
+		即 LOCAL_SRC_FILES 变量的赋值
+		实现的搜索函数：(MM_MAKE_HOME指向 F:\mm\mm_make )  F:\mm\mm_make里面是工程编译拓展集
+			include $(MM_MAKE_HOME)/compile/definitions-sources.mk
+			include $(MM_MAKE_HOME)/compile/sources-rwildcard.mk
+
+	安卓工程模板 （ mm_make\template\proj\android\jni ）
+	libmake_shared.mk  （  动态库 ）
+	libmake_static.mk  （  静态库 ）
+	make_executable.mk （  可执行程序 ）
+	备注：安卓app 只需要主动态库，所以我们只需要 libmake_shared.mk  
+	
+5 通用安卓工程配置模板，详细的配置项
+	不同点1
+		include $(BUILD_SHARED_LIBRARY)  动态库
+		include $(BUILD_STATIC_LIBRARY)  静态库
+		include $(PREBUILT_SHARED_LIBRARY)  预编译动态库
+		include $(PREBUILT_STATIC_LIBRARY)  预编译静态库
+	
+	不同点2
+		LOCAL_LDLIBS += -fPIC  动态库
+		LOCAL_LDLIBS +=        静态库 （备注，后面是空的）
+		
+	相同点，
+		都要修改这个名字
+		安卓编译工程的内置变量
+			LOCAL_MODULE           模块名
+			LOCAL_MODULE_FILENAME  模块生成库名
+			LOCAL_CFLAGS           C源文件的附件编译选项
+			LOCAL_CXXFLAGS         CXX(.cpp .cc c++文件)源文件的附件编译选项
+			LOCAL_SHARED_LIBRARIES 附加动态库集合 （预编译的动态库名）  
+			LOCAL_STATIC_LIBRARIES 附加静态库集合 （预编译的静态库名）  
+			LOCAL_C_INCLUDES       源文件的include搜索路径集合
+			LOCAL_SRC_FILES        需要编译的所有源文件集合（因为使用了搜索函数，所以直接赋空）
+			
+		LOCAL_MODULE := libmake_shared              
+		LOCAL_MODULE_FILENAME := libmake_shared	
+		
+		推荐的编译选项
+		LOCAL_CFLAGS += -fPIC
+		LOCAL_CFLAGS += -D__ANDROID__
+		
+		LOCAL_CFLAGS += -Wall      把警告等级调到最高
+		LOCAL_CFLAGS += -Wno-unused-function      -Wno-<具体的警告名称>  忽略具体的警告
+
+
+		和标准Makefile 的 CFLAGS 用法一致
+			-L<库的搜索路径>
+			-l<库的具体名字>
+				例子：
+				-L/usr/local/lib
+				-lpthread
+				
+		LOCAL_STATIC_LIBRARIES（非常重要）
+		原则：依赖关系自下而上，API等级逐层增加
+			例子：比如工程G依赖了A，A依赖了B
+			LOCAL_STATIC_LIBRARIES += B
+			LOCAL_STATIC_LIBRARIES += A
+		
+		搜索算法的的内置变量
+			MY_SOURCES_PATH           源文件的搜索目录
+			MY_SOURCES_FILTER_OUT     源文件的排除目录/或者排除文件 的模式匹配集合
+			MY_SOURCES_EXTENSION      源文件的后缀（需要编译的源文件后缀集合，只要有的都需要）
+		搜索算法写法
+			a 内置变量赋空
+			MY_SOURCES_PATH       :=      
+			MY_SOURCES_FILTER_OUT := 
+			MY_SOURCES_EXTENSION  := 
+	
+		模板里面带了例子
+			MY_SOURCES_PATH += $(LOCAL_PATH)/../../../src           添加源文件搜索目录的例子
+			MY_SOURCES_FILTER_OUT += ../../filter-out-directory%  排除目录示例
+			MY_SOURCES_FILTER_OUT += ../../filter-out-source.c    排除文件示例
+			MY_SOURCES_EXTENSION += .cpp .c .cc .S                  后缀名示例
+	
+	拓展工具（函数）
+		INSTALL_MODEL := mm_core_packet
+		INSTALL_FILES := $(MM_CORE)/mm/proj/android/bin/mm_core.jar
+		INSTALL_OPATH := $(NDK_APP_LIBS_OUT)
+		include $(MM_MAKE_HOME)/compile/prebuilt-install.mk        功能：拷贝文件
+
+	
+	include $(LOCAL_PATH)/lib_flake_flags.mk       include <目标Makefile文件>.mk  可以重用Makefile工具包
+
+
+	include $(CLEAR_VARS)                           清除所有LOCAL_* 的环境变量
+	LOCAL_PATH := $(call my-dir)                    获取当前Makefile路径 
+	LOCAL_MAKEFILE := $(this-makefile)              把文件名（ Makefile 文件名 ）暂存
+	
+	制作预编译动态库模块例子
+	include $(CLEAR_VARS)
+	LOCAL_MODULE := libmm_flake_shared              
+	LOCAL_SRC_FILES := $(MM_CORE)/flake/proj/android/libs/$(APP_ABI)/libmm_flake.so 指向动态库（模块本身所有包含的动态库集合，通常就是一个）
+	include $(PREBUILT_SHARED_LIBRARY)
+	制作预编译静态库模块例子
+	include $(CLEAR_VARS)  
+	LOCAL_MODULE := libmm_flake_static
+	LOCAL_SRC_FILES := $(MM_CORE)/flake/proj/android/obj/local/$(APP_ABI)/libmm_flake.a 指向静态库（模块本身所有包含的静态库集合，通常就是一个）
+	include $(PREBUILT_STATIC_LIBRARY)
+
+6	拷贝资源
+	用compare 比较 KO_dog\Client\resources\assets 和 KO_dog\Client\proj\android\assets 里面资源，拷贝过去
+	
+	
+	
+	
+	

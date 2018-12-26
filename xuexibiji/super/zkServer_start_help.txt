@@ -1,0 +1,83 @@
+bash ./zkServer.sh start ../conf/zoo_single_10300.cfg
+
+
+1. 启动ZK服务:       bash bin/zkServer.sh start ../conf/zoo_single_10300.cfg
+2. 查看ZK服务状态:   bash bin/zkServer.sh status ../conf/zoo_single_10300.cfg
+3. 停止ZK服务:       bash bin/zkServer.sh stop ../conf/zoo_single_10300.cfg
+4. 重启ZK服务:       bash bin/zkServer.sh restart ../conf/zoo_single_10300.cfg
+--------------------- 
+
+
+确定 是否启动zk
+	1. ps -ef | grep zoo 查看缩放启动	
+	2. netstat -anp | grep 10300 (如果服务带端口，可以用此方法查看端口)
+	3. 关闭当前ssh ，再重新启动一个新的ssh，看该服务是否还在
+	
+
+
+supervisor	
+	安装：
+		1 下载安装包 例如(meld3-1.0.2.tar.gz setuptools-39.0.1.zip supervisor-3.3.3.tar.gz)
+		2 解压安装包
+			tar -xvf meld3-1.0.2.tar.gz
+			tar -xvf supervisor-3.3.3.tar.gz
+			unzip setuptools-39.0.1.zip
+		3 分别对应到解压目录安装
+			python setup.py install
+		4 supervisor 主配置文件的生成
+			因为 supervisor 的安装路径是默认  /usr/bin, 所以要生成主配置文件
+				/usr/bin/echo_supervisord_conf > <目标目录>/supervisord.conf
+				例子 /usr/bin/echo_supervisord_conf > ~/supervisord.conf	
+		5 默认情况下，我们会把配置文件放到    （修改文件或者目录拥有组 sudo chgrp typename /etc/supervisor -R ）
+			/etc/supervisor/supervisord.conf	(主配置文件)	
+			/etc/supervisor/conf.d/		        (具体所有配置文件的目录)		
+
+			
+			主配置文件的最后两行改为下面：
+			[include]
+			files = /etc/supervisor/conf.d/*.conf
+			
+			
+			推荐配置，可选配置，打开下面四句
+			[inet_http_server]         ; inet (TCP) server disabled by default
+			port=127.0.0.1:9001        ; ip_address:port specifier, *:port for all iface
+			username=user              ; default is no username (open server)
+			password=123               ; default is no password (open server)
+
+		6 完成 /etc/supervisor/conf.d/ 下面的具体配置文件
+			cp ~/mm_shuttle_entry.conf /etc/supervisor/conf.d/mm_shuttle_entry.conf
+		
+		7 启动 supervisor
+		sudo supervisord
+		start mm_shuttle_entry:
+		
+		8 打开防火墙
+		sudo vim /etc/sysconfig/iptables	
+		
+		-A INPUT -p udp --dport 20101 -j ACCEPT
+		-A INPUT -p tcp -m state --state NEW -m tcp --dport 20201 -j ACCEPT
+		
+		9 重启防火墙
+		sudo service iptables restart  
+		
+		10 查看防火墙状态
+		sudo iptables -L -n
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
