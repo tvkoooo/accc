@@ -1,0 +1,16 @@
+04-09 00:03:23.821 13714-13714/com.example.bafc.myapplication E/mrpeng: Environment.getRootDirectory()=:/system
+04-09 00:03:23.821 13714-13714/com.example.bafc.myapplication E/mrpeng: Environment.getDataDirectory()=:/data
+04-09 00:03:23.821 13714-13714/com.example.bafc.myapplication I/mrpeng: Environment.getDataDirectory().getAbsolutePath()/data
+04-09 00:03:23.821 13714-13714/com.example.bafc.myapplication E/mrpeng: Environment.getDownloadCacheDirectory()=:/cache
+04-09 00:03:23.821 13714-13714/com.example.bafc.myapplication E/mrpeng: Environment.getExternalStorageDirectory()=:/storage/emulated/0
+04-09 00:03:23.821 13714-13714/com.example.bafc.myapplication E/mrpeng: Environment.getExternalStoragePublicDirectory()=:/storage/emulated/0/Pictures
+04-09 00:03:23.821 13714-13714/com.example.bafc.myapplication E/mrpeng: Environment.getExternalStorageState()=:mounted
+04-09 00:03:23.821 13714-13714/com.example.bafc.myapplication E/mrpeng: Environment.isExternalStorageEmulated()=:true
+04-09 00:03:23.821 13714-13714/com.example.bafc.myapplication E/mrpeng: Environment.isExternalStorageRemovable()=</span>:false
+04-09 00:03:23.821 13714-13714/com.example.bafc.myapplication E/mrpeng: context.getFilesDir()=:/data/data/com.example.bafc.myapplication/files
+04-09 00:03:23.821 13714-13714/com.example.bafc.myapplication E/mrpeng: context.getCacheDir()=:/data/data/com.example.bafc.myapplication/cache
+04-09 00:03:23.841 13714-13714/com.example.bafc.myapplication E/mrpeng: context.getExternalFilesDir()=:/storage/emulated/0/Android/data/com.example.bafc.myapplication/files/Movies
+04-09 00:03:23.841 13714-13714/com.example.bafc.myapplication E/mrpeng: context.getExternalCacheDir()=:/storage/emulated/0/Android/data/com.example.bafc.myapplication/cache
+04-09 00:03:23.841 13714-13714/com.example.bafc.myapplication E/mrpeng: context.getPackageResourcePath()=:/data/app/com.example.bafc.myapplication-2.apk
+04-09 00:03:23.841 13714-13714/com.example.bafc.myapplication E/mrpeng: context.getDatabasePath("mufeng")=:/data/data/com.example.bafc.myapplication/databases/mufeng
+

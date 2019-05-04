@@ -1,0 +1,52 @@
+//////////////范例
+脚本格式:
+mm_shuttle_entry.exe %log_dir% 7 1 192.168.1.112-10001[2] 192.168.1.112-20001[2] 127.0.0.1:10300, 127.0.0.1:10300, > nul 2>&1 &
+mm_shuttle_lobby.exe %log_dir% 7 1 192.168.1.112-10002[2] 192.168.1.112-20002[2] 127.0.0.1:10300, 127.0.0.1:10300, 101.200.169.28-10200 123456 > nul 2>&1 &
+business_account.exe %log_dir% 7 1 192.168.1.112-10010[2] 192.168.1.112-20010[2] 127.0.0.1:10300, 100 0 0 123456 > nul 2>&1 &
+business_relation.exe %log_dir% 7 1 192.168.1.112-10011[2] 192.168.1.112-20011[2] 127.0.0.1:10300, 101 0 0 > nul 2>&1 &
+mm_shuttle_proxy.exe %log_dir% 7 1 192.168.1.112-10051[2] 192.168.1.112-20051[2] 127.0.0.1:10300, 127.0.0.1:10300, 100 0x02002000 0x020020FF 0 > nul 2>&1 &
+mm_shuttle_proxy.exe %log_dir% 7 1 192.168.1.112-10052[2] 192.168.1.112-20052[2] 127.0.0.1:10300, 127.0.0.1:10300, 101 0x02002100 0x020021FF 0 > nul 2>&1 &
+
+
+
+supervisor:
+./mm_shuttle_entry /data/log/mm_shuttle_entry 7 %(process_num)d 10.44.53.26-101%(process_num)02d[2] 101.200.169.28-201%(process_num)02d[2] 127.0.0.1:10300, 127.0.0.1:10300,
+./mm_shuttle_lobby /data/log/mm_shuttle_lobby 7 %(process_num)d 10.44.53.26-102%(process_num)02d[2] 101.200.169.28-202%(process_num)02d[2] 127.0.0.1:10300, 127.0.0.1:10300, 101.200.169.28-10200 201812
+./business_account /data/log/business_account 7 %(process_num)d 10.44.53.26-191%(process_num)02d[2] 10.44.53.26-291%(process_num)02d[2] 127.0.0.1:10300, 100 0 0 201812
+./business_relation /data/log/business_account 7 %(process_num)d 10.44.53.26-192%(process_num)02d[2] 10.44.53.26-292%(process_num)02d[2] 127.0.0.1:10300, 101 0 0
+
+./mm_shuttle_proxy /data/log/mm_shuttle_proxy 7 %(process_num)d 10.44.53.26-103%(process_num)02d[2] 10.44.53.26-203%(process_num)02d[2] 127.0.0.1:10300, 127.0.0.1:10300, 100 0x02002000 0x020020FF 0
+./mm_shuttle_proxy /data/log/mm_shuttle_proxy 7 %(process_num)d 10.44.53.26-103%(process_num)02d[2] 10.44.53.26-203%(process_num)02d[2] 127.0.0.1:10300, 127.0.0.1:10300, 100 0x02002000 0x020020FF 0
+
+
+//分配配置///////////////////////////////////////////////////////////
+程序名           		内网端口      外网端口
+cherry_entry 			30101-10199   40101-20199 
+cherry_lobby 			30201-10299   40201-20299
+cherry_account 			39101-19199   49101-29199 
+cherry_relation 		39201-19299   49201-29299 
+
+cherry_account_proxy 	30301-10399   40301-20399  //business_account   0x02002000 0x020020FF
+cherry_relation_proxy 	30401-10499   40401-20499  //business_relation  0x02002100 0x020021FF
+//消息分配///////////////////////////////////////////////////////////
+程序名					配置
+cherry_handler_lobby    "./mm_handler_lobby /data/log/cherry_handler_lobby 7 %(process_num)d 172.17.8.107-50501 172.17.8.107-5673[1] 190318 mm:queue:lobby:cback:000"
+cherry_account_cback    "./mm_shuttle_cback /data/log/cherry_account_cback 7 %(process_num)d 172.17.8.107:10301 172.17.8.107-50501 172.17.8.107-50501[1] mm:queue:lobby:cback:000 brpop"
+cherry_relation_cback   "./mm_shuttle_cback /data/log/cherry_relation_cback 7 %(process_num)d 172.17.8.107:10301 172.17.8.107-50501 172.17.8.107-50501[1] mm:queue:relation:cback:000 brpop"
+cherry_account_proxy	"./mm_shuttle_proxy /data/log/cherry_account_proxy 7 %(process_num)d net.i-303%(process_num)02d[2] net.i-403%(process_num)02d[2] 172.17.8.107:10301, 172.17.8.107:10301, 100 0x02002000 0x020020FF 0"
+cherry_relation_proxy	"./mm_shuttle_proxy /data/log/cherry_relation_proxy 7 %(process_num)d net.i-304%(process_num)02d[2] net.i-404%(process_num)02d[2] 172.17.8.107:10301, 172.17.8.107:10301, 101 0x02002100 0x020021FF 0"
+cherry_lobby			"./mm_shuttle_lobby /data/log/cherry_lobby 7 %(process_num)d net.i-302%(process_num)02d[2] ::-402%(process_num)02d[2] 172.17.8.107:10301, 172.17.8.107:10301, 172.17.8.107-10201 172.17.8.107-5673 net.e-402%(process_num)02d[2] 201903 190318"
+cherry_entry			"./mm_shuttle_entry /data/log/cherry_entry 7 %(process_num)d net.i-301%(process_num)02d[2] ::-401%(process_num)02d[2] 172.17.8.107:10301, 172.17.8.107:10301, net.e-401%(process_num)02d[2]"
+cherry_account			"./cherry_account /data/log/cherry_account 7 %(process_num)d net.i-391%(process_num)02d[2] net.i-491%(process_num)02d[2] 172.17.8.107:10301, 100 0 0 201903"
+cherry_relation			"./cherry_relation /data/log/cherry_relation 7 %(process_num)d net.i-392%(process_num)02d[2] net.i-492%(process_num)02d[2] 172.17.8.107:10301, 101 0 0"
+
+cp cherry_handler_lobby.conf /etc/supervisor/conf.d/cherry_handler_lobby.conf
+cp cherry_account_cback.conf /etc/supervisor/conf.d/cherry_account_cback.conf
+cp cherry_relation_cback.conf /etc/supervisor/conf.d/cherry_relation_cback.conf
+cp cherry_account_proxy.conf /etc/supervisor/conf.d/cherry_account_proxy.conf
+cp cherry_relation_proxy.conf /etc/supervisor/conf.d/cherry_relation_proxy.conf
+cp cherry_lobby.conf /etc/supervisor/conf.d/cherry_lobby.conf
+cp cherry_entry.conf /etc/supervisor/conf.d/cherry_entry.conf
+cp cherry_account.conf /etc/supervisor/conf.d/cherry_account.conf
+cp cherry_relation.conf /etc/supervisor/conf.d/cherry_relation.conf
+

@@ -23,14 +23,17 @@
 		
 		
 3 自己的工程
-	1 安卓jni编译工程 KO_dog\Client\proj\android\jni\libKO_dog_shared.mk
+	0   到 F:\mm\mm_make\template\proj 拷贝 android 文件夹到自己 proj 目录下面
+	1   .project 右键打开 修改 <name>mm_emu</name> 为自己project
+	1.1 修改 libmm_emu_shared.mk 和 libmm_emu_static.mk 为 libXXXX_shared.mk （动态库） 和 libXXXX_static.mk （静态库）； 如果有可执行程序，需要修改 make_executable.mk
+	2 安卓jni编译工程 KO_dog\Client\proj\android\jni\libKO_dog_shared.mk
 	在 KO_dog\Client\proj\android\jni\android 做一个自己的源文件，做一个app的事件代理 ( cpp KO_dog_android.cpp ) 模板 
 		需要更改 #include "application/KO_dog.h"
 		
-	2 编译该工程 jni (c/c++ 源码)
+	3 编译该工程 jni (c/c++ 源码)
 	KO_dog\Client\proj\android\compile.bat
 	
-	3 打包具体的apk
+	4 打包具体的apk
 		方法一： 打开 eclipse.exe，使用自带打包工具打包
 			a. 右上角需要切换到C/C++ 工具集（前提条件，eclipse需要安卓adt工具包）
 		

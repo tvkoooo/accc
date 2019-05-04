@@ -1,10 +1,10 @@
 bash ./zkServer.sh start ../conf/zoo_single_10300.cfg
 
-
-1. 启动ZK服务:       bash bin/zkServer.sh start ../conf/zoo_single_10300.cfg
-2. 查看ZK服务状态:   bash bin/zkServer.sh status ../conf/zoo_single_10300.cfg
-3. 停止ZK服务:       bash bin/zkServer.sh stop ../conf/zoo_single_10300.cfg
-4. 重启ZK服务:       bash bin/zkServer.sh restart ../conf/zoo_single_10300.cfg
+cd /usr/local/application/zookeeper-3.4.10/bin
+1. 启动ZK服务:       bash zkServer.sh start ../conf/zoo_single_10300.cfg
+2. 查看ZK服务状态:   bash zkServer.sh status ../conf/zoo_single_10300.cfg
+3. 停止ZK服务:       bash zkServer.sh stop ../conf/zoo_single_10300.cfg
+4. 重启ZK服务:       bash zkServer.sh restart ../conf/zoo_single_10300.cfg
 --------------------- 
 
 
@@ -49,7 +49,11 @@ supervisor
 		
 		7 启动 supervisor
 		sudo supervisord
+		7.1 进入管理
+		sudo supervisordctl
+		7.2 启动进程
 		start mm_shuttle_entry:
+		
 		
 		8 打开防火墙
 		sudo vim /etc/sysconfig/iptables	

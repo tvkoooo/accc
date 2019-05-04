@@ -1,0 +1,12 @@
+cd /usr/local/application/zookeeper-3.4.10/bin
+1. 启动ZK服务:       bash zkServer.sh start ../conf/zoo_single_10301.cfg
+2. 查看ZK服务状态:   bash zkServer.sh status ../conf/zoo_single_10301.cfg
+3. 停止ZK服务:       bash zkServer.sh stop ../conf/zoo_single_10301.cfg
+4. 重启ZK服务:       bash zkServer.sh restart ../conf/zoo_single_10301.cfg
+--------------------- 
+
+
+确定 是否启动zk
+	1. ps -ef | grep zoo 查看缩放启动	
+	2. netstat -anp | grep 10301 (如果服务带端口，可以用此方法查看端口)
+	3. 关闭当前ssh ，再重新启动一个新的ssh，看该服务是否还在

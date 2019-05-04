@@ -1,0 +1,37 @@
+sudo vim /etc/hosts 加一行
+```
+127.0.0.1 <机器的hostname>
+```
+
+cd /usr/lib/rabbitmq/lib/rabbitmq_server-3.7.9/sbin
+
+sudo rabbitmqctl stop -n rabbit1@<机器的hostname>
+sudo rabbitmqctl stop -n rabbit2@<机器的hostname>
+sudo rabbitmqctl stop -n rabbit3@<机器的hostname>
+sudo rabbitmqctl stop -n rabbit1@iZ25b5xtkm2Z
+
+sudo RABBITMQ_NODE_PORT=5672 RABBITMQ_NODENAME=rabbit1 RABBITMQ_SERVER_START_ARGS="-rabbitmq_management listener [{port,15672}]" rabbitmq-server -detached
+sudo RABBITMQ_NODE_PORT=5673 RABBITMQ_NODENAME=rabbit2 RABBITMQ_SERVER_START_ARGS="-rabbitmq_management listener [{port,15673}]" rabbitmq-server -detached
+sudo RABBITMQ_NODE_PORT=5674 RABBITMQ_NODENAME=rabbit3 RABBITMQ_SERVER_START_ARGS="-rabbitmq_management listener [{port,15674}]" rabbitmq-server -detached
+
+RABBITMQ_NODE_IP_ADDRESS= //IP地址，空串bind所有地址，指定地址bind指定网络接口
+RABBITMQ_NODE_PORT=       //TCP端口号，默认是5672
+RABBITMQ_NODENAME=        //节点名称。默认是rabbit
+RABBITMQ_CONFIG_FILE= //配置文件路径 ，即rabbitmq.config文件路径
+RABBITMQ_MNESIA_BASE=     //mnesia所在路径
+RABBITMQ_LOG_BASE=        //日志所在路径
+RABBITMQ_PLUGINS_DIR=     //插件所在路径
+
+添加用户
+sudo rabbitmqctl -n rabbit1@<机器的hostname> add_user <username> <password>
+sudo rabbitmqctl -n rabbit1@iZ25b5xtkm2Z add_user mm_longcheng qwert
+
+加权限
+sudo rabbitmqctl -n rabbit1@<机器的hostname> set_permissions -p "/" admin ".*" ".*" ".*"
+sudo rabbitmqctl -n rabbit1@iZ25b5xtkm2Z set_permissions -p "/" mm_longcheng ".*" ".*" ".*"
+
+设置用户角色
+sudo rabbitmqctl -n rabbit1@iZ25b5xtkm2Z set_user_tags mm_longcheng administrator
+
+加入集群
+rabbitmqctl -n rabbit2 join_cluster rabbit1@`hostname -s`

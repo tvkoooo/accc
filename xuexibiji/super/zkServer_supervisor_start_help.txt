@@ -1,53 +1,11 @@
-启动redis
-	cd /data/redis
-	bash launch_101.200.169.28.bash
-	测试是否启动  redis-cli -h 101.200.169.28 -p 50500
-
-启动数据库
-	测试是否启动  打开客户端访问数据库
-
-启动rabbitmq
-	rabbitmq启动
-	systemctl start rabbitmq-server
-	#或者 
-	rabbitmq-server -detached   #以后台守护进程方式启动
-
-	#启动服务
-	systemctl start rabbitmq-server.service
-	 
-	#设置开机启动
-	systemctl enable rabbitmq-server.service
-	 
-	#停止开机启动
-	systemctl disable rabbitmq-server.service
-	 
-	#重新启动服务
-	systemctl restart rabbitmq-server.service
-	 
-	#查看服务当前状态
-	systemctl status rabbitmq-server.service
-	 
-	#查看所有已启动服务
-	systemctl list-units --type=service
---------------------- 
-
-
 bash ./zkServer.sh start ../conf/zoo_single_10300.cfg
 
-
-1. 启动ZK服务:       bash bin/zkServer.sh start ../conf/zoo_single_10300.cfg
-2. 查看ZK服务状态:   bash bin/zkServer.sh status ../conf/zoo_single_10300.cfg
-3. 停止ZK服务:       bash bin/zkServer.sh stop ../conf/zoo_single_10300.cfg
-4. 重启ZK服务:       bash bin/zkServer.sh restart ../conf/zoo_single_10300.cfg
-
-linux
+cd /usr/local/application/zookeeper-3.4.10/bin
+1. 启动ZK服务:       bash zkServer.sh start ../conf/zoo_single_10300.cfg
+2. 查看ZK服务状态:   bash zkServer.sh status ../conf/zoo_single_10300.cfg
+3. 停止ZK服务:       bash zkServer.sh stop ../conf/zoo_single_10300.cfg
+4. 重启ZK服务:       bash zkServer.sh restart ../conf/zoo_single_10300.cfg
 --------------------- 
-1. 启动ZK服务:       bash ./zkServer.sh start ../conf/zoo_single_10300.cfg
-2. 查看ZK服务状态:   bash ./zkServer.sh status ../conf/zoo_single_10300.cfg
-3. 停止ZK服务:       bash ./zkServer.sh stop ../conf/zoo_single_10300.cfg
-4. 重启ZK服务:       bash ./zkServer.sh restart ../conf/zoo_single_10300.cfg
-
-
 
 
 确定 是否启动zk
@@ -91,7 +49,11 @@ supervisor
 		
 		7 启动 supervisor
 		sudo supervisord
+		7.1 进入管理
+		sudo supervisordctl
+		7.2 启动进程
 		start mm_shuttle_entry:
+		
 		
 		8 打开防火墙
 		sudo vim /etc/sysconfig/iptables	

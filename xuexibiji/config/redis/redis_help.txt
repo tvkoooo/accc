@@ -1,0 +1,14 @@
+1	制作 ip/port config
+	复制ip/port 文件夹到 /data/redis 下面（或者在该目录下面制作对应ip 端口 文件）
+2	修改启动redis bash文件
+	修改 /data/redis/launch_101.200.169.28.bash ,添加刚才制作的config
+3	打开防火墙对应端口
+	cd /etc/sysconfig
+	打开修改iptables
+	
+4	启动redis 脚本
+	sudo service iptables restart 命令将iptables服务重启
+
+5	查看端口是否开启
+	sudo iptables -L -n
+	
